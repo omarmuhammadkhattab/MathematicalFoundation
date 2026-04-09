@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 5 — Domain, Piecewise &amp; Linear Functions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07090f;--surface:#0e1220;--surface2:#141b2e;--surface3:#192036;
+    --border:#1c2640;--border2:#253050;
+    --primary:#60a5fa;--primary-dim:rgba(96,165,250,0.12);
+    --accent:#f59e0b;--accent-dim:rgba(245,158,11,0.1);
+    --purple:#a78bfa;--purple-dim:rgba(167,139,250,0.12);
+    --green:#34d399;--green-dim:rgba(52,211,153,0.1);
+    --red:#f87171;--red-dim:rgba(248,113,113,0.1);
+    --rose:#fb7185;--rose-dim:rgba(251,113,133,0.1);
+    --text:#e2e8f0;--muted:#64748b;--muted2:#94a3b8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;}
+
+  .bg-fixed{position:fixed;inset:0;z-index:0;pointer-events:none;}
+  .bg-dots{position:absolute;inset:0;background-image:radial-gradient(circle,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:0.5;}
+  .bg-glow{position:absolute;border-radius:50%;filter:blur(100px);}
+  .g1{width:500px;height:500px;background:rgba(167,139,250,0.05);top:-100px;left:-100px;}
+  .g2{width:400px;height:400px;background:rgba(96,165,250,0.04);bottom:-50px;right:-100px;}
+
+  .page{position:relative;z-index:1;display:flex;min-height:100vh;}
+
+  /* Sidebar */
+  .sidebar{
+    width:240px;flex-shrink:0;padding:2rem 1.5rem;
+    border-right:1px solid var(--border);position:sticky;top:0;
+    height:100vh;overflow-y:auto;
+    background:rgba(7,9,15,0.6);backdrop-filter:blur(8px);
+  }
+  .sidebar-back{display:inline-flex;align-items:center;gap:0.4rem;text-decoration:none;color:var(--muted);font-size:0.8rem;transition:color 0.2s;margin-bottom:2rem;font-family:'JetBrains Mono',monospace;}
+  .sidebar-back:hover{color:var(--primary);}
+  .sidebar-title{font-size:0.7rem;color:var(--rose);text-transform:uppercase;letter-spacing:0.18em;font-family:'JetBrains Mono',monospace;margin-bottom:1rem;}
+  .toc{list-style:none;}
+  .toc li{margin-bottom:0.2rem;}
+  .toc a{display:block;padding:0.38rem 0.75rem;text-decoration:none;color:var(--muted2);font-size:0.82rem;border-left:2px solid transparent;border-radius:0 6px 6px 0;transition:all 0.2s;}
+  .toc a:hover,.toc a.active{color:var(--rose);border-left-color:var(--rose);background:var(--rose-dim);}
+  .toc-sub a{padding-left:1.5rem;font-size:0.78rem;}
+
+  .main{flex:1;max-width:800px;padding:3rem 3rem 6rem;margin:0 auto;}
+
+  /* Header */
+  .lec-header{margin-bottom:3.5rem;padding-bottom:2.5rem;border-bottom:1px solid var(--border);}
+  .lec-num{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--rose);text-transform:uppercase;letter-spacing:0.22em;background:var(--rose-dim);border:1px solid rgba(251,113,133,0.2);display:inline-block;padding:0.3rem 0.8rem;border-radius:4px;margin-bottom:1.25rem;}
+  .lec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,3.5rem);font-weight:700;line-height:1.1;margin-bottom:1rem;}
+  .lec-title em{font-style:italic;background:linear-gradient(100deg,var(--rose),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .lec-desc{color:var(--muted2);font-size:1rem;max-width:560px;line-height:1.7;}
+
+  section{margin-bottom:4rem;scroll-margin-top:2rem;}
+  .sec-badge{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--rose);text-transform:uppercase;letter-spacing:0.2em;margin-bottom:0.6rem;}
+  h2{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;margin-bottom:1.5rem;}
+  h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;margin:1.75rem 0 0.75rem;}
+  p{margin-bottom:1rem;color:var(--muted2);}
+
+  .box{border-radius:12px;padding:1.25rem 1.5rem;margin:1.25rem 0;border:1px solid;}
+  .box-def{background:var(--primary-dim);border-color:rgba(96,165,250,0.2);}
+  .box-def .box-label{color:var(--primary);}
+  .box-ex{background:var(--green-dim);border-color:rgba(52,211,153,0.2);}
+  .box-ex .box-label{color:var(--green);}
+  .box-note{background:var(--accent-dim);border-color:rgba(245,158,11,0.2);}
+  .box-note .box-label{color:var(--accent);}
+  .box-rule{background:var(--purple-dim);border-color:rgba(167,139,250,0.2);}
+  .box-rule .box-label{color:var(--purple);}
+  .box-rose{background:var(--rose-dim);border-color:rgba(251,113,133,0.2);}
+  .box-rose .box-label{color:var(--rose);}
+  .box-formula{background:var(--surface2);border-color:var(--border2);text-align:center;}
+  .box-label{font-size:0.72rem;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:0.5rem;display:block;}
+  .box p{margin:0;}.box p+p{margin-top:0.5rem;}
+
+  .math{font-family:'JetBrains Mono',monospace;font-size:0.88em;color:var(--text);background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;}
+  .math-block{font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:var(--text);background:var(--surface2);border:1px solid var(--border2);padding:0.9rem 1.2rem;border-radius:8px;margin:0.75rem 0;display:block;}
+  .big-formula{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.8rem;display:block;text-align:center;padding:0.75rem;color:var(--text);}
+
+  /* Example solution cards */
+  .ex-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.25rem 0;}
+  .ex-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;}
+  .ex-card-label{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.5rem;}
+  .ex-card-fn{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;margin-bottom:0.75rem;color:var(--text);}
+  .ex-card-steps{font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:var(--muted2);line-height:1.7;}
+  .ex-card-result{margin-top:0.75rem;font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--green);font-weight:500;}
+
+  /* Sign chart */
+  .sign-chart{background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:1rem 1.5rem;margin:1rem 0;font-family:'JetBrains Mono',monospace;font-size:0.82rem;}
+  .sign-row{display:flex;align-items:center;gap:1rem;border-bottom:1px solid var(--border);padding:0.4rem 0;}
+  .sign-row:last-child{border-bottom:none;}
+  .sign-label{color:var(--muted);min-width:100px;}
+  .sign-values{display:flex;gap:1.5rem;color:var(--text);}
+  .sign-pos{color:var(--green);}
+  .sign-neg{color:var(--red);}
+  .sign-zero{color:var(--accent);}
+
+  /* Piecewise display */
+  .piecewise{background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:1.25rem 1.5rem;margin:1rem 0;}
+  .piecewise-fn{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;margin-bottom:0.75rem;}
+  .piecewise-cases{border-left:3px solid var(--rose);padding-left:1rem;}
+  .piecewise-case{display:flex;gap:1.5rem;padding:0.3rem 0;font-family:'JetBrains Mono',monospace;font-size:0.85rem;}
+  .piecewise-formula{color:var(--text);min-width:100px;}
+  .piecewise-cond{color:var(--muted);}
+
+  /* Graph canvas */
+  .graph-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin:1.5rem 0;}
+  .graph-title{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:1rem;}
+
+  /* Domain rule table */
+  .rule-table{width:100%;border-collapse:collapse;margin:1.25rem 0;}
+  .rule-table th{background:var(--surface2);border:1px solid var(--border2);padding:0.65rem 1rem;text-align:left;font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--rose);text-transform:uppercase;letter-spacing:0.1em;}
+  .rule-table td{border:1px solid var(--border);padding:0.65rem 1rem;font-size:0.88rem;color:var(--muted2);}
+  .rule-table tr:hover td{background:var(--surface2);}
+  .rule-table td .math{font-size:0.82em;}
+
+  /* Linear function slope-intercept display */
+  .slope-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;display:flex;gap:2rem;flex-wrap:wrap;margin:1.25rem 0;}
+  .slope-item{text-align:center;}
+  .slope-num{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:700;color:var(--primary);}
+  .slope-lbl{font-size:0.75rem;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.12em;margin-top:0.2rem;}
+
+  /* Reveal animation */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity 0.55s ease,transform 0.55s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  /* Responsive */
+  @media(max-width:900px){
+    .sidebar{display:none;}
+    .main{padding:2rem 1.5rem 4rem;}
+  }
+  @media(max-width:580px){
+    .ex-grid{grid-template-columns:1fr;}
+    .main{padding:1.5rem 1rem 4rem;}
+  }
+  .lec-nav{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:2rem;margin-top:3rem;flex-wrap:wrap;gap:1rem;}
+  .nav-btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1.2rem;border:1px solid var(--border2);border-radius:8px;background:var(--surface);color:var(--muted2);text-decoration:none;font-size:0.85rem;transition:all 0.2s;}
+  .nav-btn:hover{border-color:var(--primary);color:var(--primary);}
+</style>
+</head>
+<body>
+
+<div class="bg-fixed">
+  <div class="bg-dots"></div>
+  <div class="bg-glow g1"></div>
+  <div class="bg-glow g2"></div>
+</div>
+
+<div class="page">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <a href="index.html" class="sidebar-back">← Back to Course</a>
+    <div class="sidebar-title">// Contents</div>
+    <ul class="toc">
+      <li><a href="#log-simplify">1. Log Simplification</a></li>
+      <li><a href="#domain">2. Domain Using Algebra</a></li>
+      <li class="toc-sub"><a href="#domain-rules">Three Key Rules</a></li>
+      <li class="toc-sub"><a href="#domain-examples">Worked Examples</a></li>
+      <li><a href="#piecewise">3. Piecewise Functions</a></li>
+      <li class="toc-sub"><a href="#abs-value">Absolute Value</a></li>
+      <li><a href="#linear">4. Linear Functions</a></li>
+      <li class="toc-sub"><a href="#linear-examples">Worked Examples</a></li>
+    </ul>
+  </aside>
+
+  <main class="main">
+
+    <header class="lec-header">
+      <div class="lec-num">Lecture 05</div>
+      <h1 class="lec-title">Domain, Piecewise &amp; <em>Linear Functions</em></h1>
+      <p class="lec-desc">Mastering the algebraic calculation of domains, understanding piecewise-defined functions, and introducing linear functions with their slope-intercept form.</p>
+    </header>
+
+    <!-- ═══ SECTION 1: LOG SIMPLIFICATION ═══ -->
+    <section id="log-simplify" class="reveal">
+      <div class="sec-badge">// Section 1</div>
+      <h2>Logarithm Simplification — Review</h2>
+
+      <p>Before extending our work on domains, we review and consolidate logarithm simplification using the three core log rules.</p>
+
+      <div class="box box-rule">
+        <span class="box-label">Core Rules Recap</span>
+        <p><strong>Product:</strong> log(AB) = log A + log B</p>
+        <p><strong>Quotient:</strong> log(A/B) = log A − log B</p>
+        <p><strong>Power:</strong> log(Aⁿ) = n · log A</p>
+      </div>
+
+      <h3>Worked Examples</h3>
+
+      <div class="box box-ex">
+        <span class="box-label">Example 1</span>
+        <p>Simplify <span class="math">log(x³ · √x)</span></p>
+        <span class="math-block">= log(x³ · x^(1/2))
+= log(x^(3 + 1/2))
+= log(x^(7/2))
+= (7/2) log x</span>
+      </div>
+
+      <div class="box box-ex">
+        <span class="box-label">Example 2</span>
+        <p>Simplify <span class="math">log(x⁵ / x²)</span></p>
+        <span class="math-block">= log(x^(5-2))
+= log(x³)
+= 3 log x</span>
+      </div>
+
+      <div class="box box-ex">
+        <span class="box-label">Example 3</span>
+        <p>Simplify <span class="math">ln( x⁵ / (1+x)¹⁸ )</span></p>
+        <span class="math-block">= ln(x⁵) − ln((1+x)¹⁸)
+= 5 ln x − 18 ln(1+x)</span>
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 2: DOMAIN ═══ -->
+    <section id="domain" class="reveal">
+      <div class="sec-badge">// Section 2</div>
+      <h2>Calculating Domain Using Algebra</h2>
+
+      <p>The <strong>domain</strong> of a function is the set of all input values <span class="math">x</span> for which the function is defined — i.e., produces a real output. The key question to ask is always:</p>
+
+      <div class="box box-rose">
+        <span class="box-label">The Guiding Question</span>
+        <p style="color:var(--text);font-size:1.1rem;font-style:italic;">For what values of x does f(x) make sense?</p>
+      </div>
+
+      <section id="domain-rules">
+        <h3>Three Main Problem Types</h3>
+        <p>There are three situations that restrict the domain. You must check for each one present in a function.</p>
+
+        <table class="rule-table">
+          <thead>
+            <tr>
+              <th>Situation</th>
+              <th>Function Form</th>
+              <th>Restriction</th>
+              <th>Reason</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Even Root</strong></td>
+              <td><span class="math">y = √f(x)</span></td>
+              <td><span class="math">f(x) ≥ 0</span></td>
+              <td>Square roots of negatives are not real</td>
+            </tr>
+            <tr>
+              <td><strong>Denominator</strong></td>
+              <td><span class="math">y = 1/f(x)</span></td>
+              <td><span class="math">f(x) ≠ 0</span> → <span class="math">ℝ − {x : f(x)=0}</span></td>
+              <td>Division by zero is undefined</td>
+            </tr>
+            <tr>
+              <td><strong>Logarithm</strong></td>
+              <td><span class="math">y = ln f(x)</span></td>
+              <td><span class="math">f(x) > 0</span></td>
+              <td>Log of zero or negatives is undefined</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="box box-note">
+          <span class="box-label">Odd Roots — No Restriction</span>
+          <p>Odd roots such as <span class="math">∛f(x)</span> can accept any real number, so they impose no domain restriction. The domain is all of ℝ.</p>
+        </div>
+      </section>
+    </section>
+
+    <!-- ═══ SECTION 2b: DOMAIN EXAMPLES ═══ -->
+    <section id="domain-examples" class="reveal">
+      <div class="sec-badge">// Section 2 — Worked Examples</div>
+      <h2>Domain Examples</h2>
+
+      <h3>Set A — Basic Cases</h3>
+      <div class="ex-grid">
+        <div class="ex-card">
+          <div class="ex-card-label">Example</div>
+          <div class="ex-card-fn">f(x) = x³ + 4x² + 3x + 1</div>
+          <div class="ex-card-steps">Polynomial — no restrictions</div>
+          <div class="ex-card-result">D_f = ℝ = (−∞, ∞)</div>
+        </div>
+        <div class="ex-card">
+          <div class="ex-card-label">Example</div>
+          <div class="ex-card-fn">H(x) = √x</div>
+          <div class="ex-card-steps">Even root → x ≥ 0</div>
+          <div class="ex-card-result">D_H = [0, ∞)</div>
+        </div>
+        <div class="ex-card">
+          <div class="ex-card-label">Example</div>
+          <div class="ex-card-fn">f(x) = √(x + 3)</div>
+          <div class="ex-card-steps">x + 3 ≥ 0<br>x ≥ −3</div>
+          <div class="ex-card-result">D_f = [−3, ∞)</div>
+        </div>
+        <div class="ex-card">
+          <div class="ex-card-label">Example</div>
+          <div class="ex-card-fn">f(x) = 1/x</div>
+          <div class="ex-card-steps">Denominator: x ≠ 0</div>
+          <div class="ex-card-result">D_f = ℝ − {0}</div>
+        </div>
+        <div class="ex-card">
+          <div class="ex-card-label">Example</div>
+          <div class="ex-card-fn">f(x) = 1/(x − 2)</div>
+          <div class="ex-card-steps">x − 2 ≠ 0<br>x ≠ 2</div>
+          <div class="ex-card-result">D_f = ℝ − {2}</div>
+        </div>
+      </div>
+
+      <h3>Set B — Square Roots of Quadratics</h3>
+      <div class="box box-ex">
+        <span class="box-label">Example: f(x) = √(x² − 4)</span>
+        <p>Require <span class="math">x² − 4 ≥ 0</span>. Factor: <span class="math">(x−2)(x+2) ≥ 0</span>.</p>
+        <div class="sign-chart">
+          <div class="sign-row">
+            <div class="sign-label">Region</div>
+            <div class="sign-values">
+              <span>(−∞, −2]</span>
+              <span>[−2, 2]</span>
+              <span>[2, ∞)</span>
+            </div>
+          </div>
+          <div class="sign-row">
+            <div class="sign-label">Sign of (x²−4)</div>
+            <div class="sign-values">
+              <span class="sign-pos">+ (≥0) ✓</span>
+              <span class="sign-neg">− ✗</span>
+              <span class="sign-pos">+ (≥0) ✓</span>
+            </div>
+          </div>
+        </div>
+        <p style="color:var(--green);font-family:'JetBrains Mono',monospace;">D_f = (−∞, −2] ∪ [2, ∞)</p>
+      </div>
+
+      <div class="box box-ex">
+        <span class="box-label">Example: f(x) = √(x² − 7x + 12)</span>
+        <p>Require <span class="math">x² − 7x + 12 ≥ 0</span>. Factor: <span class="math">(x−3)(x−4) ≥ 0</span>.</p>
+        <div class="sign-chart">
+          <div class="sign-row">
+            <div class="sign-label">Region</div>
+            <div class="sign-values">
+              <span>(−∞, 3]</span>
+              <span>[3, 4]</span>
+              <span>[4, ∞)</span>
+            </div>
+          </div>
+          <div class="sign-row">
+            <div class="sign-label">Sign</div>
+            <div class="sign-values">
+              <span class="sign-pos">+ ✓</span>
+              <span class="sign-neg">− ✗</span>
+              <span class="sign-pos">+ ✓</span>
+            </div>
+          </div>
+        </div>
+        <p style="color:var(--green);font-family:'JetBrains Mono',monospace;">D_f = (−∞, 3] ∪ [4, ∞)</p>
+      </div>
+
+      <h3>Set C — Rational and Logarithmic Domains</h3>
+      <div class="ex-grid">
+        <div class="ex-card">
+          <div class="ex-card-label">Example</div>
+          <div class="ex-card-fn">f(x) = 1/(x² − 6x + 8)</div>
+          <div class="ex-card-steps">Denominator ≠ 0<br>(x−2)(x−4) = 0<br>x = 2 or x = 4</div>
+          <div class="ex-card-result">D_f = ℝ − {2, 4}</div>
+        </div>
+        <div class="ex-card">
+          <div class="ex-card-label">Example</div>
+          <div class="ex-card-fn">f(x) = ln x</div>
+          <div class="ex-card-steps">ln requires x &gt; 0</div>
+          <div class="ex-card-result">D_f = (0, ∞)</div>
+        </div>
+        <div class="ex-card">
+          <div class="ex-card-label">Example</div>
+          <div class="ex-card-fn">f(x) = ln(x − 12)</div>
+          <div class="ex-card-steps">x − 12 &gt; 0<br>x &gt; 12</div>
+          <div class="ex-card-result">D_f = (12, ∞)</div>
+        </div>
+        <div class="ex-card">
+          <div class="ex-card-label">Example</div>
+          <div class="ex-card-fn">f(x) = ln(10 − x)</div>
+          <div class="ex-card-steps">10 − x &gt; 0<br>x &lt; 10</div>
+          <div class="ex-card-result">D_f = (−∞, 10)</div>
+        </div>
+      </div>
+
+      <div class="box box-ex">
+        <span class="box-label">Example: f(x) = ln(x² − 8x + 15)</span>
+        <p>Require <span class="math">x² − 8x + 15 > 0</span>. Factor: <span class="math">(x−3)(x−5) > 0</span>.</p>
+        <div class="sign-chart">
+          <div class="sign-row">
+            <div class="sign-label">Region</div>
+            <div class="sign-values">
+              <span>(−∞, 3)</span>
+              <span>(3, 5)</span>
+              <span>(5, ∞)</span>
+            </div>
+          </div>
+          <div class="sign-row">
+            <div class="sign-label">Sign</div>
+            <div class="sign-values">
+              <span class="sign-pos">+ ✓</span>
+              <span class="sign-neg">− ✗</span>
+              <span class="sign-pos">+ ✓</span>
+            </div>
+          </div>
+        </div>
+        <p style="color:var(--green);font-family:'JetBrains Mono',monospace;">D_f = (−∞, 3) ∪ (5, ∞)</p>
+      </div>
+
+      <h3>Set D — Mixed Conditions</h3>
+      <div class="ex-grid">
+        <div class="ex-card">
+          <div class="ex-card-label">Example</div>
+          <div class="ex-card-fn">f(x) = ∛(x² + 4x − 2)</div>
+          <div class="ex-card-steps">Odd root — no restriction</div>
+          <div class="ex-card-result">D_f = ℝ</div>
+        </div>
+        <div class="ex-card">
+          <div class="ex-card-label">Example</div>
+          <div class="ex-card-fn">f(x) = √(x−2) / (x−5)</div>
+          <div class="ex-card-steps">Even root: x − 2 ≥ 0 → x ≥ 2<br>Denominator: x − 5 ≠ 0 → x ≠ 5</div>
+          <div class="ex-card-result">D_f = [2, ∞) − {5}</div>
+        </div>
+        <div class="ex-card">
+          <div class="ex-card-label">Example</div>
+          <div class="ex-card-fn">f(x) = (x²+1) / √(x−10)</div>
+          <div class="ex-card-steps">Denominator contains even root:<br>x − 10 &gt; 0 (strict, since it's in denominator)<br>x &gt; 10</div>
+          <div class="ex-card-result">D_f = (10, ∞)</div>
+        </div>
+      </div>
+
+      <div class="box box-note">
+        <span class="box-label">Key Distinction</span>
+        <p>When a square root appears <em>in a numerator</em>, the condition is <span class="math">≥ 0</span> (we allow the root to equal zero). When it appears <em>in a denominator</em>, the condition is <span class="math">> 0</span> (zero in the denominator is undefined).</p>
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 3: PIECEWISE ═══ -->
+    <section id="piecewise" class="reveal">
+      <div class="sec-badge">// Section 3</div>
+      <h2>Piecewise-Defined Functions</h2>
+
+      <p>A <strong>piecewise function</strong> uses different formulas on different parts of its domain. Each formula applies only within its specified interval.</p>
+
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p>A function <span class="math">f</span> is piecewise-defined if it is described by two or more formulas, each valid for a different subset (piece) of the domain.</p>
+      </div>
+
+      <h3>Example 1 — Classic Three-Piece Function</h3>
+      <div class="piecewise">
+        <div class="piecewise-fn">f(x) =</div>
+        <div class="piecewise-cases">
+          <div class="piecewise-case">
+            <div class="piecewise-formula">−x</div>
+            <div class="piecewise-cond">if x &lt; 0</div>
+          </div>
+          <div class="piecewise-case">
+            <div class="piecewise-formula">x²</div>
+            <div class="piecewise-cond">if 0 ≤ x ≤ 1</div>
+          </div>
+          <div class="piecewise-case">
+            <div class="piecewise-formula">1</div>
+            <div class="piecewise-cond">if x &gt; 1</div>
+          </div>
+        </div>
+      </div>
+      <p>The graph uses the branch <span class="math">y = −x</span> for negative inputs, <span class="math">y = x²</span> on [0, 1], and the constant <span class="math">y = 1</span> for inputs beyond 1.</p>
+
+      <div class="graph-wrap">
+        <div class="graph-title">// Graph of f(x)</div>
+        <svg viewBox="-80 -160 380 320" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:280px;">
+          <defs>
+            <marker id="ah" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="#64748b"/>
+            </marker>
+          </defs>
+          <!-- grid lines -->
+          <line x1="-70" y1="-150" x2="-70" y2="150" stroke="#1c2640" stroke-width="1"/>
+          <line x1="-30" y1="-150" x2="-30" y2="150" stroke="#1c2640" stroke-width="1"/>
+          <line x1="10" y1="-150" x2="10" y2="150" stroke="#1c2640" stroke-width="1"/>
+          <line x1="50" y1="-150" x2="50" y2="150" stroke="#1c2640" stroke-width="1"/>
+          <line x1="90" y1="-150" x2="90" y2="150" stroke="#1c2640" stroke-width="1"/>
+          <line x1="130" y1="-150" x2="130" y2="150" stroke="#1c2640" stroke-width="1"/>
+          <line x1="170" y1="-150" x2="170" y2="150" stroke="#1c2640" stroke-width="1"/>
+          <line x1="210" y1="-150" x2="210" y2="150" stroke="#1c2640" stroke-width="1"/>
+          <line x1="-80" y1="-120" x2="280" y2="-120" stroke="#1c2640" stroke-width="1"/>
+          <line x1="-80" y1="-80" x2="280" y2="-80" stroke="#1c2640" stroke-width="1"/>
+          <line x1="-80" y1="-40" x2="280" y2="-40" stroke="#1c2640" stroke-width="1"/>
+          <line x1="-80" y1="0" x2="280" y2="0" stroke="#253050" stroke-width="1"/>
+          <line x1="-80" y1="40" x2="280" y2="40" stroke="#1c2640" stroke-width="1"/>
+          <line x1="-80" y1="80" x2="280" y2="80" stroke="#1c2640" stroke-width="1"/>
+          <line x1="-80" y1="120" x2="280" y2="120" stroke="#1c2640" stroke-width="1"/>
+          <!-- axes -->
+          <line x1="-80" y1="0" x2="280" y2="0" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah)"/>
+          <line x1="10" y1="150" x2="10" y2="-155" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah)"/>
+          <!-- axis labels -->
+          <text x="270" y="14" fill="#64748b" font-size="12" font-family="'JetBrains Mono',monospace">x</text>
+          <text x="14" y="-145" fill="#64748b" font-size="12" font-family="'JetBrains Mono',monospace">y</text>
+          <!-- tick labels: x axis (unit = 40px) -->
+          <text x="-72" y="14" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">-2</text>
+          <text x="-32" y="14" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">-1</text>
+          <text x="46" y="14" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">1</text>
+          <text x="86" y="14" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">2</text>
+          <text x="126" y="14" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">3</text>
+          <!-- y axis labels -->
+          <text x="-8" y="-37" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">1</text>
+          <text x="-8" y="-77" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">2</text>
+          <text x="-8" y="-117" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">3</text>
+          <!-- branch 1: y = -x for x < 0  (origin=10,0; unit=40) open circle at (10,0) -->
+          <line x1="-70" y1="80" x2="10" y2="0" stroke="#fb7185" stroke-width="2.5"/>
+          <circle cx="10" cy="0" r="4" fill="none" stroke="#fb7185" stroke-width="2"/>
+          <!-- branch 2: y = x^2 for 0 ≤ x ≤ 1  -->
+          <path d="M10,0 Q25,-4 50,-40" stroke="#60a5fa" stroke-width="2.5" fill="none"/>
+          <circle cx="10" cy="0" r="4" fill="#60a5fa"/>
+          <circle cx="50" cy="-40" r="4" fill="#60a5fa"/>
+          <!-- branch 3: y = 1 for x > 1  open circle at (50,-40) -->
+          <line x1="50" y1="-40" x2="250" y2="-40" stroke="#34d399" stroke-width="2.5"/>
+          <circle cx="50" cy="-40" r="4" fill="none" stroke="#34d399" stroke-width="2"/>
+          <!-- legend -->
+          <line x1="-75" y1="-145" x2="-60" y2="-145" stroke="#fb7185" stroke-width="2"/>
+          <text x="-56" y="-140" fill="#94a3b8" font-size="10" font-family="'JetBrains Mono',monospace">y=−x</text>
+          <line x1="-75" y1="-128" x2="-60" y2="-128" stroke="#60a5fa" stroke-width="2"/>
+          <text x="-56" y="-123" fill="#94a3b8" font-size="10" font-family="'JetBrains Mono',monospace">y=x²</text>
+          <line x1="-75" y1="-111" x2="-60" y2="-111" stroke="#34d399" stroke-width="2"/>
+          <text x="-56" y="-106" fill="#94a3b8" font-size="10" font-family="'JetBrains Mono',monospace">y=1</text>
+        </svg>
+      </div>
+
+      <h3>Example 2 — Evaluating a Piecewise Function</h3>
+      <div class="piecewise">
+        <div class="piecewise-fn">f(x) =</div>
+        <div class="piecewise-cases">
+          <div class="piecewise-case">
+            <div class="piecewise-formula">1</div>
+            <div class="piecewise-cond">if x ≥ 0</div>
+          </div>
+          <div class="piecewise-case">
+            <div class="piecewise-formula">2</div>
+            <div class="piecewise-cond">if x &lt; 0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box box-ex">
+        <span class="box-label">Solution</span>
+        <p>f(4) = 1 &nbsp;(since 4 ≥ 0) &nbsp;&nbsp; f(10) = 1 &nbsp;(since 10 ≥ 0)</p>
+        <p>f(−3) = 2 &nbsp;(since −3 &lt; 0) &nbsp;&nbsp; f(−15) = 2 &nbsp;(since −15 &lt; 0)</p>
+        <p><strong>Domain:</strong> ℝ &nbsp;&nbsp; <strong>Range:</strong> {1, 2}</p>
+      </div>
+
+      <h3>Example 3 — Real-World Piecewise (Cost Function)</h3>
+      <div class="piecewise">
+        <div class="piecewise-fn">C(x) =</div>
+        <div class="piecewise-cases">
+          <div class="piecewise-case">
+            <div class="piecewise-formula">39</div>
+            <div class="piecewise-cond">if 0 ≤ x ≤ 2</div>
+          </div>
+          <div class="piecewise-case">
+            <div class="piecewise-formula">39 + 15(x − 2)</div>
+            <div class="piecewise-cond">if x &gt; 2</div>
+          </div>
+        </div>
+      </div>
+      <div class="box box-ex">
+        <span class="box-label">Solution</span>
+        <p>C(0.5): since 0.5 ≤ 2, use first piece → C(0.5) = 39</p>
+        <p>C(2): since 2 ≤ 2, use first piece → C(2) = 39</p>
+        <p>C(4): since 4 &gt; 2, use second piece → C(4) = 39 + 15(4 − 2) = 39 + 30 = <strong>69</strong></p>
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 3b: ABSOLUTE VALUE ═══ -->
+    <section id="abs-value" class="reveal">
+      <div class="sec-badge">// Section 3 — Special Case</div>
+      <h2>Absolute Value as a Piecewise Function</h2>
+
+      <p>The absolute value function is a classic piecewise function with domain ℝ and range [0, ∞).</p>
+
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p style="text-align:center;font-family:'JetBrains Mono',monospace;">|a| = a &nbsp;if a ≥ 0 &nbsp;&nbsp;,&nbsp;&nbsp; |a| = −a &nbsp;if a &lt; 0</p>
+      </div>
+
+      <div class="piecewise">
+        <div class="piecewise-fn">|x| =</div>
+        <div class="piecewise-cases">
+          <div class="piecewise-case">
+            <div class="piecewise-formula">x</div>
+            <div class="piecewise-cond">if x ≥ 0</div>
+          </div>
+          <div class="piecewise-case">
+            <div class="piecewise-formula">−x</div>
+            <div class="piecewise-cond">if x &lt; 0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box box-ex">
+        <span class="box-label">Numerical Examples</span>
+        <p>|3| = 3 &nbsp;&nbsp; |−3| = −(−3) = 3 &nbsp;&nbsp; |0| = 0</p>
+        <p>|3 − π| = −(3 − π) = π − 3 &nbsp;&nbsp; (since 3 &lt; π, so 3 − π &lt; 0)</p>
+      </div>
+
+      <div class="graph-wrap">
+        <div class="graph-title">// Graph of y = |x| — V-shape, Domain ℝ, Range [0, ∞)</div>
+        <svg viewBox="-100 -140 280 200" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:220px;">
+          <defs>
+            <marker id="ah2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="#64748b"/>
+            </marker>
+          </defs>
+          <!-- grid -->
+          <line x1="-90" y1="-120" x2="170" y2="-120" stroke="#1c2640" stroke-width="1"/>
+          <line x1="-90" y1="-80" x2="170" y2="-80" stroke="#1c2640" stroke-width="1"/>
+          <line x1="-90" y1="-40" x2="170" y2="-40" stroke="#1c2640" stroke-width="1"/>
+          <line x1="-90" y1="40" x2="170" y2="40" stroke="#1c2640" stroke-width="1"/>
+          <line x1="-80" y1="-130" x2="-80" y2="55" stroke="#1c2640" stroke-width="1"/>
+          <line x1="-40" y1="-130" x2="-40" y2="55" stroke="#1c2640" stroke-width="1"/>
+          <line x1="40" y1="-130" x2="40" y2="55" stroke="#1c2640" stroke-width="1"/>
+          <line x1="80" y1="-130" x2="80" y2="55" stroke="#1c2640" stroke-width="1"/>
+          <line x1="120" y1="-130" x2="120" y2="55" stroke="#1c2640" stroke-width="1"/>
+          <!-- axes -->
+          <line x1="-95" y1="0" x2="170" y2="0" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah2)"/>
+          <line x1="0" y1="50" x2="0" y2="-135" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah2)"/>
+          <!-- tick labels -->
+          <text x="-84" y="13" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">-2</text>
+          <text x="-44" y="13" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">-1</text>
+          <text x="36" y="13" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">1</text>
+          <text x="76" y="13" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">2</text>
+          <text x="116" y="13" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">3</text>
+          <text x="4" y="-37" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">1</text>
+          <text x="4" y="-77" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">2</text>
+          <text x="4" y="-117" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">3</text>
+          <!-- y=|x| shape -->
+          <polyline points="-120,120 0,0 120,120" stroke="#a78bfa" stroke-width="2.5" fill="none" transform="scale(1,-1) translate(0,0)"/>
+          <!-- annotation -->
+          <text x="65" y="-85" fill="#a78bfa" font-size="11" font-family="'JetBrains Mono',monospace">y=|x|</text>
+        </svg>
+      </div>
+
+      <div class="box box-note">
+        <span class="box-label">Domain and Range</span>
+        <p><strong>Domain:</strong> (−∞, ∞) = ℝ &nbsp;&nbsp; <strong>Range:</strong> [0, ∞)</p>
+        <p>The output is never negative — absolute value always returns a non-negative result.</p>
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 4: LINEAR FUNCTIONS ═══ -->
+    <section id="linear" class="reveal">
+      <div class="sec-badge">// Section 4</div>
+      <h2>Linear Functions</h2>
+
+      <p>A function is <strong>linear</strong> if it can be written in the form <span class="math">f(x) = ax + b</span>, where <span class="math">a</span> is the slope and <span class="math">b</span> is the y-intercept. Its graph is a straight line.</p>
+
+      <div class="box box-def">
+        <span class="box-label">Standard Form</span>
+        <span class="big-formula">f(x) = ax + b</span>
+        <p><strong>a</strong> = slope (rate of change) &nbsp;&nbsp; <strong>b</strong> = y-intercept (value when x = 0)</p>
+      </div>
+
+      <div class="box box-note">
+        <span class="box-label">Constant Function — Special Case</span>
+        <p>When slope <span class="math">a = 0</span>, the function <span class="math">f(x) = b</span> is called a <strong>constant function</strong>. Its graph is a horizontal line. Domain = ℝ, Range = {b}.</p>
+      </div>
+
+      <h3>Graphical Behaviour by Sign</h3>
+      <div class="graph-wrap">
+        <div class="graph-title">// Effect of slope a on the line f(x) = ax + b</div>
+        <svg viewBox="0 0 520 180" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:200px;">
+          <!-- Panel 1: a>0, b>0 -->
+          <rect x="5" y="5" width="120" height="120" rx="8" fill="#0e1220" stroke="#1c2640"/>
+          <line x1="15" y1="65" x2="115" y2="65" stroke="#253050" stroke-width="1"/>
+          <line x1="65" y1="10" x2="65" y2="120" stroke="#253050" stroke-width="1"/>
+          <line x1="10" y1="110" x2="120" y2="20" stroke="#60a5fa" stroke-width="2"/>
+          <text x="62" y="40" fill="#60a5fa" font-size="9" font-family="'JetBrains Mono',monospace">a&gt;0</text>
+          <text x="62" y="52" fill="#60a5fa" font-size="9" font-family="'JetBrains Mono',monospace">b&gt;0</text>
+          <text x="8" y="133" fill="#94a3b8" font-size="9" font-family="'JetBrains Mono',monospace">Positive slope,</text>
+          <text x="8" y="144" fill="#94a3b8" font-size="9" font-family="'JetBrains Mono',monospace">positive y-int</text>
+          <!-- Panel 2: a>0, b<0 -->
+          <rect x="135" y="5" width="120" height="120" rx="8" fill="#0e1220" stroke="#1c2640"/>
+          <line x1="145" y1="65" x2="245" y2="65" stroke="#253050" stroke-width="1"/>
+          <line x1="195" y1="10" x2="195" y2="120" stroke="#253050" stroke-width="1"/>
+          <line x1="140" y1="120" x2="250" y2="30" stroke="#34d399" stroke-width="2"/>
+          <text x="198" y="90" fill="#34d399" font-size="9" font-family="'JetBrains Mono',monospace">a&gt;0</text>
+          <text x="198" y="102" fill="#34d399" font-size="9" font-family="'JetBrains Mono',monospace">b&lt;0</text>
+          <text x="138" y="133" fill="#94a3b8" font-size="9" font-family="'JetBrains Mono',monospace">Positive slope,</text>
+          <text x="138" y="144" fill="#94a3b8" font-size="9" font-family="'JetBrains Mono',monospace">negative y-int</text>
+          <!-- Panel 3: a<0, b>0 -->
+          <rect x="265" y="5" width="120" height="120" rx="8" fill="#0e1220" stroke="#1c2640"/>
+          <line x1="275" y1="65" x2="375" y2="65" stroke="#253050" stroke-width="1"/>
+          <line x1="325" y1="10" x2="325" y2="120" stroke="#253050" stroke-width="1"/>
+          <line x1="270" y1="20" x2="380" y2="110" stroke="#f59e0b" stroke-width="2"/>
+          <text x="280" y="40" fill="#f59e0b" font-size="9" font-family="'JetBrains Mono',monospace">a&lt;0</text>
+          <text x="280" y="52" fill="#f59e0b" font-size="9" font-family="'JetBrains Mono',monospace">b&gt;0</text>
+          <text x="268" y="133" fill="#94a3b8" font-size="9" font-family="'JetBrains Mono',monospace">Negative slope,</text>
+          <text x="268" y="144" fill="#94a3b8" font-size="9" font-family="'JetBrains Mono',monospace">positive y-int</text>
+          <!-- Panel 4: a<0, b<0 -->
+          <rect x="395" y="5" width="120" height="120" rx="8" fill="#0e1220" stroke="#1c2640"/>
+          <line x1="405" y1="65" x2="505" y2="65" stroke="#253050" stroke-width="1"/>
+          <line x1="455" y1="10" x2="455" y2="120" stroke="#253050" stroke-width="1"/>
+          <line x1="400" y1="30" x2="510" y2="120" stroke="#fb7185" stroke-width="2"/>
+          <text x="460" y="90" fill="#fb7185" font-size="9" font-family="'JetBrains Mono',monospace">a&lt;0</text>
+          <text x="460" y="102" fill="#fb7185" font-size="9" font-family="'JetBrains Mono',monospace">b&lt;0</text>
+          <text x="398" y="133" fill="#94a3b8" font-size="9" font-family="'JetBrains Mono',monospace">Negative slope,</text>
+          <text x="398" y="144" fill="#94a3b8" font-size="9" font-family="'JetBrains Mono',monospace">negative y-int</text>
+        </svg>
+      </div>
+
+      <div class="box box-note">
+        <span class="box-label">Domain and Range of Any Linear Function</span>
+        <p>For any non-constant linear function <span class="math">f(x) = ax + b</span> with <span class="math">a ≠ 0</span>: <strong>Domain = ℝ</strong> and <strong>Range = ℝ</strong>.</p>
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 4b: LINEAR EXAMPLES ═══ -->
+    <section id="linear-examples" class="reveal">
+      <div class="sec-badge">// Section 4 — Worked Examples</div>
+      <h2>Linear Function Examples</h2>
+
+      <div class="box box-ex">
+        <span class="box-label">Example — Identify Linear Functions</span>
+        <p>Determine which functions are linear, and state slope and y-intercept.</p>
+        <div class="ex-grid" style="margin-top:0.75rem;">
+          <div class="ex-card">
+            <div class="ex-card-label">(a)</div>
+            <div class="ex-card-fn">f(x) = 2 + 3x</div>
+            <div class="ex-card-steps">Rewrite: 3x + 2<br>Linear ✓</div>
+            <div class="ex-card-result">slope a = 3, y-int b = 2</div>
+          </div>
+          <div class="ex-card">
+            <div class="ex-card-label">(b)</div>
+            <div class="ex-card-fn">g(x) = 3(1 − 2x)</div>
+            <div class="ex-card-steps">= −6x + 3<br>Linear ✓</div>
+            <div class="ex-card-result">slope a = −6, y-int b = 3</div>
+          </div>
+          <div class="ex-card">
+            <div class="ex-card-label">(c)</div>
+            <div class="ex-card-fn">h(x) = x(4 + 3x)</div>
+            <div class="ex-card-steps">= 4x + 3x²<br>x is squared → <span style="color:var(--red)">Not linear ✗</span></div>
+            <div class="ex-card-result" style="color:var(--red)">Not a linear function</div>
+          </div>
+          <div class="ex-card">
+            <div class="ex-card-label">(d)</div>
+            <div class="ex-card-fn">k(x) = (1 − 5x)/4</div>
+            <div class="ex-card-steps">= −(5/4)x + 1/4<br>Linear ✓</div>
+            <div class="ex-card-result">slope a = −5/4, y-int b = 1/4</div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Graphing a Linear Function</h3>
+      <p>For <span class="math">f(x) = 3x + 2</span>, build a table of values and plot.</p>
+
+      <div class="sign-chart" style="max-width:420px;">
+        <div class="sign-row" style="background:var(--surface3);">
+          <div class="sign-label" style="color:var(--text);font-weight:600;">x</div>
+          <div class="sign-values" style="gap:2rem;">
+            <span>−2</span><span>−1</span><span>0</span><span>1</span><span>2</span><span>3</span>
+          </div>
+        </div>
+        <div class="sign-row">
+          <div class="sign-label" style="color:var(--text);font-weight:600;">f(x)</div>
+          <div class="sign-values" style="gap:2rem;">
+            <span>−4</span><span>−1</span><span>2</span><span>5</span><span>8</span><span>11</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="graph-wrap">
+        <div class="graph-title">// Graph of f(x) = 3x + 2 — slope 3, y-intercept 2</div>
+        <svg viewBox="-80 -160 280 320" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:280px;">
+          <defs>
+            <marker id="ah3" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="#64748b"/>
+            </marker>
+          </defs>
+          <!-- grid -->
+          <line x1="-75" y1="-150" x2="-75" y2="150" stroke="#1c2640" stroke-width="1"/>
+          <line x1="-35" y1="-150" x2="-35" y2="150" stroke="#1c2640" stroke-width="1"/>
+          <line x1="5" y1="-150" x2="5" y2="150" stroke="#1c2640" stroke-width="1"/>
+          <line x1="45" y1="-150" x2="45" y2="150" stroke="#1c2640" stroke-width="1"/>
+          <line x1="85" y1="-150" x2="85" y2="150" stroke="#1c2640" stroke-width="1"/>
+          <line x1="125" y1="-150" x2="125" y2="150" stroke="#1c2640" stroke-width="1"/>
+          <line x1="-80" y1="-120" x2="195" y2="-120" stroke="#1c2640" stroke-width="1"/>
+          <line x1="-80" y1="-80" x2="195" y2="-80" stroke="#1c2640" stroke-width="1"/>
+          <line x1="-80" y1="-40" x2="195" y2="-40" stroke="#1c2640" stroke-width="1"/>
+          <line x1="-80" y1="40" x2="195" y2="40" stroke="#1c2640" stroke-width="1"/>
+          <line x1="-80" y1="80" x2="195" y2="80" stroke="#1c2640" stroke-width="1"/>
+          <line x1="-80" y1="120" x2="195" y2="120" stroke="#1c2640" stroke-width="1"/>
+          <!-- axes -->
+          <line x1="-80" y1="0" x2="190" y2="0" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah3)"/>
+          <line x1="5" y1="150" x2="5" y2="-155" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah3)"/>
+          <!-- tick labels (unit=40px, origin at x=5) -->
+          <text x="-79" y="14" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">-2</text>
+          <text x="-39" y="14" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">-1</text>
+          <text x="41" y="14" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">1</text>
+          <text x="81" y="14" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">2</text>
+          <text x="121" y="14" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">3</text>
+          <text x="9" y="-37" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">2</text>
+          <text x="9" y="-77" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">5</text>
+          <text x="5" y="-117" fill="#475569" font-size="10" font-family="'JetBrains Mono',monospace">8</text>
+          <!-- f(x) = 3x+2 : at x=-2,f=-4(y=160); x=-1,f=-1(y=40); x=0,f=2(y=-80); x=1,f=5(y=-200) — truncate -->
+          <!-- pixel: px = 5 + x*40, py = -f(x)*40 -->
+          <!-- x=-2 → px=-75, py=160(clip) ; x=-1→px=-35,py=40 ; x=0→px=5,py=-80 ; x=1→px=45,py=-200(clip) -->
+          <line x1="-35" y1="40" x2="5" y2="-80" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="5" y1="-80" x2="35" y2="-200" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="3,2"/>
+          <line x1="-75" y1="160" x2="-35" y2="40" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="3,2"/>
+          <!-- dots at plotted points -->
+          <circle cx="-35" cy="40" r="4" fill="#60a5fa"/>
+          <circle cx="5" cy="-80" r="4" fill="#60a5fa"/>
+          <circle cx="45" cy="-200" r="3" fill="#60a5fa" opacity="0.4"/>
+          <!-- annotation -->
+          <text x="12" y="-100" fill="#60a5fa" font-size="10" font-family="'JetBrains Mono',monospace">f(x)=3x+2</text>
+          <text x="12" y="-112" fill="#60a5fa" font-size="9" font-family="'JetBrains Mono',monospace">slope=3</text>
+        </svg>
+      </div>
+
+      <div class="box box-note">
+        <span class="box-label">Reading the Slope</span>
+        <p>A slope of <span class="math">a = 3</span> means: for every 1 unit increase in x, the output f(x) increases by 3 units. A negative slope means the function is decreasing.</p>
+      </div>
+    </section>
+
+
+    <div class="lec-nav">
+      <a href="lecture4.html" class="nav-btn">← Lecture 4: Functions &amp; Logarithms</a>
+      <a href="index.html" class="nav-btn">← Back to Course</a>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // Reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, {threshold:0.08});
+  revealEls.forEach(el => io.observe(el));
+
+  // TOC active link
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.toc a');
+  const tocIO = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        links.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.toc a[href="#${e.target.id}"]`);
+        if(a) a.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-30% 0px -60% 0px'});
+  sections.forEach(s => tocIO.observe(s));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 2 — Exponents & Algebra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07090f;--surface:#0e1220;--surface2:#141b2e;--surface3:#192036;
+    --border:#1c2640;--border2:#253050;
+    --primary:#60a5fa;--primary-dim:rgba(96,165,250,0.12);
+    --accent:#f59e0b;--accent-dim:rgba(245,158,11,0.1);
+    --purple:#a78bfa;--purple-dim:rgba(167,139,250,0.12);
+    --green:#34d399;--green-dim:rgba(52,211,153,0.1);
+    --red:#f87171;--red-dim:rgba(248,113,113,0.1);
+    --text:#e2e8f0;--muted:#64748b;--muted2:#94a3b8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;}
+
+  .bg-fixed{position:fixed;inset:0;z-index:0;pointer-events:none;}
+  .bg-dots{position:absolute;inset:0;background-image:radial-gradient(circle,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:0.5;}
+  .bg-glow{position:absolute;border-radius:50%;filter:blur(100px);}
+  .g1{width:500px;height:500px;background:rgba(245,158,11,0.05);top:-100px;left:-100px;}
+  .g2{width:400px;height:400px;background:rgba(96,165,250,0.04);bottom:-50px;right:-100px;}
+
+  .page{position:relative;z-index:1;display:flex;min-height:100vh;}
+
+  /* Sidebar */
+  .sidebar{
+    width:240px;flex-shrink:0;padding:2rem 1.5rem;
+    border-right:1px solid var(--border);position:sticky;top:0;
+    height:100vh;overflow-y:auto;
+    background:rgba(7,9,15,0.6);backdrop-filter:blur(8px);
+  }
+  .sidebar-back{
+    display:inline-flex;align-items:center;gap:0.4rem;
+    text-decoration:none;color:var(--muted);font-size:0.8rem;
+    transition:color 0.2s;margin-bottom:2rem;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .sidebar-back:hover{color:var(--primary);}
+  .sidebar-title{font-size:0.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.18em;font-family:'JetBrains Mono',monospace;margin-bottom:1rem;}
+  .toc{list-style:none;}
+  .toc li{margin-bottom:0.2rem;}
+  .toc a{display:block;padding:0.38rem 0.75rem;text-decoration:none;color:var(--muted2);font-size:0.82rem;border-left:2px solid transparent;border-radius:0 6px 6px 0;transition:all 0.2s;}
+  .toc a:hover,.toc a.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-dim);}
+  .toc-sub a{padding-left:1.5rem;font-size:0.78rem;}
+
+  .main{flex:1;max-width:800px;padding:3rem 3rem 6rem;margin:0 auto;}
+
+  .lec-header{margin-bottom:3.5rem;padding-bottom:2.5rem;border-bottom:1px solid var(--border);}
+  .lec-num{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.22em;background:var(--accent-dim);border:1px solid rgba(245,158,11,0.2);display:inline-block;padding:0.3rem 0.8rem;border-radius:4px;margin-bottom:1.25rem;}
+  .lec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,3.5rem);font-weight:700;line-height:1.1;margin-bottom:1rem;}
+  .lec-title em{font-style:italic;background:linear-gradient(100deg,var(--accent),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .lec-desc{color:var(--muted2);font-size:1rem;max-width:560px;line-height:1.7;}
+
+  section{margin-bottom:4rem;scroll-margin-top:2rem;}
+  .sec-badge{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.2em;margin-bottom:0.6rem;}
+  h2{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;margin-bottom:1.5rem;}
+  h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;margin:1.75rem 0 0.75rem;}
+  p{margin-bottom:1rem;color:var(--muted2);}
+
+  .box{border-radius:12px;padding:1.25rem 1.5rem;margin:1.25rem 0;border:1px solid;}
+  .box-def{background:var(--primary-dim);border-color:rgba(96,165,250,0.2);}
+  .box-def .box-label{color:var(--primary);}
+  .box-ex{background:var(--green-dim);border-color:rgba(52,211,153,0.2);}
+  .box-ex .box-label{color:var(--green);}
+  .box-note{background:var(--accent-dim);border-color:rgba(245,158,11,0.2);}
+  .box-note .box-label{color:var(--accent);}
+  .box-rule{background:var(--purple-dim);border-color:rgba(167,139,250,0.2);}
+  .box-rule .box-label{color:var(--purple);}
+  .box-formula{background:var(--surface2);border-color:var(--border2);text-align:center;}
+  .box-label{font-size:0.72rem;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:0.5rem;display:block;}
+  .box p{margin:0;}.box p+p{margin-top:0.5rem;}
+
+  .math{font-family:'JetBrains Mono',monospace;font-size:0.88em;color:var(--text);background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;}
+  .math-block{font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:var(--text);background:var(--surface2);border:1px solid var(--border2);padding:0.9rem 1.2rem;border-radius:8px;margin:0.75rem 0;display:block;}
+  .big-formula{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2rem;display:block;text-align:center;padding:1rem;color:var(--text);}
+
+  /* Index notation visual */
+  .index-visual{
+    display:flex;align-items:center;justify-content:center;
+    gap:0;margin:1.5rem 0;
+    font-family:'Cormorant Garamond',serif;
+  }
+  .idx-base{font-size:5rem;font-weight:600;color:var(--primary);position:relative;}
+  .idx-exp{font-size:2.5rem;color:var(--accent);position:relative;top:-1.5rem;left:0.1rem;}
+  .idx-labels{display:flex;flex-direction:column;gap:0.5rem;margin-left:1.5rem;font-size:0.82rem;color:var(--muted2);}
+  .idx-labels span{display:flex;align-items:center;gap:0.4rem;}
+  .idx-labels .dot{width:8px;height:8px;border-radius:50%;}
+  .dot-blue{background:var(--primary);}
+  .dot-amber{background:var(--accent);}
+
+  /* Index laws table */
+  .laws-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin:1.25rem 0;}
+  .law-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:10px;
+    padding:1rem 1.25rem;cursor:pointer;transition:all 0.25s;
+    position:relative;overflow:hidden;
+  }
+  .law-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--accent-dim),transparent);opacity:0;transition:opacity 0.3s;}
+  .law-card:hover{border-color:rgba(245,158,11,0.35);transform:translateY(-2px);}
+  .law-card:hover::before{opacity:1;}
+  .law-formula{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.3rem;color:var(--text);margin-bottom:0.4rem;}
+  .law-rule{font-size:0.78rem;color:var(--muted);margin-bottom:0;line-height:1.4;}
+  .law-example{
+    display:none;margin-top:0.75rem;padding-top:0.75rem;
+    border-top:1px solid var(--border2);
+    font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--green);
+  }
+  .law-card.open .law-example{display:block;}
+  .law-card.open{border-color:rgba(245,158,11,0.35);}
+
+  /* Negative bases */
+  .neg-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0;}
+  .neg-col{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.1rem 1.25rem;}
+  .neg-col-title{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--muted);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.12em;}
+  .neg-row{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:0.85rem;padding:0.3rem 0;border-bottom:1px solid var(--border);}
+  .neg-row:last-child{border-bottom:none;}
+  .neg-row .eq{color:var(--text);}
+  .neg-row .val{color:var(--accent);}
+
+  /* Steps */
+  .steps{margin:1.25rem 0;}
+  .step{display:flex;gap:1rem;margin-bottom:0.9rem;align-items:flex-start;}
+  .step-num{
+    flex-shrink:0;width:26px;height:26px;border-radius:50%;
+    background:var(--accent-dim);border:1px solid rgba(245,158,11,0.3);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--accent);
+  }
+  .step-body{flex:1;}
+  .step-body .math-block{margin:0.35rem 0;}
+
+  /* Equation solver */
+  .solver{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.75rem;margin:1.5rem 0;}
+  .solver h4{font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:1.25rem;}
+  .eq-example{margin-bottom:1.5rem;}
+  .eq-title{font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--primary);margin-bottom:0.5rem;}
+  .eq-steps{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:1rem 1.25rem;}
+  .eq-line{display:flex;align-items:center;gap:1rem;padding:0.3rem 0;font-family:'JetBrains Mono',monospace;font-size:0.85rem;}
+  .eq-line .expr{color:var(--text);}
+  .eq-line .note{color:var(--muted);font-size:0.75rem;flex:1;text-align:right;}
+  .eq-result{color:var(--green);font-weight:500;}
+
+  /* Expand laws */
+  .expand-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin:1rem 0;}
+  .expand-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:0.9rem 1.1rem;}
+  .expand-formula{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--text);margin-bottom:0.25rem;}
+  .expand-name{font-size:0.75rem;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+
+  /* Rational index */
+  .roots-table{width:100%;border-collapse:collapse;margin:1rem 0;}
+  .roots-table th{text-align:left;padding:0.5rem 0.9rem;font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;border-bottom:1px solid var(--border2);}
+  .roots-table td{padding:0.65rem 0.9rem;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:0.85rem;}
+  .roots-table td:first-child{color:var(--accent);}
+  .roots-table td:nth-child(2){color:var(--primary);}
+  .roots-table td:last-child{color:var(--green);}
+  .roots-table tr:hover td{background:var(--surface2);}
+
+
+  .lec-nav{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:2rem;margin-top:3rem;}
+  .nav-btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1.2rem;border:1px solid var(--border2);border-radius:8px;background:var(--surface);color:var(--muted2);text-decoration:none;font-size:0.85rem;transition:all 0.2s;}
+  .nav-btn:hover{border-color:var(--primary);color:var(--primary);}
+
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity 0.55s ease,transform 0.55s ease;}
+  .reveal.visible{opacity:1;transform:none;}
+
+  @media(max-width:768px){
+    .sidebar{display:none;}
+    .main{padding:2rem 1.25rem 4rem;}
+    .laws-grid{grid-template-columns:1fr;}
+    .neg-grid{grid-template-columns:1fr;}
+    .expand-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-fixed">
+  <div class="bg-dots"></div>
+  <div class="bg-glow g1"></div>
+  <div class="bg-glow g2"></div>
+</div>
+
+<div class="page">
+
+  <aside class="sidebar">
+    <a href="index.html" class="sidebar-back">← Back to Course</a>
+    <div class="sidebar-title">// Contents</div>
+    <ul class="toc">
+      <li><a href="#index-notation">1. Index Notation</a></li>
+      <li><a href="#neg-bases">2. Negative Bases</a></li>
+      <li><a href="#index-laws">3. Index Laws</a></li>
+      <li><a href="#rational">4. Rational Indices</a></li>
+      <li><a href="#algebra">5. Algebraic Expansion</a></li>
+      <li class="toc-sub"><a href="#polynomials">Polynomials</a></li>
+      <li class="toc-sub"><a href="#expansion-laws">Expansion Laws</a></li>
+      <li><a href="#equations">6. Solving Equations</a></li>
+      <li class="toc-sub"><a href="#linear">Linear</a></li>
+      <li class="toc-sub"><a href="#quadratic">Quadratic</a></li>
+      <li class="toc-sub"><a href="#absolute">Absolute Value</a></li>
+    </ul>
+  </aside>
+
+  <main class="main">
+
+    <header class="lec-header">
+      <div class="lec-num">Lecture 02</div>
+      <h1 class="lec-title">Exponents &amp; <em>Algebra</em></h1>
+      <p class="lec-desc">From repeated multiplication to the laws that govern powers — plus algebraic expansion and equation-solving strategies used throughout calculus.</p>
+    </header>
+
+    <!-- ═══ 1. INDEX NOTATION ═══ -->
+    <section id="index-notation" class="reveal">
+      <div class="sec-badge">// Section 1</div>
+      <h2>Index Notation</h2>
+
+      <p>When a number is multiplied by itself repeatedly, we use <strong>exponent notation</strong> to write it compactly. Instead of writing 2 × 2 × 2 × 2 × 2, we write:</p>
+
+      <div class="index-visual">
+        <div style="position:relative;display:inline-block;">
+          <span class="idx-base">2</span><span class="idx-exp">5</span>
+        </div>
+        <div class="idx-labels">
+          <span><span class="dot dot-amber"></span> 5 = exponent / power / index</span>
+          <span><span class="dot dot-blue"></span> 2 = base</span>
+        </div>
+      </div>
+
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p>If n is a positive integer, then <span class="math">aⁿ</span> is the product of n factors of a:</p>
+        <p style="text-align:center;font-family:'JetBrains Mono',monospace;margin-top:0.6rem;font-size:0.95rem;">aⁿ = a × a × a × … × a &nbsp;(n factors)</p>
+      </div>
+
+      <div class="box box-ex">
+        <span class="box-label">Evaluate</span>
+        <p>(-2)³ = -8 &nbsp;|&nbsp; 2⁴ = 16 &nbsp;|&nbsp; (-1)⁵ = -1 &nbsp;|&nbsp; (-1)⁴ = 1</p>
+        <p>(1/3)³ = 1/27 &nbsp;|&nbsp; 0³ = 0</p>
+      </div>
+    </section>
+
+    <!-- ═══ 2. NEGATIVE BASES ═══ -->
+    <section id="neg-bases" class="reveal">
+      <div class="sec-badge">// Section 2</div>
+      <h2>Negative Bases</h2>
+
+      <div class="neg-grid">
+        <div class="neg-col">
+          <div class="neg-col-title">Base = −1</div>
+          <div class="neg-row"><span class="eq">(-1)¹</span><span class="val">= -1</span></div>
+          <div class="neg-row"><span class="eq">(-1)²</span><span class="val">= 1</span></div>
+          <div class="neg-row"><span class="eq">(-1)³</span><span class="val">= -1</span></div>
+          <div class="neg-row"><span class="eq">(-1)⁴</span><span class="val">= 1</span></div>
+        </div>
+        <div class="neg-col">
+          <div class="neg-col-title">Base = −2</div>
+          <div class="neg-row"><span class="eq">(-2)¹</span><span class="val">= -2</span></div>
+          <div class="neg-row"><span class="eq">(-2)²</span><span class="val">= 4</span></div>
+          <div class="neg-row"><span class="eq">(-2)³</span><span class="val">= -8</span></div>
+          <div class="neg-row"><span class="eq">(-2)⁴</span><span class="val">= 16</span></div>
+        </div>
+      </div>
+
+      <div class="box box-rule">
+        <span class="box-label">Key Rule</span>
+        <p>A <strong>negative</strong> base raised to an <strong>odd</strong> power → <strong>negative</strong>.</p>
+        <p>A <strong>negative</strong> base raised to an <strong>even</strong> power → <strong>positive</strong>.</p>
+      </div>
+
+      <div class="box box-note">
+        <span class="box-label">Watch out for parentheses!</span>
+        <p><span class="math">(-2)⁴ = 16</span> &nbsp;vs&nbsp; <span class="math">-2⁴ = -1 × 2⁴ = -16</span></p>
+        <p><span class="math">(-2)⁵ = -32</span> &nbsp;vs&nbsp; <span class="math">-(−2)⁵ = -1 × (-32) = 32</span></p>
+      </div>
+    </section>
+
+    <!-- ═══ 3. INDEX LAWS ═══ -->
+    <section id="index-laws" class="reveal">
+      <div class="sec-badge">// Section 3</div>
+      <h2>Index Laws</h2>
+      <p>Click any law card to see a worked example:</p>
+
+      <div class="laws-grid">
+        <div class="law-card" onclick="this.classList.toggle('open')">
+          <div class="law-formula">aᵐ × aⁿ = aᵐ⁺ⁿ</div>
+          <div class="law-rule">Same base: keep base, <strong>add</strong> exponents.</div>
+          <div class="law-example">3⁵ × 3¹⁰ = 3¹⁵<br>2⁵ × 2³ = 2⁵⁺³ = 2⁸ = 256</div>
+        </div>
+        <div class="law-card" onclick="this.classList.toggle('open')">
+          <div class="law-formula">aᵐ ÷ aⁿ = aᵐ⁻ⁿ</div>
+          <div class="law-rule">Same base: keep base, <strong>subtract</strong> exponents.</div>
+          <div class="law-example">3⁵ / 3¹⁰ = 3⁻⁵<br>2⁵ / 2³ = 2⁵⁻³ = 2² = 4</div>
+        </div>
+        <div class="law-card" onclick="this.classList.toggle('open')">
+          <div class="law-formula">(aᵐ)ⁿ = aᵐˣⁿ</div>
+          <div class="law-rule">Power of a power: keep base, <strong>multiply</strong> exponents.</div>
+          <div class="law-example">(3⁵)¹⁰ = 3⁵⁰<br>(2²)³ = 2²ˣ³ = 2⁶ = 32</div>
+        </div>
+        <div class="law-card" onclick="this.classList.toggle('open')">
+          <div class="law-formula">(ab)ⁿ = aⁿbⁿ</div>
+          <div class="law-rule">Power of a product = product of powers.</div>
+          <div class="law-example">(2×4)³ = 2³×4³ = 8×64 = 512<br>(3·5)¹⁰ = 3¹⁰·5¹⁰</div>
+        </div>
+        <div class="law-card" onclick="this.classList.toggle('open')">
+          <div class="law-formula">(a/b)ⁿ = aⁿ/bⁿ</div>
+          <div class="law-rule">Power of a quotient = quotient of powers.</div>
+          <div class="law-example">(3/5)¹⁰ = 3¹⁰/5¹⁰<br>(2/3)⁴ = 2⁴/3⁴ = 16/81</div>
+        </div>
+        <div class="law-card" onclick="this.classList.toggle('open')">
+          <div class="law-formula">a⁰ = 1 &nbsp;(a≠0)</div>
+          <div class="law-rule">Any non-zero number raised to 0 is 1.</div>
+          <div class="law-example">(-2)⁰ = 1<br>1000⁰ = 1 &nbsp;&nbsp; x⁰ = 1</div>
+        </div>
+        <div class="law-card" onclick="this.classList.toggle('open')">
+          <div class="law-formula">a⁻ⁿ = 1/aⁿ</div>
+          <div class="law-rule">Negative exponent = reciprocal of positive.</div>
+          <div class="law-example">2⁻³ = 1/2³ = 1/8<br>x⁻³ = 1/x³ &nbsp;&nbsp; 1/x⁻² = x²</div>
+        </div>
+        <div class="law-card" onclick="this.classList.toggle('open')">
+          <div class="law-formula">a⁻¹ = 1/a</div>
+          <div class="law-rule">Special case of negative exponent with n=1.</div>
+          <div class="law-example">5⁻¹ = 1/5<br>(1/3)⁻² = 3² = 9</div>
+        </div>
+      </div>
+
+      <div class="box box-note">
+        <span class="box-label">Express with prime base</span>
+        <p>9⁴ = (3²)⁴ = 3⁸ &nbsp;&nbsp;|&nbsp;&nbsp; 4 × 2ᵖ = 2² × 2ᵖ = 2ᵖ⁺²</p>
+        <p>3ˣ/9ʸ = 3ˣ/(3²)ʸ = 3ˣ/3²ʸ = 3ˣ⁻²ʸ &nbsp;&nbsp;|&nbsp;&nbsp; 25ˣ⁻¹ = (5²)ˣ⁻¹ = 5²ˣ⁻²</p>
+      </div>
+    </section>
+
+    <!-- ═══ 4. RATIONAL INDICES ═══ -->
+    <section id="rational" class="reveal">
+      <div class="sec-badge">// Section 4</div>
+      <h2>Rational Indices (Radicals & Roots)</h2>
+
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p><span class="math">a^(1/n) = ⁿ√a</span> (the nth root of a)</p>
+        <p>In general: <span class="math">a^(m/n) = ⁿ√(aᵐ) = (ⁿ√a)ᵐ</span></p>
+      </div>
+
+      <table class="roots-table">
+        <thead><tr><th>Notation</th><th>Equivalent</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>a^(1/2)</td><td>√a</td><td>9^(1/2) = √9 = 3</td></tr>
+          <tr><td>a^(1/3)</td><td>³√a</td><td>8^(1/3) = ³√8 = 2</td></tr>
+          <tr><td>a^(1/n)</td><td>ⁿ√a</td><td>32^(1/5) = ⁵√32 = 2</td></tr>
+          <tr><td>a^(m/n)</td><td>ⁿ√(aᵐ)</td><td>8^(2/3) = (³√8)² = 4</td></tr>
+          <tr><td>a^(-1/2)</td><td>1/√a</td><td>4^(-1/2) = 1/2</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Properties of nth Roots</h3>
+      <div class="box box-ex">
+        <span class="box-label">Key Properties</span>
+        <p>1. &nbsp;<span class="math">ⁿ√(ab) = ⁿ√a · ⁿ√b</span> &nbsp;&nbsp; e.g. (27×8)^(1/3) = 3×2 = 6</p>
+        <p>2. &nbsp;<span class="math">ⁿ√(a/b) = ⁿ√a / ⁿ√b</span> &nbsp;&nbsp; e.g. (27/8)^(1/3) = 3/2</p>
+        <p>3. &nbsp;<span class="math">ᵐ√(ⁿ√a) = ᵐⁿ√a</span> &nbsp;&nbsp; e.g. ³√(²√64) = ⁶√64</p>
+        <p>4. &nbsp;<span class="math">ⁿ√(aⁿ) = a</span> if n is odd &nbsp;&nbsp; e.g. ³√((-3)³) = -3</p>
+        <p>5. &nbsp;<span class="math">ⁿ√(aⁿ) = |a|</span> if n is even &nbsp;&nbsp; e.g. ²√((-3)²) = 3</p>
+      </div>
+
+      <div class="box box-ex">
+        <span class="box-label">Write as power of 2</span>
+        <p>³√2 = 2^(1/3) &nbsp;&nbsp;|&nbsp;&nbsp; 1/√2 = 2^(-1/2) &nbsp;&nbsp;|&nbsp;&nbsp; ⁵√4 = (2²)^(1/5) = 2^(2/5)</p>
+      </div>
+    </section>
+
+    <!-- ═══ 5. ALGEBRAIC EXPANSION ═══ -->
+    <section id="algebra" class="reveal">
+      <div class="sec-badge">// Section 5</div>
+      <h2>Algebraic Expansion</h2>
+    </section>
+
+    <section id="polynomials" class="reveal">
+      <h3>Polynomials</h3>
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p>A <strong>polynomial</strong> in x is an expression of the form:</p>
+        <p style="text-align:center;font-family:'JetBrains Mono',monospace;margin-top:0.5rem;">aₙxⁿ + aₙ₋₁xⁿ⁻¹ + … + a₁x + a₀</p>
+        <p style="margin-top:0.5rem;">where aₙ ≠ 0 and n is the <strong>degree</strong>. Each aₖxᵏ is a <em>term</em>; aₖ is the <em>coefficient</em>.</p>
+      </div>
+
+      <div class="box box-ex">
+        <span class="box-label">Calculate (add polynomials)</span>
+        <p>(2x³ + x + 5) + (x⁵ + x³ + 10) = <strong style="color:var(--green)">x⁵ + 3x³ + x + 15</strong></p>
+        <p>(x² − 1)(x + 1) = x³ + x² − x − 1</p>
+      </div>
+    </section>
+
+    <section id="expansion-laws" class="reveal">
+      <h3>Expansion Laws</h3>
+      <div class="expand-grid">
+        <div class="expand-item">
+          <div class="expand-formula">(a+b)(c+d) = ac+ad+bc+bd</div>
+          <div class="expand-name">FOIL method</div>
+        </div>
+        <div class="expand-item">
+          <div class="expand-formula">(a+b)(a−b) = a²−b²</div>
+          <div class="expand-name">Difference of squares</div>
+        </div>
+        <div class="expand-item">
+          <div class="expand-formula">(a+b)² = a²+2ab+b²</div>
+          <div class="expand-name">Perfect square (+)</div>
+        </div>
+        <div class="expand-item">
+          <div class="expand-formula">(a−b)² = a²−2ab+b²</div>
+          <div class="expand-name">Perfect square (−)</div>
+        </div>
+      </div>
+
+      <div class="box box-ex">
+        <span class="box-label">Worked Example — Expand & Simplify</span>
+        <p style="margin-bottom:0.5rem;">x^(-1/2) (x^(3/2) + 2x^(1/2) − 3x^(-1/2))</p>
+        <div class="steps" style="margin:0.5rem 0 0;">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <p style="margin:0 0 0.3rem;font-size:0.85rem;color:var(--muted2);">Distribute x^(-1/2) into each term:</p>
+              <code class="math-block">= x^(-1/2 + 3/2) + 2x^(-1/2 + 1/2) − 3x^(-1/2 − 1/2)</code>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <p style="margin:0 0 0.3rem;font-size:0.85rem;color:var(--muted2);">Add the exponents:</p>
+              <code class="math-block">= x¹ + 2x⁰ − 3x⁻¹</code>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <p style="margin:0 0 0.3rem;font-size:0.85rem;color:var(--muted2);">Simplify (x⁰ = 1, x⁻¹ = 1/x):</p>
+              <code class="math-block" style="color:var(--green);">= x + 2 − 3/x</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 6. SOLVING EQUATIONS ═══ -->
+    <section id="equations" class="reveal">
+      <div class="sec-badge">// Section 6</div>
+      <h2>Solving Equations</h2>
+    </section>
+
+    <section id="linear" class="reveal">
+      <h3>Linear Equations</h3>
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p>A <strong>linear equation</strong> in one variable is equivalent to: <span class="math">ax + b = 0</span></p>
+      </div>
+
+      <div class="solver">
+        <h4>Worked Examples — Linear</h4>
+        <div class="eq-example">
+          <div class="eq-title">Solve: 4x + 1 = 3</div>
+          <div class="eq-steps">
+            <div class="eq-line"><span class="expr">4x + 1 = 3</span></div>
+            <div class="eq-line"><span class="expr">4x = 2</span><span class="note">subtract 1</span></div>
+            <div class="eq-line eq-result"><span class="expr">x = 1/2</span><span class="note">divide by 4</span></div>
+          </div>
+        </div>
+        <div class="eq-example">
+          <div class="eq-title">Solve: 3x + 2 = x + 1</div>
+          <div class="eq-steps">
+            <div class="eq-line"><span class="expr">3x + 2 = x + 1</span></div>
+            <div class="eq-line"><span class="expr">2x = -1</span><span class="note">subtract x, subtract 2</span></div>
+            <div class="eq-line eq-result"><span class="expr">x = -1/2</span><span class="note">divide by 2</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="quadratic" class="reveal">
+      <h3>Quadratic Equations</h3>
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p>A <strong>quadratic equation</strong> has the form <span class="math">ax² + bx + c = 0</span>, where a ≠ 0.</p>
+      </div>
+      <div class="box box-rule">
+        <span class="box-label">Zero-Product Property</span>
+        <p><strong>AB = 0</strong> if and only if <strong>A = 0</strong> or <strong>B = 0</strong>. This is the key to solving by factoring.</p>
+      </div>
+
+      <div class="solver">
+        <h4>Solve by Factoring — Three Examples</h4>
+
+        <div class="eq-example">
+          <div class="eq-title">1. x² + 2x = 24</div>
+          <div class="eq-steps">
+            <div class="eq-line"><span class="expr">x² + 2x − 24 = 0</span><span class="note">rearrange</span></div>
+            <div class="eq-line"><span class="expr">(x − 4)(x + 6) = 0</span><span class="note">factor</span></div>
+            <div class="eq-line eq-result"><span class="expr">S.S = {−6, 4}</span></div>
+          </div>
+        </div>
+
+        <div class="eq-example">
+          <div class="eq-title">2. x² − 7x + 12 = 0</div>
+          <div class="eq-steps">
+            <div class="eq-line"><span class="expr">(x − 4)(x − 3) = 0</span><span class="note">factor</span></div>
+            <div class="eq-line eq-result"><span class="expr">S.S = {3, 4}</span></div>
+          </div>
+        </div>
+
+        <div class="eq-example">
+          <div class="eq-title">3. x² − 8x − 20 = 0</div>
+          <div class="eq-steps">
+            <div class="eq-line"><span class="expr">(x + 2)(x − 10) = 0</span><span class="note">factor</span></div>
+            <div class="eq-line eq-result"><span class="expr">S.S = {−2, 10}</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="absolute" class="reveal">
+      <h3>Equations with Absolute Value</h3>
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p>|a| = a if a ≥ 0, and |a| = −a if a &lt; 0.</p>
+        <p>To solve |A| = B, solve <strong>both</strong> A = B <strong>and</strong> −A = B.</p>
+      </div>
+      <div class="box box-note">
+        <span class="box-label">Key Facts</span>
+        <p>|−a| = |a| = a &nbsp;&nbsp;|&nbsp;&nbsp; |ab| = |a|·|b| &nbsp;&nbsp;|&nbsp;&nbsp; |−5| = |5| = 5</p>
+      </div>
+
+      <div class="solver">
+        <h4>Solve for x</h4>
+
+        <div class="eq-example">
+          <div class="eq-title">1. |3x + 1| = 5</div>
+          <div class="eq-steps">
+            <div class="eq-line"><span class="expr">Case 1: &nbsp;3x + 1 = 5</span><span class="note">→ x = 4/3</span></div>
+            <div class="eq-line"><span class="expr">Case 2: &nbsp;−(3x + 1) = 5</span><span class="note">→ −3x = 6 → x = −2</span></div>
+            <div class="eq-line eq-result"><span class="expr">S.S = {−2, 4/3}</span></div>
+          </div>
+        </div>
+
+        <div class="eq-example">
+          <div class="eq-title">2. |x² + 2x| = 1</div>
+          <div class="eq-steps">
+            <div class="eq-line"><span class="expr">Case 1: &nbsp;x² + 2x = 1</span></div>
+            <div class="eq-line"><span class="expr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x² + 2x − 1 = 0</span><span class="note">no rational roots</span></div>
+            <div class="eq-line"><span class="expr">Case 2: &nbsp;−(x² + 2x) = 1</span></div>
+            <div class="eq-line"><span class="expr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x² + 2x + 1 = 0 → (x+1)² = 0</span></div>
+            <div class="eq-line eq-result"><span class="expr">S.S = {−1}</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <div class="lec-nav">
+      <a href="lecture1.html" class="nav-btn">← Lecture 1: Set Theory</a>
+      <a href="lecture3.html" class="nav-btn">Lecture 3: Inequalities →</a>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function toggleAnswer(btn) {
+  const ans = btn.nextElementSibling;
+  ans.classList.toggle('show');
+  btn.textContent = ans.classList.contains('show') ? 'Hide' : 'Reveal';
+}
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+reveals.forEach(r => observer.observe(r));
+
+// Active TOC
+const sections = document.querySelectorAll('section[id]');
+const tocLinks = document.querySelectorAll('.toc a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if(window.scrollY + 150 >= s.offsetTop) current = s.id; });
+  tocLinks.forEach(a => {
+    a.classList.remove('active');
+    if(a.getAttribute('href') === '#'+current) a.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

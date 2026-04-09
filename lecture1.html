@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 1 — Set Theory & Operations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07090f;--surface:#0e1220;--surface2:#141b2e;--surface3:#192036;
+    --border:#1c2640;--border2:#253050;
+    --primary:#60a5fa;--primary-dim:rgba(96,165,250,0.12);--primary-glow:rgba(96,165,250,0.25);
+    --accent:#f59e0b;--accent-dim:rgba(245,158,11,0.1);
+    --purple:#a78bfa;--purple-dim:rgba(167,139,250,0.12);
+    --green:#34d399;--green-dim:rgba(52,211,153,0.1);
+    --red:#f87171;--red-dim:rgba(248,113,113,0.1);
+    --text:#e2e8f0;--muted:#64748b;--muted2:#94a3b8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;}
+
+  /* BG */
+  .bg-fixed{position:fixed;inset:0;z-index:0;pointer-events:none;}
+  .bg-dots{position:absolute;inset:0;background-image:radial-gradient(circle,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:0.5;}
+  .bg-glow{position:absolute;border-radius:50%;filter:blur(100px);}
+  .g1{width:500px;height:500px;background:rgba(96,165,250,0.05);top:-100px;right:-100px;}
+  .g2{width:400px;height:400px;background:rgba(167,139,250,0.04);bottom:-50px;left:-100px;}
+
+  /* Layout */
+  .page{position:relative;z-index:1;display:flex;min-height:100vh;}
+
+  /* Sidebar */
+  .sidebar{
+    width:240px;flex-shrink:0;
+    padding:2rem 1.5rem;
+    border-right:1px solid var(--border);
+    position:sticky;top:0;height:100vh;overflow-y:auto;
+    background:rgba(7,9,15,0.6);backdrop-filter:blur(8px);
+  }
+  .sidebar-back{
+    display:inline-flex;align-items:center;gap:0.4rem;
+    text-decoration:none;color:var(--muted);font-size:0.8rem;
+    transition:color 0.2s;margin-bottom:2rem;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .sidebar-back:hover{color:var(--primary);}
+  .sidebar-title{font-size:0.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.18em;font-family:'JetBrains Mono',monospace;margin-bottom:1rem;}
+  .toc{list-style:none;}
+  .toc li{margin-bottom:0.25rem;}
+  .toc a{
+    display:block;padding:0.4rem 0.75rem;
+    text-decoration:none;color:var(--muted2);font-size:0.82rem;
+    border-left:2px solid transparent;
+    border-radius:0 6px 6px 0;
+    transition:all 0.2s;
+  }
+  .toc a:hover,.toc a.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-dim);}
+  .toc-sub a{padding-left:1.5rem;font-size:0.78rem;}
+
+  /* Main */
+  .main{flex:1;max-width:800px;padding:3rem 3rem 6rem;margin:0 auto;}
+
+  /* Header */
+  .lec-header{margin-bottom:3.5rem;padding-bottom:2.5rem;border-bottom:1px solid var(--border);}
+  .lec-num{
+    font-family:'JetBrains Mono',monospace;font-size:0.7rem;
+    color:var(--primary);text-transform:uppercase;letter-spacing:0.22em;
+    background:var(--primary-dim);border:1px solid rgba(96,165,250,0.18);
+    display:inline-block;padding:0.3rem 0.8rem;border-radius:4px;margin-bottom:1.25rem;
+  }
+  .lec-title{
+    font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,3.5rem);
+    font-weight:700;line-height:1.1;margin-bottom:1rem;
+  }
+  .lec-title em{font-style:italic;background:linear-gradient(100deg,var(--primary),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .lec-desc{color:var(--muted2);font-size:1rem;max-width:560px;line-height:1.7;}
+
+  /* Sections */
+  section{margin-bottom:4rem;scroll-margin-top:2rem;}
+  .sec-badge{
+    font-family:'JetBrains Mono',monospace;font-size:0.68rem;
+    color:var(--accent);text-transform:uppercase;letter-spacing:0.2em;
+    margin-bottom:0.6rem;
+  }
+  h2{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;margin-bottom:1.5rem;}
+  h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;margin:1.75rem 0 0.75rem;}
+
+  p{margin-bottom:1rem;color:var(--muted2);}
+
+  /* Callout boxes */
+  .box{border-radius:12px;padding:1.25rem 1.5rem;margin:1.25rem 0;border:1px solid;}
+  .box-def{background:var(--primary-dim);border-color:rgba(96,165,250,0.2);}
+  .box-def .box-label{color:var(--primary);}
+  .box-ex{background:var(--green-dim);border-color:rgba(52,211,153,0.2);}
+  .box-ex .box-label{color:var(--green);}
+  .box-note{background:var(--accent-dim);border-color:rgba(245,158,11,0.2);}
+  .box-note .box-label{color:var(--accent);}
+  .box-formula{background:var(--surface2);border-color:var(--border2);text-align:center;}
+  .box-purple{background:var(--purple-dim);border-color:rgba(167,139,250,0.2);}
+  .box-purple .box-label{color:var(--purple);}
+  .box-label{font-size:0.72rem;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:0.5rem;display:block;}
+  .box p{margin:0;}
+  .box p+p{margin-top:0.5rem;}
+
+  /* Math inline */
+  .math{font-family:'JetBrains Mono',monospace;font-size:0.9em;color:var(--text);background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;}
+  .math-large{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:1.4rem;color:var(--text);display:block;
+    text-align:center;padding:0.75rem;
+  }
+
+  /* Set notation table */
+  .sets-table{width:100%;border-collapse:collapse;margin:1.25rem 0;}
+  .sets-table th{
+    text-align:left;padding:0.6rem 1rem;
+    font-family:'JetBrains Mono',monospace;font-size:0.72rem;font-weight:500;
+    color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;
+    border-bottom:1px solid var(--border2);
+  }
+  .sets-table td{padding:0.75rem 1rem;border-bottom:1px solid var(--border);font-size:0.88rem;}
+  .sets-table td:first-child{font-family:'JetBrains Mono',monospace;color:var(--primary);font-size:1rem;}
+  .sets-table td:nth-child(2){color:var(--text);}
+  .sets-table td:last-child{color:var(--muted2);}
+  .sets-table tr:hover td{background:var(--surface2);}
+
+  /* Method cards */
+  .method-cards{display:grid;grid-template-columns:1fr;gap:1rem;margin:1.25rem 0;}
+  .method-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:10px;
+    padding:1.25rem 1.5rem;
+    transition:border-color 0.2s;
+  }
+  .method-card:hover{border-color:var(--border2);}
+  .method-num{
+    font-family:'JetBrains Mono',monospace;font-size:0.68rem;
+    color:var(--purple);margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:0.15em;
+  }
+  .method-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;margin-bottom:0.4rem;}
+  .method-ex{font-size:0.85rem;color:var(--muted2);}
+  .method-ex .math{background:var(--surface2);}
+
+  /* Interval viz */
+  .intervals{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin:1rem 0;}
+  .interval-item{
+    background:var(--surface);border:1px solid var(--border);border-radius:8px;
+    padding:0.9rem 1.1rem;
+  }
+  .interval-notation{font-family:'JetBrains Mono',monospace;font-size:1rem;color:var(--primary);margin-bottom:0.3rem;}
+  .interval-meaning{font-size:0.8rem;color:var(--muted2);}
+
+  /* ── INTERACTIVE VENN DIAGRAM ── */
+  .venn-wrapper{
+    background:var(--surface);border:1px solid var(--border);border-radius:16px;
+    padding:2rem;margin:1.5rem 0;
+  }
+  .venn-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;margin-bottom:0.75rem;text-align:center;}
+  .venn-subtitle{font-size:0.85rem;color:var(--muted2);text-align:center;margin-bottom:1.5rem;}
+  .op-btns{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin-bottom:1.5rem;}
+  .op-btn{
+    padding:0.4rem 0.9rem;
+    border:1px solid var(--border2);border-radius:6px;
+    background:var(--surface2);color:var(--muted2);
+    font-size:0.8rem;font-family:'DM Sans',sans-serif;
+    cursor:pointer;transition:all 0.2s;
+  }
+  .op-btn:hover{border-color:var(--primary);color:var(--primary);}
+  .op-btn.active{background:var(--primary-dim);border-color:var(--primary);color:var(--primary);}
+  .venn-svg-wrap{display:flex;justify-content:center;margin-bottom:1.25rem;}
+  .venn-svg-wrap svg{max-width:380px;width:100%;}
+  .venn-desc{
+    background:var(--surface2);border:1px solid var(--border2);border-radius:8px;
+    padding:0.9rem 1.25rem;text-align:center;
+  }
+  .venn-desc .op-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--primary);margin-bottom:0.25rem;}
+  .venn-desc .op-formula{font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:var(--accent);margin-bottom:0.25rem;}
+  .venn-desc .op-explain{font-size:0.85rem;color:var(--muted2);}
+
+  /* Operation sections */
+  .op-section{margin-bottom:2rem;}
+
+  /* Quiz / check boxes */
+  .quiz-box{
+    background:var(--surface);border:1px solid var(--border);border-radius:12px;
+    padding:1.5rem;margin:1.5rem 0;
+  }
+  .quiz-box h4{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:1rem;}
+  .quiz-q{margin-bottom:0.75rem;}
+  .quiz-q p{color:var(--text);margin-bottom:0.4rem;}
+  .reveal-btn{
+    padding:0.3rem 0.7rem;background:var(--surface2);border:1px solid var(--border2);
+    border-radius:5px;color:var(--muted);font-size:0.78rem;cursor:pointer;
+    font-family:'JetBrains Mono',monospace;transition:all 0.2s;
+  }
+  .reveal-btn:hover{border-color:var(--green);color:var(--green);}
+  .answer{display:none;margin-top:0.5rem;padding:0.6rem 0.9rem;background:var(--green-dim);border:1px solid rgba(52,211,153,0.2);border-radius:6px;font-size:0.85rem;color:var(--green);}
+  .answer.show{display:block;}
+
+  /* Progress dots */
+  .progress{display:flex;gap:0.4rem;margin-bottom:2rem;}
+  .pdot{width:6px;height:6px;border-radius:50%;background:var(--border2);}
+  .pdot.done{background:var(--primary);}
+
+  /* Next/prev nav */
+  .lec-nav{
+    display:flex;justify-content:space-between;align-items:center;
+    border-top:1px solid var(--border);padding-top:2rem;margin-top:3rem;
+  }
+  .nav-btn{
+    display:inline-flex;align-items:center;gap:0.5rem;
+    padding:0.6rem 1.2rem;border:1px solid var(--border2);border-radius:8px;
+    background:var(--surface);color:var(--muted2);text-decoration:none;
+    font-size:0.85rem;transition:all 0.2s;
+  }
+  .nav-btn:hover{border-color:var(--primary);color:var(--primary);}
+
+  /* Scroll fade-in */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity 0.55s ease,transform 0.55s ease;}
+  .reveal.visible{opacity:1;transform:none;}
+
+  /* Responsive */
+  @media(max-width:768px){
+    .sidebar{display:none;}
+    .main{padding:2rem 1.25rem 4rem;}
+    .intervals{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-fixed">
+  <div class="bg-dots"></div>
+  <div class="bg-glow g1"></div>
+  <div class="bg-glow g2"></div>
+</div>
+
+<div class="page">
+
+  <!-- Sidebar TOC -->
+  <aside class="sidebar">
+    <a href="index.html" class="sidebar-back">← Back to Course</a>
+    <div class="sidebar-title">// Contents</div>
+    <ul class="toc">
+      <li><a href="#intro">1. Set Theory</a></li>
+      <li class="toc-sub"><a href="#common-sets">Common Sets</a></li>
+      <li class="toc-sub"><a href="#describing">Describing Sets</a></li>
+      <li class="toc-sub"><a href="#terminology">Terminology</a></li>
+      <li><a href="#operations">2. Set Operations</a></li>
+      <li class="toc-sub"><a href="#venn-interactive">Interactive Venn</a></li>
+      <li class="toc-sub"><a href="#union">Union</a></li>
+      <li class="toc-sub"><a href="#intersection">Intersection</a></li>
+      <li class="toc-sub"><a href="#difference">Difference</a></li>
+      <li class="toc-sub"><a href="#sym-diff">Symmetric Diff.</a></li>
+      <li class="toc-sub"><a href="#complement">Complement</a></li>
+      <li><a href="#practice">Practice</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+
+    <header class="lec-header">
+      <div class="lec-num">Lecture 01</div>
+      <h1 class="lec-title">Set Theory &amp; <em>Operations</em></h1>
+      <p class="lec-desc">The mathematical language of collections — how to define, describe, compare, and combine sets. The foundation of logic, databases, and data science.</p>
+    </header>
+
+    <!-- ═══ SECTION 1: SET THEORY ═══ -->
+    <section id="intro" class="reveal">
+      <div class="sec-badge">// Section 1</div>
+      <h2>Set Theory</h2>
+
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p>A <strong>set</strong> is an <em>unordered</em> collection of objects, called <strong>elements</strong> or <strong>members</strong>. A set is said to contain its elements.</p>
+      </div>
+
+      <p>We write <span class="math">a ∈ A</span> to say "a belongs to A", and <span class="math">a ∉ A</span> to say "a does not belong to A". Sets are named with <strong>uppercase</strong> letters; elements with <strong>lowercase</strong>.</p>
+
+      <div class="box box-ex">
+        <span class="box-label">Examples</span>
+        <p>People in a class: <span class="math">{Trisha, Tanvir, Tonmoy, Keya}</span></p>
+        <p>Mixed elements: <span class="math">{3, a, Potato}</span></p>
+        <p>Positive numbers ≤ 5: <span class="math">{1, 2, 3, 4, 5}</span></p>
+      </div>
+
+      <div class="box box-note">
+        <span class="box-label">Key Properties</span>
+        <p><strong>Order doesn't matter:</strong> <span class="math">{1,2,3} = {3,1,2}</span></p>
+        <p><strong>Duplicates don't matter:</strong> <span class="math">{1,1,2,2} = {1,2}</span></p>
+      </div>
+    </section>
+
+    <!-- Common Sets -->
+    <section id="common-sets" class="reveal">
+      <div class="sec-badge">// Section 1.1</div>
+      <h2>Common Sets in Mathematics</h2>
+
+      <table class="sets-table">
+        <thead>
+          <tr><th>Symbol</th><th>Name</th><th>Elements</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>ℕ</td><td>Natural Numbers</td><td>{0, 1, 2, 3, …}</td></tr>
+          <tr><td>ℤ</td><td>Integers</td><td>{…, −2, −1, 0, 1, 2, …}</td></tr>
+          <tr><td>ℤ⁺</td><td>Positive Integers</td><td>{1, 2, 3, …}</td></tr>
+          <tr><td>ℚ</td><td>Rational Numbers</td><td>p/q where p,q ∈ ℤ, q ≠ 0</td></tr>
+          <tr><td>ℝ</td><td>Real Numbers</td><td>All points on the number line</td></tr>
+          <tr><td>ℂ</td><td>Complex Numbers</td><td>a + bi where i = √(−1)</td></tr>
+        </tbody>
+      </table>
+
+      <div class="box box-formula">
+        <span class="math-large">ℕ ⊆ ℤ ⊆ ℚ ⊆ ℝ ⊆ ℂ</span>
+        <p style="color:var(--muted2);font-size:0.85rem;text-align:center;">Each set is contained within the next — a chain of inclusions.</p>
+      </div>
+    </section>
+
+    <!-- Describing Sets -->
+    <section id="describing" class="reveal">
+      <div class="sec-badge">// Section 1.2</div>
+      <h2>Three Ways to Describe a Set</h2>
+
+      <div class="method-cards">
+        <div class="method-card">
+          <div class="method-num">Method 1</div>
+          <div class="method-name">Word Description</div>
+          <p class="method-ex">Describe the set in plain English.<br>
+          <strong>Example:</strong> "The set of even counting numbers less than 10."</p>
+        </div>
+        <div class="method-card">
+          <div class="method-num">Method 2</div>
+          <div class="method-name">Roster (Listing) Method</div>
+          <p class="method-ex">List all elements between curly braces.<br>
+          <strong>Example:</strong> <span class="math">{2, 4, 6, 8}</span></p>
+        </div>
+        <div class="method-card">
+          <div class="method-num">Method 3</div>
+          <div class="method-name">Set-Builder Notation</div>
+          <p class="method-ex">Characterize elements by a property they must satisfy.<br>
+          <strong>Example:</strong> <span class="math">O = { x | x is an odd positive integer &lt; 10 }</span><br>
+          Or: <span class="math">B = { x ∈ ℤ⁺ | x is odd and x &lt; 10 }</span><br>
+          Read as: "B is the set of all x such that x is odd and x &lt; 10."</p>
+        </div>
+      </div>
+
+      <h3>Interval Notation</h3>
+      <p>For continuous ranges of real numbers between <span class="math">a</span> and <span class="math">b</span> (where <span class="math">a &lt; b</span>):</p>
+      <div class="intervals">
+        <div class="interval-item">
+          <div class="interval-notation">[a, b]</div>
+          <div class="interval-meaning">Closed interval: a ≤ x ≤ b (both endpoints included)</div>
+        </div>
+        <div class="interval-item">
+          <div class="interval-notation">(a, b)</div>
+          <div class="interval-meaning">Open interval: a &lt; x &lt; b (neither endpoint included)</div>
+        </div>
+        <div class="interval-item">
+          <div class="interval-notation">[a, b)</div>
+          <div class="interval-meaning">Half-open: a ≤ x &lt; b (left included, right excluded)</div>
+        </div>
+        <div class="interval-item">
+          <div class="interval-notation">(a, b]</div>
+          <div class="interval-meaning">Half-open: a &lt; x ≤ b (left excluded, right included)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Terminology -->
+    <section id="terminology" class="reveal">
+      <div class="sec-badge">// Section 1.3</div>
+      <h2>Key Set Terminology</h2>
+
+      <h3>Universal Set (U)</h3>
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p><span class="math">U</span> is the <strong>universal set</strong> — the set of all elements from which any given set is drawn. Every set exists within a universe.</p>
+      </div>
+
+      <h3>Empty Set (∅)</h3>
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p>A set with <strong>zero elements</strong> is the <strong>empty set</strong>, written <span class="math">∅ = { }</span>.</p>
+      </div>
+      <div class="box box-note">
+        <span class="box-label">Important Distinction</span>
+        <p><span class="math">∅</span> — empty set (0 elements)</p>
+        <p><span class="math">{∅}</span> — a set containing one element (the empty set). These are NOT the same!</p>
+      </div>
+
+      <h3>Subset (⊆) and Proper Subset (⊂)</h3>
+      <div class="box box-def">
+        <span class="box-label">Definition — Subset</span>
+        <p><span class="math">A ⊆ B</span> if every element of A is also in B: <span class="math">∀x (x ∈ A → x ∈ B)</span></p>
+      </div>
+      <div class="box box-purple">
+        <span class="box-label">Definition — Proper Subset</span>
+        <p><span class="math">A ⊂ B</span> if A ⊆ B <em>and</em> A ≠ B. There must exist some element in B not in A.</p>
+      </div>
+      <div class="box box-ex">
+        <span class="box-label">Examples</span>
+        <p>A = {2,4,6}, B = {1,2,3,4,5,6,7} → <span class="math">A ⊂ B</span> and <span class="math">A ⊆ B</span> ✓</p>
+        <p>A = {1,2,3,4}, B = {1,2,3,4} → <span class="math">A ⊆ B</span> ✓ but <span class="math">A ⊄ B</span> (they are equal)</p>
+      </div>
+      <div class="box box-note">
+        <span class="box-label">Remember</span>
+        <p>For any set S: &nbsp;<span class="math">∅ ⊆ S</span>&nbsp; and &nbsp;<span class="math">S ⊆ S</span>&nbsp; are always true.</p>
+      </div>
+
+      <h3>Set Equality</h3>
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p>A = B if and only if they have exactly the same elements: <span class="math">∀x (x ∈ A ↔ x ∈ B)</span></p>
+      </div>
+      <div class="box box-ex">
+        <span class="box-label">Examples</span>
+        <p>{1,2,3} = {3,2,1} &nbsp;→&nbsp; <strong style="color:var(--green)">True</strong> (order doesn't matter)</p>
+        <p>{1,2,3} = {3,3,2,1,2,1} &nbsp;→&nbsp; <strong style="color:var(--green)">True</strong> (duplicates don't matter)</p>
+      </div>
+
+      <h3>Cardinality (|S|)</h3>
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p>The <strong>cardinality</strong> of a finite set S, written <span class="math">|S|</span>, is the number of distinct elements in S.</p>
+      </div>
+      <div class="box box-ex">
+        <span class="box-label">Examples</span>
+        <p>A = {1,3,5,7,9} &nbsp;→&nbsp; <span class="math">|A| = 5</span></p>
+        <p>English alphabet &nbsp;→&nbsp; <span class="math">|S| = 26</span></p>
+        <p><span class="math">|∅| = 0</span> &nbsp;and&nbsp; <span class="math">|{∅}| = 1</span></p>
+      </div>
+
+      <h3>Power Set P(S)</h3>
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p>The <strong>power set</strong> <span class="math">P(S)</span> is the set of <em>all subsets</em> of S. If |S| = n, then |P(S)| = 2ⁿ.</p>
+      </div>
+      <div class="box box-ex">
+        <span class="box-label">Example — P({0, 1, 2})</span>
+        <p><span class="math">P({0,1,2}) = { ∅, {0}, {1}, {2}, {0,1}, {0,2}, {1,2}, {0,1,2} }</span></p>
+        <p>|S| = 3, so |P(S)| = 2³ = <strong>8 subsets</strong></p>
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 2: OPERATIONS ═══ -->
+    <section id="operations" class="reveal">
+      <div class="sec-badge">// Section 2</div>
+      <h2>Set Operations</h2>
+      <p>Operations on sets A and B produce new sets. There are five key operations:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin:1rem 0;">
+        <span class="math">A ∪ B</span>
+        <span class="math">A ∩ B</span>
+        <span class="math">A − B</span>
+        <span class="math">A ⊕ B</span>
+        <span class="math">Ā</span>
+      </div>
+    </section>
+
+    <!-- Interactive Venn -->
+    <section id="venn-interactive" class="reveal">
+      <div class="venn-wrapper">
+        <div class="venn-title">Interactive Venn Diagram</div>
+        <div class="venn-subtitle">Click an operation to see which region is highlighted</div>
+
+        <div class="op-btns">
+          <button class="op-btn active" data-op="union">Union A ∪ B</button>
+          <button class="op-btn" data-op="intersection">Intersection A ∩ B</button>
+          <button class="op-btn" data-op="diff-ab">Difference A − B</button>
+          <button class="op-btn" data-op="diff-ba">Difference B − A</button>
+          <button class="op-btn" data-op="sym-diff">Symmetric Diff. A ⊕ B</button>
+          <button class="op-btn" data-op="comp-a">Complement Ā</button>
+          <button class="op-btn" data-op="comp-b">Complement B̄</button>
+        </div>
+
+        <div class="venn-svg-wrap">
+          <svg id="venn-svg" viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <!-- Clip paths for each region -->
+              <clipPath id="clip-a">
+                <circle cx="155" cy="120" r="85"/>
+              </clipPath>
+              <clipPath id="clip-b">
+                <circle cx="245" cy="120" r="85"/>
+              </clipPath>
+              <!-- Inverse of A (everything outside A) -->
+              <clipPath id="clip-not-a">
+                <path d="M0 0 H400 V240 H0 Z" clip-rule="evenodd"/>
+              </clipPath>
+            </defs>
+
+            <!-- U rectangle -->
+            <rect x="5" y="5" width="390" height="230" rx="10" fill="none" stroke="#253050" stroke-width="1.5"/>
+            <text x="380" y="25" font-size="14" fill="#64748b" font-family="Cormorant Garamond, serif" font-style="italic" text-anchor="end">U</text>
+
+            <!-- Region highlights -->
+            <!-- Only A (A minus B) -->
+            <g id="region-only-a">
+              <circle cx="155" cy="120" r="85" fill="rgba(96,165,250,0.5)" clip-path="url(#clip-a)"/>
+              <circle cx="245" cy="120" r="85" fill="rgba(7,9,15,0)" clip-path="url(#clip-a)"/>
+            </g>
+            <!-- Only B (B minus A) -->
+            <g id="region-only-b">
+              <circle cx="245" cy="120" r="85" fill="rgba(167,139,250,0.5)" clip-path="url(#clip-b)"/>
+              <circle cx="155" cy="120" r="85" fill="rgba(7,9,15,0)" clip-path="url(#clip-b)"/>
+            </g>
+            <!-- Intersection region only -->
+            <g id="region-intersect">
+              <circle cx="155" cy="120" r="85" fill="rgba(52,211,153,0.5)" clip-path="url(#clip-b)"/>
+            </g>
+            <!-- Outside (complement) of A -->
+            <g id="region-outside">
+              <rect x="5" y="5" width="390" height="230" rx="10" fill="rgba(245,158,11,0.3)"/>
+            </g>
+
+            <!-- Base circles (drawn last for clean borders) -->
+            <circle id="circle-a" cx="155" cy="120" r="85" fill="none" stroke="#60a5fa" stroke-width="2" opacity="0.6"/>
+            <circle id="circle-b" cx="245" cy="120" r="85" fill="none" stroke="#a78bfa" stroke-width="2" opacity="0.6"/>
+
+            <!-- Labels -->
+            <text x="105" y="125" font-family="Cormorant Garamond, serif" font-style="italic" font-size="22" fill="#60a5fa" text-anchor="middle">A</text>
+            <text x="295" y="125" font-family="Cormorant Garamond, serif" font-style="italic" font-size="22" fill="#a78bfa" text-anchor="middle">B</text>
+          </svg>
+        </div>
+
+        <div class="venn-desc">
+          <div class="op-name" id="op-name">Union — A ∪ B</div>
+          <div class="op-formula" id="op-formula">A ∪ B = { x | x ∈ A ∨ x ∈ B }</div>
+          <div class="op-explain" id="op-explain">All elements that are in A, in B, or in both.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Union -->
+    <section id="union" class="op-section reveal">
+      <h3>Union (∪)</h3>
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p>A ∪ B contains elements that are in A <em>or</em> in B (or both).</p>
+        <p style="text-align:center;font-family:'JetBrains Mono',monospace;margin-top:0.5rem;">A ∪ B = { x | x ∈ A ∨ x ∈ B }</p>
+      </div>
+      <div class="box box-ex">
+        <span class="box-label">Example</span>
+        <p>A = {1,2,5,7}, B = {3,4,5,6}</p>
+        <p>A ∪ B = <strong style="color:var(--green)">{1, 2, 3, 4, 5, 6, 7}</strong></p>
+      </div>
+    </section>
+
+    <!-- Intersection -->
+    <section id="intersection" class="op-section reveal">
+      <h3>Intersection (∩)</h3>
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p>A ∩ B contains elements that are in <em>both</em> A and B.</p>
+        <p style="text-align:center;font-family:'JetBrains Mono',monospace;margin-top:0.5rem;">A ∩ B = { x | x ∈ A ∧ x ∈ B }</p>
+      </div>
+      <div class="box box-ex">
+        <span class="box-label">Example</span>
+        <p>A = {1,2,5,7}, B = {3,4,5,6}</p>
+        <p>A ∩ B = <strong style="color:var(--green)">{5}</strong></p>
+      </div>
+      <div class="box box-purple">
+        <span class="box-label">Disjoint Sets</span>
+        <p>Two sets are <strong>disjoint</strong> if A ∩ B = ∅ (no elements in common).</p>
+        <p>Example: {a, b} and {3, 4} are disjoint.</p>
+      </div>
+    </section>
+
+    <!-- Difference -->
+    <section id="difference" class="op-section reveal">
+      <h3>Difference (−)</h3>
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p>A − B contains elements in A that are <em>not</em> in B.</p>
+        <p style="text-align:center;font-family:'JetBrains Mono',monospace;margin-top:0.5rem;">A − B = { x | x ∈ A ∧ x ∉ B }</p>
+      </div>
+      <div class="box box-ex">
+        <span class="box-label">Examples</span>
+        <p>A = {1,3,5}, B = {1,2,3} → A − B = <strong style="color:var(--green)">{5}</strong></p>
+        <p>A = {1,3,5,6}, B = {1,2,3,9,10} → A − B = <strong style="color:var(--green)">{5, 6}</strong></p>
+      </div>
+      <div class="box box-note">
+        <span class="box-label">Note</span>
+        <p>A − B ≠ B − A in general. The difference operation is <strong>not commutative</strong>.</p>
+      </div>
+    </section>
+
+    <!-- Symmetric Difference -->
+    <section id="sym-diff" class="op-section reveal">
+      <h3>Symmetric Difference (⊕)</h3>
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p>A ⊕ B contains elements in A or B, but <em>not both</em>.</p>
+        <p style="text-align:center;font-family:'JetBrains Mono',monospace;margin-top:0.5rem;">A ⊕ B = { x | x ∈ A ∨ x ∈ B ∧ x ∉ (A ∩ B) }</p>
+      </div>
+      <div class="box box-ex">
+        <span class="box-label">Example</span>
+        <p>A = {1,2,5,7}, B = {3,4,5,6}</p>
+        <p>A ⊕ B = <strong style="color:var(--green)">{1, 2, 3, 4, 6, 7}</strong> &nbsp;(5 is excluded since it's in both)</p>
+      </div>
+    </section>
+
+    <!-- Complement -->
+    <section id="complement" class="op-section reveal">
+      <h3>Complement (Ā)</h3>
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p>The <strong>complement</strong> of A (written Ā) is everything in U that is <em>not</em> in A.</p>
+        <p style="text-align:center;font-family:'JetBrains Mono',monospace;margin-top:0.5rem;">Ā = { x ∈ U | x ∉ A } = U − A</p>
+      </div>
+      <div class="box box-ex">
+        <span class="box-label">Example</span>
+        <p>If U = {1,2,3,4,5} and A = {1,3,5}, then Ā = <strong style="color:var(--green)">{2, 4}</strong></p>
+      </div>
+    </section>
+
+    <!-- Practice -->
+    <section id="practice" class="reveal">
+      <div class="sec-badge">// Practice</div>
+      <h2>Check Your Understanding</h2>
+      <div class="quiz-box">
+        <h4>Try These — click "Reveal" to check</h4>
+
+        <div class="quiz-q">
+          <p>Given A = {1,2,3,4}, B = {3,4,5,6,7}, C = {2,3,5,7} — what is <strong>A ∪ B</strong>?</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">Reveal</button>
+          <div class="answer">{1, 2, 3, 4, 5, 6, 7}</div>
+        </div>
+
+        <div class="quiz-q">
+          <p>What is <strong>A ∩ C</strong>?</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">Reveal</button>
+          <div class="answer">{2, 3}</div>
+        </div>
+
+        <div class="quiz-q">
+          <p>What is <strong>B − C</strong>?</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">Reveal</button>
+          <div class="answer">{4, 6}</div>
+        </div>
+
+        <div class="quiz-q">
+          <p>Is <span class="math">∅ ⊆ A</span> true or false?</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">Reveal</button>
+          <div class="answer">True — the empty set is a subset of every set.</div>
+        </div>
+
+        <div class="quiz-q">
+          <p>Let S = {a, b}. What is P(S)?</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">Reveal</button>
+          <div class="answer">P(S) = { ∅, {a}, {b}, {a,b} } — 4 subsets (2² = 4)</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="lec-nav">
+      <a href="index.html" class="nav-btn">← Back to Course</a>
+      <a href="lecture2.html" class="nav-btn">Lecture 2: Exponents →</a>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ── Venn Diagram Logic ──
+const ops = {
+  union: {
+    name: 'Union — A ∪ B',
+    formula: 'A ∪ B = { x | x ∈ A ∨ x ∈ B }',
+    explain: 'All elements that are in A, in B, or in both.',
+    onlyA: true, inter: true, onlyB: true, outside: false
+  },
+  intersection: {
+    name: 'Intersection — A ∩ B',
+    formula: 'A ∩ B = { x | x ∈ A ∧ x ∈ B }',
+    explain: 'Only elements belonging to both A and B.',
+    onlyA: false, inter: true, onlyB: false, outside: false
+  },
+  'diff-ab': {
+    name: 'Difference — A − B',
+    formula: 'A − B = { x | x ∈ A ∧ x ∉ B }',
+    explain: 'Elements in A that are not in B.',
+    onlyA: true, inter: false, onlyB: false, outside: false
+  },
+  'diff-ba': {
+    name: 'Difference — B − A',
+    formula: 'B − A = { x | x ∈ B ∧ x ∉ A }',
+    explain: 'Elements in B that are not in A.',
+    onlyA: false, inter: false, onlyB: true, outside: false
+  },
+  'sym-diff': {
+    name: 'Symmetric Difference — A ⊕ B',
+    formula: 'A ⊕ B = { x | x ∈ A ∨ x ∈ B ∧ x ∉ (A ∩ B) }',
+    explain: 'Elements in A or B, but not in both.',
+    onlyA: true, inter: false, onlyB: true, outside: false
+  },
+  'comp-a': {
+    name: 'Complement — Ā',
+    formula: 'Ā = { x ∈ U | x ∉ A }',
+    explain: 'Everything in the universe U that is not in A.',
+    onlyA: false, inter: false, onlyB: true, outside: true
+  },
+  'comp-b': {
+    name: 'Complement — B̄',
+    formula: 'B̄ = { x ∈ U | x ∉ B }',
+    explain: 'Everything in the universe U that is not in B.',
+    onlyA: true, inter: false, onlyB: false, outside: true
+  }
+};
+
+function applyVenn(opKey) {
+  const op = ops[opKey];
+  const svg = document.getElementById('venn-svg');
+
+  // Colors
+  const colA = 'rgba(96,165,250,0.45)';
+  const colB = 'rgba(167,139,250,0.45)';
+  const colAB = 'rgba(52,211,153,0.45)';
+  const colOut = 'rgba(245,158,11,0.25)';
+  const none = 'rgba(0,0,0,0)';
+
+  // Draw using overlapping fill approach
+  // Rebuild the SVG regions
+  // Remove old fills
+  svg.querySelectorAll('.vfill').forEach(e => e.remove());
+
+  const NS = 'http://www.w3.org/2000/svg';
+  const insertBefore = svg.querySelector('#circle-a');
+
+  if (op.outside) {
+    const r = document.createElementNS(NS,'rect');
+    r.setAttribute('x','5');r.setAttribute('y','5');
+    r.setAttribute('width','390');r.setAttribute('height','230');
+    r.setAttribute('rx','10');r.setAttribute('fill', colOut);
+    r.classList.add('vfill');
+    svg.insertBefore(r, insertBefore);
+  }
+
+  if (op.onlyA) {
+    const c = document.createElementNS(NS,'circle');
+    c.setAttribute('cx','155');c.setAttribute('cy','120');c.setAttribute('r','85');
+    c.setAttribute('fill', colA);
+    c.classList.add('vfill');
+    svg.insertBefore(c, insertBefore);
+  }
+
+  if (op.onlyB) {
+    const c = document.createElementNS(NS,'circle');
+    c.setAttribute('cx','245');c.setAttribute('cy','120');c.setAttribute('r','85');
+    c.setAttribute('fill', colB);
+    c.classList.add('vfill');
+    svg.insertBefore(c, insertBefore);
+  }
+
+  // Intersection — draw on top
+  if (op.inter) {
+    // Draw the intersection region by clipping circle B shape with circle A clip
+    const g = document.createElementNS(NS,'g');
+    g.setAttribute('clip-path','url(#clip-b)');
+    const c = document.createElementNS(NS,'circle');
+    c.setAttribute('cx','155');c.setAttribute('cy','120');c.setAttribute('r','85');
+    c.setAttribute('fill', colAB);
+    g.appendChild(c);
+    g.classList.add('vfill');
+    svg.insertBefore(g, insertBefore);
+  } else if (op.onlyA || op.onlyB) {
+    // Blank out the intersection area to remove overlap
+    const g = document.createElementNS(NS,'g');
+    g.setAttribute('clip-path','url(#clip-b)');
+    const c = document.createElementNS(NS,'circle');
+    c.setAttribute('cx','155');c.setAttribute('cy','120');c.setAttribute('r','85');
+    c.setAttribute('fill', op.onlyA && op.onlyB ? colAB : 'rgba(7,9,15,0.6)');
+    // Actually, don't blank it — just handle it differently
+    // For diff-ab: fill A but blank out the intersection
+    if (op.onlyA && !op.onlyB) {
+      // blank intersection
+      c.setAttribute('fill','rgba(7,9,15,0.7)');
+      g.appendChild(c);
+      g.classList.add('vfill');
+      svg.insertBefore(g, insertBefore);
+    } else if (op.onlyB && !op.onlyA) {
+      // blank intersection from B
+      const g2 = document.createElementNS(NS,'g');
+      g2.setAttribute('clip-path','url(#clip-a)');
+      const c2 = document.createElementNS(NS,'circle');
+      c2.setAttribute('cx','245');c2.setAttribute('cy','120');c2.setAttribute('r','85');
+      c2.setAttribute('fill','rgba(7,9,15,0.7)');
+      g2.appendChild(c2);
+      g2.classList.add('vfill');
+      svg.insertBefore(g2, insertBefore);
+    }
+  }
+
+  document.getElementById('op-name').textContent = op.name;
+  document.getElementById('op-formula').textContent = op.formula;
+  document.getElementById('op-explain').textContent = op.explain;
+}
+
+document.querySelectorAll('.op-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.op-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyVenn(btn.dataset.op);
+  });
+});
+
+// Initial state
+applyVenn('union');
+
+// ── Reveal answers ──
+function toggleAnswer(btn) {
+  const ans = btn.nextElementSibling;
+  ans.classList.toggle('show');
+  btn.textContent = ans.classList.contains('show') ? 'Hide' : 'Reveal';
+}
+
+// ── Scroll reveal ──
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+reveals.forEach(r => observer.observe(r));
+
+// ── Active TOC ──
+const sections = document.querySelectorAll('section[id]');
+const tocLinks = document.querySelectorAll('.toc a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY + 150 >= s.offsetTop) current = s.id;
+  });
+  tocLinks.forEach(a => {
+    a.classList.remove('active');
+    if(a.getAttribute('href') === '#'+current) a.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

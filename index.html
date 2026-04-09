@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mathematical Foundation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #07090f;
+    --surface: #0e1220;
+    --surface2: #141b2e;
+    --border: #1c2640;
+    --border2: #253050;
+    --primary: #60a5fa;
+    --primary-dim: rgba(96,165,250,0.12);
+    --accent: #f59e0b;
+    --accent-dim: rgba(245,158,11,0.1);
+    --purple: #a78bfa;
+    --green: #34d399;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --muted2: #94a3b8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'DM Sans',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+
+  /* Background */
+  .bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+  .bg-dots{
+    position:absolute;inset:0;
+    background-image:radial-gradient(circle, var(--border) 1px, transparent 1px);
+    background-size:40px 40px;
+    opacity:0.6;
+  }
+  .bg-glow{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;}
+  .glow1{width:700px;height:700px;background:rgba(96,165,250,0.06);top:-200px;right:-150px;}
+  .glow2{width:600px;height:600px;background:rgba(167,139,250,0.05);bottom:-100px;left:-200px;}
+  .glow3{width:500px;height:500px;background:rgba(245,158,11,0.04);top:40%;left:30%;}
+
+  /* Floating symbols */
+  .sym{
+    position:absolute;
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    color:rgba(96,165,250,0.08);
+    pointer-events:none;
+    animation:riseSym linear infinite;
+    user-select:none;
+    font-weight:400;
+  }
+  @keyframes riseSym{
+    0%{transform:translateY(100vh) rotate(-10deg);opacity:0;}
+    5%{opacity:1;}
+    95%{opacity:1;}
+    100%{transform:translateY(-20vh) rotate(10deg);opacity:0;}
+  }
+
+  /* Layout */
+  .wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 1.25rem;}
+
+  /* Nav */
+  nav{
+    padding:1.25rem 0;
+    border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:100;
+    background:rgba(7,9,15,0.85);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+  }
+  .nav-inner{display:flex;align-items:center;gap:0.5rem;}
+  .logo{
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.15rem;
+    color:var(--primary);
+    letter-spacing:0.04em;
+    display:flex;align-items:center;gap:0.4rem;
+  }
+  .logo-sym{font-size:1.5rem;}
+
+  /* Hero */
+  .hero{
+    padding:5rem 0 4rem;
+    text-align:center;
+    position:relative;
+  }
+  .hero-eyebrow{
+    display:inline-flex;align-items:center;gap:0.5rem;
+    padding:0.35rem 1rem;
+    background:var(--primary-dim);
+    border:1px solid rgba(96,165,250,0.2);
+    border-radius:100px;
+    font-size:0.72rem;
+    color:var(--primary);
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    font-family:'JetBrains Mono',monospace;
+    margin-bottom:2rem;
+    animation:fadeUp 0.6s ease forwards;
+    opacity:0;
+  }
+  .hero h1{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(2.6rem,7vw,6rem);
+    font-weight:700;
+    line-height:1.02;
+    margin-bottom:1.5rem;
+    animation:fadeUp 0.6s 0.15s ease forwards;
+    opacity:0;
+  }
+  .hero h1 .line1{color:var(--text);}
+  .hero h1 .line2{
+    font-style:italic;
+    background:linear-gradient(100deg,var(--primary) 0%,var(--purple) 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  }
+  .hero-sub{
+    font-size:1rem;
+    color:var(--muted2);
+    max-width:480px;
+    margin:0 auto 2.5rem;
+    line-height:1.75;
+    animation:fadeUp 0.6s 0.3s ease forwards;
+    opacity:0;
+    padding:0 0.5rem;
+  }
+
+  /* Topic pills */
+  .topics{
+    display:flex;flex-wrap:wrap;justify-content:center;gap:0.5rem;
+    margin-bottom:4rem;
+    animation:fadeUp 0.6s 0.45s ease forwards;
+    opacity:0;
+    padding:0 0.25rem;
+  }
+  .topic{
+    padding:0.28rem 0.75rem;
+    border:1px solid var(--border2);
+    border-radius:6px;
+    font-size:0.75rem;
+    color:var(--muted);
+    font-family:'JetBrains Mono',monospace;
+    transition:all 0.2s;
+    cursor:default;
+  }
+  .topic:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-dim);}
+
+  /* Stats bar */
+  .stats{
+    display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;
+    padding:1.5rem;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+    margin-bottom:4.5rem;
+    animation:fadeUp 0.6s 0.6s ease forwards;
+    opacity:0;
+  }
+  .stat{text-align:center;}
+  .stat-num{
+    font-family:'Cormorant Garamond',serif;
+    font-size:2.2rem;
+    font-weight:700;
+    color:var(--primary);
+  }
+  .stat-label{font-size:0.78rem;color:var(--muted);margin-top:0.2rem;}
+
+  /* Lectures */
+  .lectures{padding:0 0 5rem;}
+  .sec-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.72rem;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:0.2em;
+    margin-bottom:0.65rem;
+  }
+  .sec-title{
+    font-family:'Cormorant Garamond',serif;
+    font-size:2.25rem;
+    font-weight:600;
+    margin-bottom:2rem;
+  }
+
+  /* Responsive grid: 2 cols on ≥700px, 1 col on phones */
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:1.25rem;
+  }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:1.75rem 1.75rem 1.5rem;
+    text-decoration:none;color:inherit;
+    display:block;position:relative;overflow:hidden;
+    transition:transform 0.3s ease,border-color 0.3s,box-shadow 0.3s;
+    opacity:0;
+    animation:fadeUp 0.7s ease forwards;
+  }
+  .card:nth-child(1){animation-delay:0.1s;}
+  .card:nth-child(2){animation-delay:0.2s;}
+  .card:nth-child(3){animation-delay:0.3s;}
+  .card:nth-child(4){animation-delay:0.4s;}
+
+  .card::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(135deg,rgba(96,165,250,0.05) 0%,transparent 60%);
+    opacity:0;transition:opacity 0.3s;
+  }
+  .card:hover{
+    transform:translateY(-4px);
+    border-color:rgba(96,165,250,0.35);
+    box-shadow:0 20px 50px rgba(0,0,0,0.4),0 0 0 1px rgba(96,165,250,0.08);
+  }
+  .card:hover::after{opacity:1;}
+
+  .card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem;}
+  .card-num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.66rem;
+    color:var(--primary);
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    background:var(--primary-dim);
+    padding:0.22rem 0.6rem;
+    border-radius:4px;
+    border:1px solid rgba(96,165,250,0.15);
+  }
+  .card-emoji{font-size:2rem;line-height:1;}
+  .card-title{
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.7rem;
+    font-weight:600;
+    line-height:1.2;
+    margin-bottom:0.6rem;
+  }
+  .card-desc{font-size:0.86rem;color:var(--muted2);line-height:1.7;margin-bottom:1.25rem;}
+  .card-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.5rem;}
+  .tag{
+    padding:0.2rem 0.55rem;
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:4px;
+    font-size:0.7rem;
+    color:var(--muted);
+    font-family:'JetBrains Mono',monospace;
+  }
+  .card-cta{
+    display:flex;align-items:center;gap:0.5rem;
+    color:var(--primary);font-size:0.86rem;font-weight:500;
+  }
+  .arrow{transition:transform 0.25s;}
+  .card:hover .arrow{transform:translateX(5px);}
+
+  /* Footer */
+  footer{
+    border-top:1px solid var(--border);
+    padding:2rem 0;
+    text-align:center;
+    color:var(--muted);
+    font-size:0.78rem;
+  }
+
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(20px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+
+  /* ─── Mobile breakpoints ─── */
+  @media(max-width:680px){
+    .cards{grid-template-columns:1fr;}
+    .hero{padding:3.5rem 0 3rem;}
+    .hero h1{font-size:2.4rem;}
+    .stats{gap:1.25rem;padding:1.25rem;}
+    .stat-num{font-size:1.9rem;}
+    .sec-title{font-size:1.8rem;}
+    .card{padding:1.4rem 1.4rem 1.25rem;}
+    .card-title{font-size:1.5rem;}
+  }
+
+  @media(max-width:400px){
+    .hero h1{font-size:2rem;}
+    .topics{gap:0.35rem;}
+    .topic{font-size:0.68rem;padding:0.22rem 0.6rem;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-canvas">
+  <div class="bg-dots"></div>
+  <div class="bg-glow glow1"></div>
+  <div class="bg-glow glow2"></div>
+  <div class="bg-glow glow3"></div>
+  <div id="syms"></div>
+</div>
+
+<nav>
+  <div class="wrap">
+    <div class="nav-inner">
+      <div class="logo"><span class="logo-sym">∑</span> Mathematical Foundation</div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-eyebrow">📐 Data Science · Math Core</div>
+      <h1>
+        <span class="line1">Master the</span><br>
+        <span class="line2">Mathematics</span><br>
+        <span class="line1">Behind the Data</span>
+      </h1>
+      <p class="hero-sub">From sets and logic to calculus — the mathematical toolkit every data scientist needs, made clear and visual.</p>
+
+      <div class="topics">
+        <span class="topic">Set Theory</span>
+        <span class="topic">Set Operations</span>
+        <span class="topic">Exponents</span>
+        <span class="topic">Inequalities</span>
+        <span class="topic">Functions</span>
+        <span class="topic">Logarithms</span>
+        <span class="topic">Limits</span>
+        <span class="topic">Continuity</span>
+        <span class="topic">Differentiation</span>
+        <span class="topic">Piecewise Functions</span>
+        <span class="topic">Linear Functions</span>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-num">5</div>
+          <div class="stat-label">Lectures Available</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Concepts to Explore</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">∀</div>
+          <div class="stat-label">Topics Covered</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="lectures">
+    <div class="wrap">
+      <div class="sec-label">// Course Materials</div>
+      <h2 class="sec-title">Lecture Notes</h2>
+
+      <div class="cards">
+
+        <a href="lecture1.html" class="card">
+          <div class="card-header">
+            <span class="card-num">Lecture 01</span>
+            <span class="card-emoji">🔢</span>
+          </div>
+          <h3 class="card-title">Set Theory &amp; Operations</h3>
+          <p class="card-desc">Explore the language of mathematics — how we collect, describe, and operate on groups of objects with precision. Includes an interactive Venn diagram.</p>
+          <div class="card-tags">
+            <span class="tag">definitions</span>
+            <span class="tag">notation</span>
+            <span class="tag">subsets</span>
+            <span class="tag">venn diagrams</span>
+            <span class="tag">union ∪</span>
+            <span class="tag">intersection ∩</span>
+            <span class="tag">complement</span>
+            <span class="tag">power set</span>
+          </div>
+          <div class="card-cta">Open Lecture <span class="arrow">→</span></div>
+        </a>
+
+        <a href="lecture2.html" class="card">
+          <div class="card-header">
+            <span class="card-num">Lecture 02</span>
+            <span class="card-emoji">⚡</span>
+          </div>
+          <h3 class="card-title">Exponents &amp; Algebra</h3>
+          <p class="card-desc">Unlock the power of exponential notation — index laws, radicals, polynomial expressions, and solving linear, quadratic and absolute-value equations.</p>
+          <div class="card-tags">
+            <span class="tag">index laws</span>
+            <span class="tag">negative bases</span>
+            <span class="tag">radicals aⁿ</span>
+            <span class="tag">polynomials</span>
+            <span class="tag">FOIL</span>
+            <span class="tag">quadratics</span>
+            <span class="tag">|x| equations</span>
+          </div>
+          <div class="card-cta">Open Lecture <span class="arrow">→</span></div>
+        </a>
+
+        <a href="lecture3.html" class="card">
+          <div class="card-header">
+            <span class="card-num">Lecture 03</span>
+            <span class="card-emoji">⚖️</span>
+          </div>
+          <h3 class="card-title">Inequalities</h3>
+          <p class="card-desc">Master the art of bounding — from linear inequalities and their six manipulation rules to quadratic and absolute-value inequalities solved via sign analysis and interval notation.</p>
+          <div class="card-tags">
+            <span class="tag">linear ineq.</span>
+            <span class="tag">6 rules</span>
+            <span class="tag">sign chart</span>
+            <span class="tag">quadratic ineq.</span>
+            <span class="tag">|x| ineq.</span>
+            <span class="tag">interval notation</span>
+            <span class="tag">solution sets</span>
+          </div>
+          <div class="card-cta">Open Lecture <span class="arrow">→</span></div>
+        </a>
+
+        <a href="lecture4.html" class="card">
+          <div class="card-header">
+            <span class="card-num">Lecture 04</span>
+            <span class="card-emoji">🔭</span>
+          </div>
+          <h3 class="card-title">Functions &amp; Logarithms</h3>
+          <p class="card-desc">Dive into the heart of analysis — defining functions, evaluating them, graphing with the vertical line test, finding domain &amp; range, and mastering logarithm rules and equations.</p>
+          <div class="card-tags">
+            <span class="tag">definition</span>
+            <span class="tag">domain &amp; range</span>
+            <span class="tag">vertical line test</span>
+            <span class="tag">graphing</span>
+            <span class="tag">log rules</span>
+            <span class="tag">ln x</span>
+            <span class="tag">log equations</span>
+          </div>
+          <div class="card-cta">Open Lecture <span class="arrow">→</span></div>
+        </a>
+
+        <a href="lecture5.html" class="card">
+          <div class="card-header">
+            <span class="card-num">Lecture 05</span>
+            <span class="card-emoji">📐</span>
+          </div>
+          <h3 class="card-title">Domain, Piecewise &amp; Linear Functions</h3>
+          <p class="card-desc">Algebraic domain calculation via three key rules, piecewise-defined functions including the absolute value, and a complete introduction to linear functions with slope-intercept form.</p>
+          <div class="card-tags">
+            <span class="tag">domain algebra</span>
+            <span class="tag">even root</span>
+            <span class="tag">denominator</span>
+            <span class="tag">log domain</span>
+            <span class="tag">piecewise</span>
+            <span class="tag">|x| function</span>
+            <span class="tag">linear f(x)</span>
+            <span class="tag">slope</span>
+          </div>
+          <div class="card-cta">Open Lecture <span class="arrow">→</span></div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Mathematical Foundation — Interactive Course Notes</div>
+</footer>
+
+<script>
+  const syms=['∪','∩','∅','⊆','⊂','∈','∉','ℕ','ℤ','ℝ','ℚ','∞','∫','∂','∇','√','π','λ','θ','aⁿ','xⁿ','∀','∃','⊕','≤','≥','log','ln'];
+  const c=document.getElementById('syms');
+  syms.forEach((s)=>{
+    const d=document.createElement('div');
+    d.className='sym';
+    d.textContent=s;
+    d.style.left=`${Math.random()*100}vw`;
+    d.style.fontSize=`${1.5+Math.random()*3.5}rem`;
+    d.style.animationDuration=`${18+Math.random()*22}s`;
+    d.style.animationDelay=`${Math.random()*15}s`;
+    c.appendChild(d);
+  });
+</script>
+</body>
+</html>
