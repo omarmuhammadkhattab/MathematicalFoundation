@@ -101,9 +101,6 @@
   .step-list li:last-child{border-bottom:none;}
   .step-list li::before{content:counter(steps);position:absolute;left:0;top:0.6rem;width:1.7rem;height:1.7rem;background:var(--teal-dim);border:1px solid rgba(45,212,191,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--teal);}
 
-  .task-box{background:var(--surface2);border:2px solid rgba(45,212,191,0.3);border-radius:14px;padding:2rem;margin:2rem 0;}
-  .task-title{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--teal);text-transform:uppercase;letter-spacing:0.2em;margin-bottom:1rem;}
-  .task-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;margin:0.5rem 0;font-family:'JetBrains Mono',monospace;font-size:0.88rem;color:var(--muted2);}
 
   .reveal{opacity:0;transform:translateY(18px);transition:opacity 0.55s ease,transform 0.55s ease;}
   .reveal.visible{opacity:1;transform:translateY(0);}
@@ -144,7 +141,6 @@
       <li><a href="#logarithm">Logarithm Function</a></li>
       <li><a href="#operations">Operations on Functions</a></li>
       <li><a href="#composite">Composite Functions</a></li>
-      <li><a href="#task4">Task 4</a></li>
     </ul>
   </aside>
 
@@ -1127,48 +1123,7 @@
       </div>
     </section>
 
-    <!-- ═══ SECTION 10: TASK 4 ═══ -->
-    <section id="task4" class="reveal">
-      <div class="sec-badge">// Task 4</div>
-      <h2>Practice Problems</h2>
-      <div class="task-box">
-        <div class="task-title">// Part A — Find the Domain</div>
-        <div class="ex-grid">
-          <div>
-            <div class="task-item">① f(x) = x² + 3x + 1</div>
-            <div class="task-item">② f(x) = ⁴√(x² + 2)</div>
-            <div class="task-item">③ f(x) = √(x + 5)</div>
-            <div class="task-item">④ f(x) = √(x − 3) / 2</div>
-            <div class="task-item">⑤ f(x) = ⁶√(x² − 9x + 14)</div>
-          </div>
-          <div>
-            <div class="task-item">⑥ f(x) = (x + 1) / (x² + 3)</div>
-            <div class="task-item">⑦ f(x) = (1 − x) / (x − 9)</div>
-            <div class="task-item">⑧ f(x) = 4x / (x² − 9x + 18)</div>
-            <div class="task-item">⑨ f(x) = √(x − 4) / (x − 13)</div>
-            <div class="task-item">⑩ f(x) = (x + 2) / ⁶√(x + 3)</div>
-          </div>
-        </div>
-      </div>
-      <div class="task-box">
-        <div class="task-title">// Part B — Sketch &amp; Find Domain and Range</div>
-        <div class="task-item">f(x) = { 2 − x, for 0 ≤ x &lt; 1 &nbsp;&nbsp;|&nbsp;&nbsp; x, for 1 ≤ x ≤ 2 }</div>
-        <div class="task-item" style="margin-top:0.5rem;">f(x) = |x − 2|</div>
-      </div>
-      <div class="task-box">
-        <div class="task-title">// Part C — Operations &amp; Composition</div>
-        <p style="color:var(--muted2);font-size:0.9rem;margin-bottom:1rem;">For each pair, find f+g, f−g, f·g, f/g and their domains:</p>
-        <div class="task-item">① f(x) = 2x − 5, &nbsp; g(x) = −4x</div>
-        <div class="task-item">② f(x) = √(x+2), &nbsp; g(x) = √(2−x)</div>
-        <div class="task-item">③ f(x) = x³ + x, &nbsp; g(x) = 1/√(x+1)</div>
-        <div class="task-item">④ f(x) = x/(x+1), &nbsp; g(x) = (x−1)/x</div>
-        <p style="color:var(--muted2);font-size:0.9rem;margin:1rem 0 0.5rem;">Find fog and gof:</p>
-        <div class="task-item">① f(x) = x + 1, &nbsp; g(x) = 2x</div>
-        <div class="task-item">② f(x) = √(x+1), &nbsp; g(x) = x⁴</div>
-        <div class="task-item">③ f(x) = √(1−x), &nbsp; g(x) = √(x−1)</div>
-      </div>
-    </section>
-
+    
     <!-- Navigation -->
     <div class="lec-nav">
       <a href="lecture5.html" class="nav-btn">← Lecture 05</a>
