@@ -92,9 +92,6 @@
   .step-list li:last-child{border-bottom:none;}
   .step-list li::before{content:counter(steps);position:absolute;left:0;top:0.6rem;width:1.7rem;height:1.7rem;background:var(--purple-dim);border:1px solid rgba(167,139,250,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--purple);}
 
-  .task-box{background:var(--surface2);border:2px solid rgba(167,139,250,0.3);border-radius:14px;padding:2rem;margin:2rem 0;}
-  .task-title{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--purple);text-transform:uppercase;letter-spacing:0.2em;margin-bottom:1rem;}
-  .task-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;margin:0.5rem 0;font-family:'JetBrains Mono',monospace;font-size:0.88rem;color:var(--muted2);}
 
   .reveal{opacity:0;transform:translateY(18px);transition:opacity 0.55s ease,transform 0.55s ease;}
   .reveal.visible{opacity:1;transform:translateY(0);}
@@ -133,7 +130,6 @@
       <li><a href="#inverse">Inverse Functions</a></li>
       <li class="toc-sub"><a href="#find-inverse">Finding the Inverse</a></li>
       <li class="toc-sub"><a href="#inverse-compose">Inverse &amp; Composition</a></li>
-      <li><a href="#task5">Task 5</a></li>
     </ul>
   </aside>
 
@@ -665,31 +661,6 @@
           </div>
           <div class="ex-card-result">f⁻¹(x) = (eˣ − 5) / 2</div>
         </div>
-      </div>
-    </section>
-
-    <!-- ═══ SECTION 4: TASK 5 ═══ -->
-    <section id="task5" class="reveal">
-      <div class="sec-badge">// Task 5</div>
-      <h2>Practice Problems</h2>
-      <div class="task-box">
-        <div class="task-title">// Part 1 — Classify as Even, Odd, or Neither</div>
-        <div class="task-item">① f(x) = x / (1 + x²)</div>
-        <div class="task-item">② f(x) = x⁵ + 7x² − 3x + 5</div>
-      </div>
-      <div class="task-box">
-        <div class="task-title">// Part 2 — Check 1-1 and Find Inverse</div>
-        <div class="task-item">① f(x) = 3x + 5</div>
-        <div class="task-item">② f(x) = 1/x</div>
-        <div class="task-item">③ f(x) = √(4x + 3)</div>
-        <div class="task-item">④ f(x) = (x + 1)²</div>
-        <div class="task-item">⑤ f(x) = e^(x − 2)</div>
-        <div class="task-item">⑥ f(x) = ln(2x + 5)</div>
-      </div>
-      <div class="box box-note" style="margin-top:1rem;">
-        <span class="box-label">Hint — Inverse Steps</span>
-        <p><strong>1.</strong> Check f is 1-1 &nbsp; <strong>2.</strong> Write y = f(x) &nbsp; <strong>3.</strong> Solve for x &nbsp; <strong>4.</strong> Replace y → x</p>
-        <p>Always verify: (f ∘ f⁻¹)(x) = x and (f⁻¹ ∘ f)(x) = x</p>
       </div>
     </section>
 
