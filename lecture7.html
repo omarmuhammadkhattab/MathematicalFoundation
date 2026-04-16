@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 7 — Odd &amp; Even Functions, 1-1, Inverse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07090f;--surface:#0e1220;--surface2:#141b2e;--surface3:#192036;
+    --border:#1c2640;--border2:#253050;
+    --primary:#60a5fa;--primary-dim:rgba(96,165,250,0.12);
+    --accent:#f59e0b;--accent-dim:rgba(245,158,11,0.1);
+    --purple:#a78bfa;--purple-dim:rgba(167,139,250,0.12);
+    --green:#34d399;--green-dim:rgba(52,211,153,0.1);
+    --red:#f87171;--red-dim:rgba(248,113,113,0.1);
+    --violet:#8b5cf6;--violet-dim:rgba(139,92,246,0.12);
+    --text:#e2e8f0;--muted:#64748b;--muted2:#94a3b8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;}
+
+  .bg-fixed{position:fixed;inset:0;z-index:0;pointer-events:none;}
+  .bg-dots{position:absolute;inset:0;background-image:radial-gradient(circle,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:0.5;}
+  .bg-glow{position:absolute;border-radius:50%;filter:blur(100px);}
+  .g1{width:500px;height:500px;background:rgba(139,92,246,0.05);top:-100px;right:-100px;}
+  .g2{width:400px;height:400px;background:rgba(96,165,250,0.04);bottom:-50px;left:-100px;}
+
+  .page{position:relative;z-index:1;display:flex;min-height:100vh;}
+  .sidebar{width:240px;flex-shrink:0;padding:2rem 1.5rem;border-right:1px solid var(--border);position:sticky;top:0;height:100vh;overflow-y:auto;background:rgba(7,9,15,0.6);backdrop-filter:blur(8px);}
+  .sidebar-back{display:inline-flex;align-items:center;gap:0.4rem;text-decoration:none;color:var(--muted);font-size:0.8rem;transition:color 0.2s;margin-bottom:2rem;font-family:'JetBrains Mono',monospace;}
+  .sidebar-back:hover{color:var(--purple);}
+  .sidebar-title{font-size:0.7rem;color:var(--purple);text-transform:uppercase;letter-spacing:0.18em;font-family:'JetBrains Mono',monospace;margin-bottom:1rem;}
+  .toc{list-style:none;}
+  .toc li{margin-bottom:0.2rem;}
+  .toc a{display:block;padding:0.38rem 0.75rem;text-decoration:none;color:var(--muted2);font-size:0.82rem;border-left:2px solid transparent;border-radius:0 6px 6px 0;transition:all 0.2s;}
+  .toc a:hover,.toc a.active{color:var(--purple);border-left-color:var(--purple);background:var(--purple-dim);}
+  .toc-sub a{padding-left:1.5rem;font-size:0.78rem;}
+
+  .main{flex:1;max-width:800px;padding:3rem 3rem 6rem;margin:0 auto;}
+
+  .lec-header{margin-bottom:3.5rem;padding-bottom:2.5rem;border-bottom:1px solid var(--border);}
+  .lec-num{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--purple);text-transform:uppercase;letter-spacing:0.22em;background:var(--purple-dim);border:1px solid rgba(167,139,250,0.2);display:inline-block;padding:0.3rem 0.8rem;border-radius:4px;margin-bottom:1.25rem;}
+  .lec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,3.5rem);font-weight:700;line-height:1.1;margin-bottom:1rem;}
+  .lec-title em{font-style:italic;background:linear-gradient(100deg,var(--purple),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .lec-desc{color:var(--muted2);font-size:1rem;max-width:560px;line-height:1.7;}
+
+  section{margin-bottom:4rem;scroll-margin-top:2rem;}
+  .sec-badge{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--purple);text-transform:uppercase;letter-spacing:0.2em;margin-bottom:0.6rem;}
+  h2{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;margin-bottom:1.5rem;}
+  h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;margin:1.75rem 0 0.75rem;}
+  p{margin-bottom:1rem;color:var(--muted2);}
+
+  .box{border-radius:12px;padding:1.25rem 1.5rem;margin:1.25rem 0;border:1px solid;}
+  .box-def{background:var(--primary-dim);border-color:rgba(96,165,250,0.2);}
+  .box-def .box-label{color:var(--primary);}
+  .box-ex{background:var(--green-dim);border-color:rgba(52,211,153,0.2);}
+  .box-ex .box-label{color:var(--green);}
+  .box-note{background:var(--accent-dim);border-color:rgba(245,158,11,0.2);}
+  .box-note .box-label{color:var(--accent);}
+  .box-rule{background:var(--purple-dim);border-color:rgba(167,139,250,0.2);}
+  .box-rule .box-label{color:var(--purple);}
+  .box-violet{background:var(--violet-dim);border-color:rgba(139,92,246,0.2);}
+  .box-violet .box-label{color:var(--violet);}
+  .box-label{font-size:0.72rem;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:0.5rem;display:block;}
+  .box p{margin:0;}.box p+p{margin-top:0.5rem;}
+
+  .math{font-family:'JetBrains Mono',monospace;font-size:0.88em;color:var(--text);background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;}
+  .math-block{font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:var(--text);background:var(--surface2);border:1px solid var(--border2);padding:0.9rem 1.2rem;border-radius:8px;margin:0.75rem 0;display:block;}
+
+  .ex-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.25rem 0;}
+  .ex-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;}
+  .ex-card-label{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.5rem;}
+  .ex-card-fn{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;margin-bottom:0.75rem;color:var(--text);}
+  .ex-card-steps{font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:var(--muted2);line-height:1.7;}
+  .ex-card-result{margin-top:0.75rem;font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--green);font-weight:500;}
+
+  .graph-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin:1.5rem 0;}
+  .graph-title{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:1rem;}
+  .graph-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.25rem 0;}
+  .graph-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin:1.25rem 0;}
+
+  .sym-table{width:100%;border-collapse:collapse;margin:1.25rem 0;}
+  .sym-table th{background:var(--surface2);border:1px solid var(--border2);padding:0.65rem 1rem;text-align:left;font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--purple);text-transform:uppercase;letter-spacing:0.1em;}
+  .sym-table td{border:1px solid var(--border);padding:0.65rem 1rem;font-size:0.88rem;color:var(--muted2);vertical-align:top;}
+  .sym-table tr:hover td{background:var(--surface2);}
+
+  .step-list{list-style:none;counter-reset:steps;}
+  .step-list li{counter-increment:steps;padding:0.6rem 0 0.6rem 2.5rem;position:relative;border-bottom:1px solid var(--border);color:var(--muted2);}
+  .step-list li:last-child{border-bottom:none;}
+  .step-list li::before{content:counter(steps);position:absolute;left:0;top:0.6rem;width:1.7rem;height:1.7rem;background:var(--purple-dim);border:1px solid rgba(167,139,250,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--purple);}
+
+  .task-box{background:var(--surface2);border:2px solid rgba(167,139,250,0.3);border-radius:14px;padding:2rem;margin:2rem 0;}
+  .task-title{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--purple);text-transform:uppercase;letter-spacing:0.2em;margin-bottom:1rem;}
+  .task-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;margin:0.5rem 0;font-family:'JetBrains Mono',monospace;font-size:0.88rem;color:var(--muted2);}
+
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity 0.55s ease,transform 0.55s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  @media(max-width:900px){.sidebar{display:none;}.main{padding:2rem 1.5rem 4rem;}}
+  @media(max-width:580px){.ex-grid,.graph-grid-2,.graph-grid-3{grid-template-columns:1fr;}.main{padding:1.5rem 1rem 4rem;}}
+
+  .lec-nav{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:2rem;margin-top:3rem;flex-wrap:wrap;gap:1rem;}
+  .nav-btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1.2rem;border:1px solid var(--border2);border-radius:8px;background:var(--surface);color:var(--muted2);text-decoration:none;font-size:0.85rem;transition:all 0.2s;}
+  .nav-btn:hover{border-color:var(--purple);color:var(--purple);}
+
+  .svg-label{font-family:'JetBrains Mono',monospace;font-size:10px;fill:#475569;}
+  .svg-axis-label{font-family:'JetBrains Mono',monospace;font-size:12px;fill:#64748b;}
+  .svg-legend{font-family:'JetBrains Mono',monospace;font-size:10px;fill:#94a3b8;}
+</style>
+</head>
+<body>
+
+<div class="bg-fixed">
+  <div class="bg-dots"></div>
+  <div class="bg-glow g1"></div>
+  <div class="bg-glow g2"></div>
+</div>
+
+<div class="page">
+  <aside class="sidebar">
+    <a href="index.html" class="sidebar-back">← Back to Index</a>
+    <div class="sidebar-title">// Contents</div>
+    <ul class="toc">
+      <li><a href="#even-odd">Odd &amp; Even Functions</a></li>
+      <li class="toc-sub"><a href="#even-def">Even Functions</a></li>
+      <li class="toc-sub"><a href="#odd-def">Odd Functions</a></li>
+      <li class="toc-sub"><a href="#neither">Neither</a></li>
+      <li><a href="#one-to-one">One-to-One Functions</a></li>
+      <li class="toc-sub"><a href="#hlt">Horizontal Line Test</a></li>
+      <li><a href="#inverse">Inverse Functions</a></li>
+      <li class="toc-sub"><a href="#find-inverse">Finding the Inverse</a></li>
+      <li class="toc-sub"><a href="#inverse-compose">Inverse &amp; Composition</a></li>
+      <li><a href="#task5">Task 5</a></li>
+    </ul>
+  </aside>
+
+  <main class="main">
+    <div class="lec-header reveal">
+      <div class="lec-num">Lecture 07</div>
+      <h1 class="lec-title">Odd &amp; Even, 1-1,<br><em>Inverse Functions</em></h1>
+      <p class="lec-desc">Understanding symmetry through odd and even functions, injectivity via the one-to-one test, and reversing functions via inverses.</p>
+    </div>
+
+    <!-- ═══ SECTION 1: EVEN AND ODD ═══ -->
+    <section id="even-odd" class="reveal">
+      <div class="sec-badge">// Section 1</div>
+      <h2>Odd and Even Functions</h2>
+      <p>Symmetry is a key property of many functions. We classify functions by how they behave when we replace x with −x.</p>
+
+      <div id="even-def">
+        <h3>Even Functions</h3>
+        <div class="box box-def">
+          <span class="box-label">Definition — Even</span>
+          <p>A function f is <strong>even</strong> if:</p>
+          <p style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:1rem;margin-top:0.3rem;">f(−x) = f(x) &nbsp;&nbsp; for all x in the domain</p>
+          <p style="margin-top:0.5rem;">Geometric meaning: the graph is <strong>symmetric with respect to the y-axis</strong>.</p>
+        </div>
+        <div class="box box-ex">
+          <span class="box-label">Classic Example</span>
+          <p>f(x) = x² is even because: f(−x) = (−x)² = x² = f(x) ✓</p>
+        </div>
+        <div class="graph-wrap">
+          <div class="graph-title">// y = x² — even function, y-axis symmetry. f(−x) = f(x)</div>
+          <svg viewBox="-100 -100 220 130" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:220px;">
+            <defs><marker id="ev1" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#64748b"/></marker></defs>
+            <!-- origin(0,20), unit=40 -->
+            <line x1="-95" y1="20" x2="110" y2="20" stroke="#64748b" stroke-width="1.5" marker-end="url(#ev1)"/>
+            <line x1="0" y1="25" x2="0" y2="-95" stroke="#64748b" stroke-width="1.5" marker-end="url(#ev1)"/>
+            <text x="102" y="34" class="svg-axis-label">x</text>
+            <text x="4" y="-88" class="svg-axis-label">y</text>
+            <!-- grid -->
+            <line x1="-95" y1="-20" x2="110" y2="-20" stroke="#1c2640" stroke-width="0.8"/>
+            <line x1="-95" y1="-60" x2="110" y2="-60" stroke="#1c2640" stroke-width="0.8"/>
+            <line x1="-80" y1="-95" x2="-80" y2="25" stroke="#1c2640" stroke-width="0.8"/>
+            <line x1="-40" y1="-95" x2="-40" y2="25" stroke="#1c2640" stroke-width="0.8"/>
+            <line x1="40" y1="-95" x2="40" y2="25" stroke="#1c2640" stroke-width="0.8"/>
+            <line x1="80" y1="-95" x2="80" y2="25" stroke="#1c2640" stroke-width="0.8"/>
+            <!-- tick labels: origin(0,20),unit=40 -->
+            <text x="-84" y="34" class="svg-label">-2</text>
+            <text x="-44" y="34" class="svg-label">-1</text>
+            <text x="36" y="34" class="svg-label">1</text>
+            <text x="76" y="34" class="svg-label">2</text>
+            <text x="-18" y="-17" class="svg-label">1</text>
+            <text x="-18" y="-57" class="svg-label">2</text>
+            <!-- parabola: svg_y=20-40x² -->
+            <polyline points="-80,-244 -70,-176 -60,-124 -50,-80 -40,-44 -30,-16 -20,4 -10,16 0,20 10,16 20,4 30,-16 40,-44 50,-80 60,-124 70,-176 80,-244" stroke="#a78bfa" stroke-width="2.5" fill="none" clip-path="url(#clip1)"/>
+            <defs><clipPath id="clip1"><rect x="-95" y="-95" width="205" height="125"/></clipPath></defs>
+            <polyline points="-80,-244 -70,-176 -60,-124 -50,-80 -40,-44 -30,-16 -20,4 -10,16 0,20 10,16 20,4 30,-16 40,-44 50,-80 60,-124 70,-176 80,-244" stroke="#a78bfa" stroke-width="2.5" fill="none" clip-path="url(#clip1)"/>
+            <!-- symmetry annotation -->
+            <line x1="-40" y1="-44" x2="-40" y2="20" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+            <line x1="40" y1="-44" x2="40" y2="20" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+            <line x1="-40" y1="-44" x2="0" y2="-44" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="0" y1="-44" x2="40" y2="-44" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2"/>
+            <text x="-54" y="-48" class="svg-legend" fill="#f59e0b">f(−1)</text>
+            <text x="42" y="-48" class="svg-legend" fill="#f59e0b">f(1)</text>
+            <text x="-42" y="-58" class="svg-legend" fill="#94a3b8">equal!</text>
+            <circle cx="-40" cy="-44" r="4" fill="#a78bfa"/>
+            <circle cx="40" cy="-44" r="4" fill="#a78bfa"/>
+            <circle cx="0" cy="20" r="4" fill="#a78bfa"/>
+            <!-- y-axis symmetry label -->
+            <text x="-95" y="-82" class="svg-legend">y-axis symmetry</text>
+            <text x="-95" y="-72" class="svg-legend">f(x) = x², f(−x) = f(x)</text>
+          </svg>
+        </div>
+      </div>
+
+      <div id="odd-def">
+        <h3>Odd Functions</h3>
+        <div class="box box-rule">
+          <span class="box-label">Definition — Odd</span>
+          <p>A function f is <strong>odd</strong> if:</p>
+          <p style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:1rem;margin-top:0.3rem;">f(−x) = −f(x) &nbsp;&nbsp; for all x in the domain</p>
+          <p style="margin-top:0.5rem;">Geometric meaning: the graph is <strong>symmetric about the origin</strong>.</p>
+        </div>
+        <div class="box box-ex">
+          <span class="box-label">Classic Example</span>
+          <p>f(x) = x³ is odd because: f(−x) = (−x)³ = −x³ = −f(x) ✓</p>
+        </div>
+        <div class="graph-wrap">
+          <div class="graph-title">// y = x³ — odd function, origin symmetry. f(−x) = −f(x)</div>
+          <svg viewBox="-90 -80 200 170" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:220px;">
+            <defs><marker id="od1" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#64748b"/></marker></defs>
+            <!-- origin(0,50), unit=40 -->
+            <line x1="-85" y1="50" x2="105" y2="50" stroke="#64748b" stroke-width="1.5" marker-end="url(#od1)"/>
+            <line x1="0" y1="75" x2="0" y2="-75" stroke="#64748b" stroke-width="1.5" marker-end="url(#od1)"/>
+            <text x="96" y="64" class="svg-axis-label">x</text>
+            <text x="4" y="-68" class="svg-axis-label">y</text>
+            <!-- grid -->
+            <line x1="-85" y1="10" x2="105" y2="10" stroke="#1c2640" stroke-width="0.8"/>
+            <line x1="-85" y1="-30" x2="105" y2="-30" stroke="#1c2640" stroke-width="0.8"/>
+            <line x1="-85" y1="90" x2="105" y2="90" stroke="#1c2640" stroke-width="0.8"/>
+            <line x1="-40" y1="-75" x2="-40" y2="75" stroke="#1c2640" stroke-width="0.8"/>
+            <line x1="40" y1="-75" x2="40" y2="75" stroke="#1c2640" stroke-width="0.8"/>
+            <line x1="80" y1="-75" x2="80" y2="75" stroke="#1c2640" stroke-width="0.8"/>
+            <line x1="-80" y1="-75" x2="-80" y2="75" stroke="#1c2640" stroke-width="0.8"/>
+            <!-- tick labels: origin(0,50),unit=40 -->
+            <text x="-84" y="64" class="svg-label">-2</text>
+            <text x="-44" y="64" class="svg-label">-1</text>
+            <text x="36" y="64" class="svg-label">1</text>
+            <text x="76" y="64" class="svg-label">2</text>
+            <text x="-18" y="14" class="svg-label">1</text>
+            <text x="-18" y="-26" class="svg-label">2</text>
+            <text x="-18" y="94" class="svg-label">-1</text>
+            <!-- y=x³: svg_y=50-40x³ -->
+            <!-- x=-1.5:svg_y=50-40*(-3.375)=50+135=185→clip; x=-1:svg_y=50+40=90; x=-0.5:svg_y=50+5=55; x=0:50; x=0.5:50-5=45; x=1:50-40=10; x=1.5:50-135=-85 clip -->
+            <polyline points="-80,50+40*2=-80,50-40*8=-80,-270 clip" stroke="none"/>
+            <!-- Let me be precise: svg_y = 50 - 40*(x)^3 where x is in real units and svg_x = x*40 -->
+            <!-- svg_x=-80 → x=-2: svg_y=50-40*(-8)=50+320=370 way off -->
+            <!-- Use unit=20: svg_y=50-20*x³, svg_x=20*x -->
+            <!-- x=−2:svg(−40, 50+160=210 clip); x=−1.5:(−30,50+67.5=117.5); x=−1:(−20,50+20=70); x=−0.5:(−10,50+2.5=52.5); x=0:(0,50); x=0.5:(10,47.5); x=1:(20,30); x=1.5:(30,-17.5); x=2:(40,-110 clip) -->
+            <polyline points="-30,117.5 -20,70 -10,52.5 0,50 10,47.5 20,30 30,-17.5" stroke="#34d399" stroke-width="2.5" fill="none"/>
+            <!-- origin symmetry annotation -->
+            <line x1="-20" y1="70" x2="20" y2="30" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2" opacity="0.6"/>
+            <circle cx="-20" cy="70" r="4" fill="#34d399"/>
+            <circle cx="20" cy="30" r="4" fill="#34d399"/>
+            <circle cx="0" cy="50" r="4" fill="#34d399"/>
+            <text x="-36" y="68" class="svg-legend" fill="#f59e0b">(−1,−1)</text>
+            <text x="22" y="28" class="svg-legend" fill="#f59e0b">(1, 1)</text>
+            <text x="-85" y="-68" class="svg-legend">origin symmetry</text>
+            <text x="-85" y="-58" class="svg-legend">f(x)=x³, f(−x)=−f(x)</text>
+          </svg>
+        </div>
+      </div>
+
+      <div id="neither">
+        <h3>Example — Classify Each Function</h3>
+        <div class="box box-note">
+          <span class="box-label">Problem</span>
+          <p>Classify each: (a) f(x) = x⁵ + x &nbsp; (b) g(x) = 1 − x⁴ &nbsp; (c) h(x) = 2x − x²</p>
+        </div>
+        <div class="ex-grid">
+          <div class="ex-card">
+            <div class="ex-card-label">(a) f(x) = x⁵ + x</div>
+            <div class="ex-card-steps">
+              f(−x) = (−x)⁵ + (−x)<br>
+              = −x⁵ − x<br>
+              = −(x⁵ + x)<br>
+              = −f(x)
+            </div>
+            <div class="ex-card-result">✓ ODD function</div>
+          </div>
+          <div class="ex-card">
+            <div class="ex-card-label">(b) g(x) = 1 − x⁴</div>
+            <div class="ex-card-steps">
+              g(−x) = 1 − (−x)⁴<br>
+              = 1 − x⁴<br>
+              = g(x)
+            </div>
+            <div class="ex-card-result">✓ EVEN function</div>
+          </div>
+        </div>
+        <div class="ex-card" style="margin-top:1rem;">
+          <div class="ex-card-label">(c) h(x) = 2x − x²</div>
+          <div class="ex-card-steps">
+            h(−x) = 2(−x) − (−x)² = −2x − x²<br>
+            Is h(−x) = h(x)? &nbsp; −2x − x² ≠ 2x − x² &nbsp;&nbsp;✗<br>
+            Is h(−x) = −h(x)? &nbsp; −2x − x² ≠ −(2x − x²) = −2x + x² &nbsp;&nbsp;✗
+          </div>
+          <div class="ex-card-result" style="color:var(--accent);">⚠ NEITHER even nor odd</div>
+        </div>
+
+        <div class="graph-wrap" style="margin-top:1.5rem;">
+          <div class="graph-title">// Comparing symmetry: even (y-axis), odd (origin), neither (no symmetry)</div>
+          <svg viewBox="0 0 580 180" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:200px;">
+            <defs>
+              <marker id="sym1" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/></marker>
+            </defs>
+            <!-- Panel 1: g(x)=1-x⁴ (even) -->
+            <text x="90" y="12" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#a78bfa">g(x)=1−x⁴ (even)</text>
+            <line x1="10" y1="100" x2="170" y2="100" stroke="#64748b" stroke-width="1.2" marker-end="url(#sym1)"/>
+            <line x1="90" y1="155" x2="90" y2="15" stroke="#64748b" stroke-width="1.2" marker-end="url(#sym1)"/>
+            <!-- g(-x)=g(x): parabola-like, peak at x=0, y=1 → svg(90,60) with unit=40 -->
+            <!-- svg_x=90+40x, svg_y=100-40*(1-x⁴)=60+40x⁴ -->
+            <!-- x=0:(90,60); x=0.5:(110,62.5); x=1:(130,100); x=-1:(50,100); x=-0.5:(70,62.5) -->
+            <polyline points="10,155 30,145 50,100 70,62.5 90,60 110,62.5 130,100 150,145 170,155" stroke="#a78bfa" stroke-width="2.5" fill="none"/>
+            <circle cx="90" cy="60" r="4" fill="#a78bfa"/>
+            <!-- symmetry arrows -->
+            <path d="M 75 40 Q 90 30 105 40" stroke="#f59e0b" stroke-width="1.5" fill="none" marker-end="url(#sym1)"/>
+            <text x="90" y="28" text-anchor="middle" class="svg-legend" fill="#f59e0b">y-axis sym</text>
+
+            <!-- Panel 2: f(x)=x³ (odd) -->
+            <text x="290" y="12" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#34d399">f(x)=x⁵+x (odd)</text>
+            <line x1="205" y1="90" x2="380" y2="90" stroke="#64748b" stroke-width="1.2" marker-end="url(#sym1)"/>
+            <line x1="290" y1="160" x2="290" y2="18" stroke="#64748b" stroke-width="1.2" marker-end="url(#sym1)"/>
+            <!-- odd: origin symmetry. use x⁵+x which looks like x³ for display -->
+            <!-- svg_x=290+30x, svg_y=90-30*(x⁵+x). Unit=30 -->
+            <!-- x=0:(290,90); x=0.5:(305,90-30*0.53125=90-15.9=74); x=1:(320,90-30*2=30); x=-0.5:(275,90+16=106); x=-1:(260,90+60=150) -->
+            <polyline points="260,150 265,140 275,106 290,90 305,74 315,50 320,30" stroke="#34d399" stroke-width="2.5" fill="none"/>
+            <circle cx="290" cy="90" r="4" fill="#34d399"/>
+            <!-- origin symmetry arrow -->
+            <line x1="275" y1="106" x2="305" y2="74" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2" opacity="0.6"/>
+            <text x="290" y="175" text-anchor="middle" class="svg-legend" fill="#f59e0b">origin sym</text>
+
+            <!-- Panel 3: h(x)=2x-x² (neither) -->
+            <text x="490" y="12" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#f87171">h(x)=2x−x² (neither)</text>
+            <line x1="400" y1="100" x2="575" y2="100" stroke="#64748b" stroke-width="1.2" marker-end="url(#sym1)"/>
+            <line x1="420" y1="155" x2="420" y2="18" stroke="#64748b" stroke-width="1.2" marker-end="url(#sym1)"/>
+            <!-- h(x)=2x-x², vertex at x=1,y=1. svg_x=420+40*x, svg_y=100-40*(2x-x²) -->
+            <!-- x=0:(420,100); x=1:(460,60); x=2:(500,100); x=-1:(380,140); x=3:(540,60) wait: 2*3-9=-3 → svg_y=100+120=220 clip -->
+            <!-- x=0:(420,100); x=0.5:(440,80); x=1:(460,60); x=1.5:(480,70); x=2:(500,100); x=-0.5:(400,120); x=-1:(380,140) -->
+            <polyline points="380,140 390,120 400,104 420,100 440,80 460,60 480,70 500,100 520,140" stroke="#f87171" stroke-width="2.5" fill="none"/>
+            <circle cx="460" cy="60" r="4" fill="#f87171"/>
+            <text x="464" y="56" class="svg-legend" fill="#f87171">(1,1)</text>
+            <text x="490" y="175" text-anchor="middle" class="svg-legend" fill="#f87171">no symmetry</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 2: ONE-TO-ONE ═══ -->
+    <section id="one-to-one" class="reveal">
+      <div class="sec-badge">// Section 2</div>
+      <h2>One-to-One Functions (1-1)</h2>
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p>A function f is <strong>one-to-one (injective)</strong> if:</p>
+        <p style="text-align:center;font-family:'JetBrains Mono',monospace;margin-top:0.3rem;">f(x₁) = f(x₂) &nbsp; implies &nbsp; x₁ = x₂</p>
+        <p style="margin-top:0.5rem;">In other words: <em>no two different inputs produce the same output.</em></p>
+      </div>
+      <p>Equivalently: if x₁ ≠ x₂ then f(x₁) ≠ f(x₂). Each y-value is hit by at most one x-value.</p>
+
+      <div id="hlt">
+        <h3>Horizontal Line Test</h3>
+        <div class="box box-rule">
+          <span class="box-label">The Test</span>
+          <p>A function is one-to-one <strong>if and only if</strong> every horizontal line intersects its graph at <strong>most once</strong>.</p>
+        </div>
+        <div class="graph-grid-2 reveal">
+          <div class="graph-wrap" style="padding:1rem;">
+            <div class="graph-title">// f(x) = 2x + 3 — ONE-TO-ONE ✓ (linear, strict monotone)</div>
+            <svg viewBox="-70 -80 180 180" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:220px;">
+              <defs><marker id="hlt1" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/></marker></defs>
+              <line x1="-65" y1="50" x2="100" y2="50" stroke="#64748b" stroke-width="1.2" marker-end="url(#hlt1)"/>
+              <line x1="0" y1="75" x2="0" y2="-75" stroke="#64748b" stroke-width="1.2" marker-end="url(#hlt1)"/>
+              <text x="92" y="62" class="svg-axis-label">x</text>
+              <text x="4" y="-68" class="svg-axis-label">y</text>
+              <!-- grid -->
+              <line x1="-65" y1="10" x2="100" y2="10" stroke="#1c2640" stroke-width="0.8"/>
+              <line x1="-65" y1="-30" x2="100" y2="-30" stroke="#1c2640" stroke-width="0.8"/>
+              <line x1="-65" y1="90" x2="100" y2="90" stroke="#1c2640" stroke-width="0.8"/>
+              <line x1="-40" y1="-75" x2="-40" y2="75" stroke="#1c2640" stroke-width="0.8"/>
+              <line x1="40" y1="-75" x2="40" y2="75" stroke="#1c2640" stroke-width="0.8"/>
+              <line x1="80" y1="-75" x2="80" y2="75" stroke="#1c2640" stroke-width="0.8"/>
+              <!-- y=2x+3: svg_y=50-30*(2x+3)=50-60x-90=-40-60x; svg_x=30x -->
+              <!-- Hmm unit=30: svg_y=50-30*(2x+3). x=-2:svg(-60,50-30*(-1)=50+30=80); x=-1:svg(-30,50-30=20+10?): Let me recalc. -->
+              <!-- f(x)=2x+3. x=-1:f=-1+3=1→but wait 2*(-1)+3=1. x=0:3. x=1:5. x=-1.5:0. -->
+              <!-- svg_y = 50 - 30*f(x) = 50 - 30*(2x+3) -->
+              <!-- x=-2: f=-1, svg_y=50+30=80; x=-1.5:f=0,svg_y=50; x=-1:f=1,svg_y=50-30=20; x=0:f=3,svg_y=50-90=-40; x=0.5:f=4,svg_y=-70; x=1:f=5,svg_y=-100 clip -->
+              <!-- svg_x = 30*x -->
+              <line x1="-60" y1="80" x2="30" y2="-40" stroke="#34d399" stroke-width="2.5"/>
+              <!-- horizontal test line: y = 2 for example: svg_y=50-60=-10 -->
+              <line x1="-65" y1="-10" x2="100" y2="-10" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="5,3"/>
+              <!-- single intersection point: x=(y-3)/2=(2-3)/2=-0.5 → wait f(x)=2, 2x+3=2, x=-0.5, svg_x=-15, svg_y=-10 -->
+              <circle cx="-15" cy="-10" r="4" fill="#f59e0b"/>
+              <text x="-65" y="-14" class="svg-legend" fill="#f59e0b">horizontal line hits once → 1-1</text>
+            </svg>
+          </div>
+          <div class="graph-wrap" style="padding:1rem;">
+            <div class="graph-title">// f(x) = x² + 3 — NOT one-to-one ✗ (even function)</div>
+            <svg viewBox="-80 -80 180 180" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:220px;">
+              <defs><marker id="hlt2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/></marker></defs>
+              <line x1="-75" y1="70" x2="90" y2="70" stroke="#64748b" stroke-width="1.2" marker-end="url(#hlt2)"/>
+              <line x1="0" y1="75" x2="0" y2="-75" stroke="#64748b" stroke-width="1.2" marker-end="url(#hlt2)"/>
+              <text x="82" y="82" class="svg-axis-label">x</text>
+              <text x="4" y="-68" class="svg-axis-label">y</text>
+              <line x1="-75" y1="30" x2="90" y2="30" stroke="#1c2640" stroke-width="0.8"/>
+              <line x1="-75" y1="-10" x2="90" y2="-10" stroke="#1c2640" stroke-width="0.8"/>
+              <line x1="-75" y1="-50" x2="90" y2="-50" stroke="#1c2640" stroke-width="0.8"/>
+              <line x1="-40" y1="-75" x2="-40" y2="75" stroke="#1c2640" stroke-width="0.8"/>
+              <line x1="40" y1="-75" x2="40" y2="75" stroke="#1c2640" stroke-width="0.8"/>
+              <!-- tick labels: origin(0,70),unit=40 -->
+              <text x="-44" y="84" class="svg-label">-1</text>
+              <text x="36" y="84" class="svg-label">1</text>
+              <text x="-16" y="34" class="svg-label">1</text>
+              <text x="-16" y="-6" class="svg-label">2</text>
+              <text x="-16" y="-46" class="svg-label">3</text>
+              <!-- y=x²+3: svg_y=70-40*(x²+3)=70-40x²-120=-50-40x² -->
+              <!-- x=0:(0,-50); x=1:(40,-90); x=-1:(-40,-90); -->
+              <!-- This would have vertex way above visible area. Use smaller scale. -->
+              <!-- origin(0,70), unit=25: svg_y=70-25*(x²+3)=70-25x²-75=-5-25x² -->
+              <!-- x=0:(0,-5); x=1:(25,-30); x=-1:(-25,-30); x=1.5:(37.5,-61.25); x=-1.5:(-37.5,-61.25); -->
+              <polyline points="-65,-112 -50,-67.5 -40,-45 -30,-27.5 -20,-15 -10,-7.5 0,-5 10,-7.5 20,-15 30,-27.5 40,-45 50,-67.5 65,-112" stroke="#60a5fa" stroke-width="2.5" fill="none"/>
+              <!-- horizontal line at y=4: svg_y=70-25*4=-30 -->
+              <line x1="-75" y1="-30" x2="90" y2="-30" stroke="#f87171" stroke-width="1.5" stroke-dasharray="5,3"/>
+              <!-- intersections at x=±1: svg(±25,-30) -->
+              <circle cx="25" cy="-30" r="4" fill="#f87171"/>
+              <circle cx="-25" cy="-30" r="4" fill="#f87171"/>
+              <text x="-62" y="-34" class="svg-legend" fill="#f87171">hits twice → not 1-1!</text>
+              <!-- x₁ and x₂ labels -->
+              <text x="-34" y="84" class="svg-legend" fill="#f87171">x₂</text>
+              <text x="22" y="84" class="svg-legend" fill="#f87171">x₁</text>
+              <line x1="-25" y1="-30" x2="-25" y2="70" stroke="#f87171" stroke-width="1" stroke-dasharray="2,2" opacity="0.5"/>
+              <line x1="25" y1="-30" x2="25" y2="70" stroke="#f87171" stroke-width="1" stroke-dasharray="2,2" opacity="0.5"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <h3>Solved Examples</h3>
+      <div class="ex-grid">
+        <div class="ex-card">
+          <div class="ex-card-label">Example A</div>
+          <div class="ex-card-fn">f(x) = 2x + 3</div>
+          <div class="ex-card-steps">
+            Assume f(x₁) = f(x₂)<br>
+            2x₁ + 3 = 2x₂ + 3<br>
+            2x₁ = 2x₂<br>
+            x₁ = x₂
+          </div>
+          <div class="ex-card-result">✓ f is one-to-one</div>
+        </div>
+        <div class="ex-card">
+          <div class="ex-card-label">Example B</div>
+          <div class="ex-card-fn">f(x) = x² + 3</div>
+          <div class="ex-card-steps">
+            f(x₁) = f(x₂)<br>
+            x₁² + 3 = x₂² + 3<br>
+            x₁² = x₂²<br>
+            x₁ = ±x₂
+          </div>
+          <div class="ex-card-result" style="color:var(--accent);">✗ NOT 1-1 (e.g. f(1)=f(−1)=4)</div>
+        </div>
+      </div>
+      <div class="box box-note">
+        <span class="box-label">Restricted Domain Fix</span>
+        <p>y = x² + 3 is <em>not</em> 1-1 on ℝ, but <strong>is</strong> 1-1 if we restrict to x ≥ 0 (or x ≤ 0).</p>
+        <p>On [0, ∞): x₁² = x₂² with both ≥ 0 forces x₁ = x₂. ✓</p>
+      </div>
+      <div class="ex-card" style="margin:1rem 0;">
+        <div class="ex-card-label">Example C</div>
+        <div class="ex-card-fn">f(x) = ³√(x + 1)</div>
+        <div class="ex-card-steps">
+          f(x₁) = f(x₂) → ³√(x₁+1) = ³√(x₂+1)<br>
+          Cube both sides: x₁+1 = x₂+1 → x₁ = x₂
+        </div>
+        <div class="ex-card-result">✓ f is one-to-one</div>
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 3: INVERSE FUNCTIONS ═══ -->
+    <section id="inverse" class="reveal">
+      <div class="sec-badge">// Section 3</div>
+      <h2>Inverse Functions</h2>
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p>If f is a <strong>one-to-one</strong> function, then its <strong>inverse f⁻¹</strong> is the function that reverses f:</p>
+        <p style="text-align:center;font-family:'JetBrains Mono',monospace;margin-top:0.5rem;">f⁻¹(y) = x &nbsp; ⟺ &nbsp; f(x) = y</p>
+      </div>
+      <div class="box box-rule">
+        <span class="box-label">Key Properties</span>
+        <p><strong>(f ∘ f⁻¹)(x) = x</strong> for all x in the domain of f⁻¹</p>
+        <p><strong>(f⁻¹ ∘ f)(x) = x</strong> for all x in the domain of f</p>
+        <p style="margin-top:0.5rem;color:var(--accent);">The domain of f⁻¹ = Range of f, and Range of f⁻¹ = Domain of f</p>
+      </div>
+
+      <div id="find-inverse">
+        <h3>How to Find an Inverse</h3>
+        <ol class="step-list">
+          <li>Verify f is one-to-one (or restrict domain)</li>
+          <li>Write y = f(x)</li>
+          <li>Solve for x in terms of y</li>
+          <li>Replace y with x to get f⁻¹(x)</li>
+        </ol>
+      </div>
+
+      <h3>Example 1 — f(x) = 5x + 2</h3>
+      <div class="box box-ex">
+        <span class="box-label">Finding f⁻¹</span>
+        <p>y = 5x + 2 &nbsp;→&nbsp; y − 2 = 5x &nbsp;→&nbsp; x = (y − 2)/5</p>
+        <p><strong>f⁻¹(x) = (x − 2) / 5</strong></p>
+      </div>
+      <div class="graph-wrap">
+        <div class="graph-title">// f(x) = 5x+2 and f⁻¹(x) = (x−2)/5 — reflections across y = x</div>
+        <svg viewBox="-60 -80 220 180" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:240px;">
+          <defs><marker id="inv1" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#64748b"/></marker></defs>
+          <!-- origin(60,80), unit=20 -->
+          <line x1="-55" y1="80" x2="150" y2="80" stroke="#64748b" stroke-width="1.5" marker-end="url(#inv1)"/>
+          <line x1="60" y1="95" x2="60" y2="-75" stroke="#64748b" stroke-width="1.5" marker-end="url(#inv1)"/>
+          <text x="142" y="94" class="svg-axis-label">x</text>
+          <text x="64" y="-68" class="svg-axis-label">y</text>
+          <!-- grid -->
+          <line x1="-55" y1="40" x2="150" y2="40" stroke="#1c2640" stroke-width="0.8"/>
+          <line x1="-55" y1="0" x2="150" y2="0" stroke="#1c2640" stroke-width="0.8"/>
+          <line x1="-55" y1="-40" x2="150" y2="-40" stroke="#1c2640" stroke-width="0.8"/>
+          <line x1="20" y1="-75" x2="20" y2="95" stroke="#1c2640" stroke-width="0.8"/>
+          <line x1="100" y1="-75" x2="100" y2="95" stroke="#1c2640" stroke-width="0.8"/>
+          <line x1="140" y1="-75" x2="140" y2="95" stroke="#1c2640" stroke-width="0.8"/>
+          <!-- tick labels: origin(60,80),unit=20 -->
+          <text x="16" y="94" class="svg-label">-2</text>
+          <text x="96" y="94" class="svg-label">2</text>
+          <text x="136" y="94" class="svg-label">4</text>
+          <text x="42" y="44" class="svg-label">-2</text>
+          <text x="42" y="4" class="svg-label">4</text>
+          <text x="42" y="-36" class="svg-label">6</text>
+          <!-- line y=x: svg_y = 80 - (svg_x - 60) = 140 - svg_x i.e. slope=-1 in svg which means slope=1 in real -->
+          <line x1="-55" y1="175" x2="155" y2="-35" stroke="#253050" stroke-width="1.2" stroke-dasharray="5,3" opacity="0.6"/>
+          <text x="125" y="-55" class="svg-legend" fill="#475569">y = x</text>
+          <!-- f(x)=5x+2: svg_y=80-20*(5x+2)=80-100x-40=40-100x; svg_x=60+20x -->
+          <!-- x=-2:svg(20,40+200=240 clip); x=-1:svg(40,40+100=140 clip→95); x=-0.5:svg(50,90); x=0:svg(60,40); x=0.5:svg(70,-10); x=1:svg(80,-60); x=1.5:svg(90,-110 clip) -->
+          <line x1="50" y1="90" x2="85" y2="-60" stroke="#60a5fa" stroke-width="2.5"/>
+          <text x="86" y="-55" class="svg-legend" fill="#60a5fa">f(x)=5x+2</text>
+          <!-- f⁻¹(x)=(x-2)/5: svg_y=80-20*(x-2)/5=80-4x+8=88-4x; svg_x=60+20x -->
+          <!-- x=-2:svg(20,88+8=96≈95); x=0:svg(60,88); x=2:svg(100,80); x=5:svg(160,68 clip) -->
+          <!-- wait: f⁻¹(x)=(x-2)/5. x=-2:(-4/5) → svg_y=80-20*(-4/5)=80+16=96; x=0:(-2/5)→svg_y=80+8=88; x=2:(0)→svg_y=80; x=5:(3/5)→svg_y=80-12=68; x=7:(1)→svg_y=80-20=60; x=12:(2)→svg_y=80-40=40 -->
+          <line x1="20" y1="95.2" x2="150" y2="73.6" stroke="#a78bfa" stroke-width="2.5"/>
+          <text x="152" y="75" class="svg-legend" fill="#a78bfa">f⁻¹(x)=(x−2)/5</text>
+          <!-- verify: point (0,2) on f → (2,0) on f⁻¹ -->
+          <circle cx="60" cy="40" r="4" fill="#60a5fa"/>
+          <circle cx="100" cy="80" r="4" fill="#a78bfa"/>
+          <text x="62" y="36" class="svg-legend" fill="#60a5fa">(0,2)</text>
+          <text x="102" y="76" class="svg-legend" fill="#a78bfa">(2,0)</text>
+        </svg>
+      </div>
+
+      <div id="inverse-compose">
+        <h3>Verifying with Composition</h3>
+        <div class="box box-teal" style="background:var(--green-dim);border-color:rgba(52,211,153,0.2);">
+          <span class="box-label" style="color:var(--green);">Verification for f(x) = 5x + 2, f⁻¹(x) = (x−2)/5</span>
+          <p>(f ∘ f⁻¹)(x) = f(f⁻¹(x)) = f((x−2)/5) = 5·(x−2)/5 + 2 = (x−2) + 2 = <strong>x ✓</strong></p>
+          <p>(f⁻¹ ∘ f)(x) = f⁻¹(f(x)) = f⁻¹(5x+2) = (5x+2−2)/5 = 5x/5 = <strong>x ✓</strong></p>
+        </div>
+      </div>
+
+      <h3>Example 2 — Exponential &amp; Logarithm are Inverses</h3>
+      <div class="box box-note">
+        <span class="box-label">Classic Pair</span>
+        <p>f(x) = eˣ &nbsp;and&nbsp; f⁻¹(x) = ln x &nbsp; are inverses of each other.</p>
+        <p><strong>Domain of eˣ</strong> = ℝ &nbsp;&nbsp; <strong>Range of eˣ</strong> = (0, ∞)</p>
+        <p><strong>Domain of ln x</strong> = (0, ∞) &nbsp;&nbsp; <strong>Range of ln x</strong> = ℝ</p>
+        <p style="margin-top:0.5rem;">(f ∘ f⁻¹)(x) = e^(ln x) = x ✓ &nbsp;&nbsp; (f⁻¹ ∘ f)(x) = ln(eˣ) = x ✓</p>
+      </div>
+      <div class="graph-wrap">
+        <div class="graph-title">// f(x)=eˣ and f⁻¹(x)=ln x — reflections across y=x</div>
+        <svg viewBox="-80 -80 220 200" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:260px;">
+          <defs><marker id="inv2" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#64748b"/></marker></defs>
+          <!-- origin(0,0), unit=30 -->
+          <line x1="-75" y1="0" x2="130" y2="0" stroke="#64748b" stroke-width="1.5" marker-end="url(#inv2)"/>
+          <line x1="0" y1="110" x2="0" y2="-75" stroke="#64748b" stroke-width="1.5" marker-end="url(#inv2)"/>
+          <text x="122" y="14" class="svg-axis-label">x</text>
+          <text x="4" y="-68" class="svg-axis-label">y</text>
+          <!-- grid -->
+          <line x1="-75" y1="-60" x2="130" y2="-60" stroke="#1c2640" stroke-width="0.8"/>
+          <line x1="-75" y1="-30" x2="130" y2="-30" stroke="#1c2640" stroke-width="0.8"/>
+          <line x1="-75" y1="30" x2="130" y2="30" stroke="#1c2640" stroke-width="0.8"/>
+          <line x1="-75" y1="60" x2="130" y2="60" stroke="#1c2640" stroke-width="0.8"/>
+          <line x1="-75" y1="90" x2="130" y2="90" stroke="#1c2640" stroke-width="0.8"/>
+          <line x1="-60" y1="-75" x2="-60" y2="110" stroke="#1c2640" stroke-width="0.8"/>
+          <line x1="-30" y1="-75" x2="-30" y2="110" stroke="#1c2640" stroke-width="0.8"/>
+          <line x1="30" y1="-75" x2="30" y2="110" stroke="#1c2640" stroke-width="0.8"/>
+          <line x1="60" y1="-75" x2="60" y2="110" stroke="#1c2640" stroke-width="0.8"/>
+          <line x1="90" y1="-75" x2="90" y2="110" stroke="#1c2640" stroke-width="0.8"/>
+          <line x1="120" y1="-75" x2="120" y2="110" stroke="#1c2640" stroke-width="0.8"/>
+          <!-- tick labels -->
+          <text x="-64" y="14" class="svg-label">-2</text>
+          <text x="-34" y="14" class="svg-label">-1</text>
+          <text x="26" y="14" class="svg-label">1</text>
+          <text x="56" y="14" class="svg-label">2</text>
+          <text x="86" y="14" class="svg-label">3</text>
+          <text x="-18" y="-27" class="svg-label">1</text>
+          <text x="-18" y="-57" class="svg-label">2</text>
+          <text x="-18" y="34" class="svg-label">-1</text>
+          <text x="-18" y="64" class="svg-label">-2</text>
+          <!-- y=x line -->
+          <line x1="-75" y1="75" x2="110" y2="-110" stroke="#253050" stroke-width="1.2" stroke-dasharray="5,3" opacity="0.7"/>
+          <text x="95" y="-70" class="svg-legend" fill="#475569">y = x</text>
+          <!-- eˣ: svg_y=-30*eˣ, svg_x=30*x -->
+          <!-- x=-2:svg(-60,-30*0.135=-4); x=-1:svg(-30,-11); x=0:svg(0,-30); x=0.5:svg(15,-49.5); x=1:svg(30,-81.5); -->
+          <polyline points="-75,-3 -60,-4 -30,-11 -15,-20 0,-30 12,-45 18,-55 24,-72 30,-81.5" stroke="#f59e0b" stroke-width="2.5" fill="none"/>
+          <text x="32" y="-78" class="svg-legend" fill="#f59e0b">eˣ</text>
+          <!-- ln(x): svg_y = -30*ln(x), svg_x=30*x  (x>0) -->
+          <!-- x=0.1:(3,69); x=0.2:(6,48); x=0.5:(15,21); x=1:(30,0); x=2:(60,-20.8); x=3:(90,-33); x=4:(120,-41.6) -->
+          <polyline points="3,69 6,48 10,32 15,21 21,11 30,0 45,-11.7 60,-20.8 90,-33 120,-41.6" stroke="#2dd4bf" stroke-width="2.5" fill="none"/>
+          <text x="122" y="-38" class="svg-legend" fill="#2dd4bf">ln x</text>
+          <!-- key: (1,0) on ln and (0,1) on eˣ -->
+          <circle cx="30" cy="0" r="4" fill="#2dd4bf"/>
+          <circle cx="0" cy="-30" r="4" fill="#f59e0b"/>
+          <text x="32" y="-2" class="svg-legend" fill="#2dd4bf">(1,0)</text>
+          <text x="2" y="-26" class="svg-legend" fill="#f59e0b">(0,1)</text>
+          <!-- legend -->
+          <line x1="-75" y1="-68" x2="-60" y2="-68" stroke="#f59e0b" stroke-width="2"/>
+          <text x="-57" y="-64" class="svg-legend">f(x) = eˣ &nbsp; Df=ℝ, Rf=(0,∞)</text>
+          <line x1="-75" y1="-58" x2="-60" y2="-58" stroke="#2dd4bf" stroke-width="2"/>
+          <text x="-57" y="-54" class="svg-legend">f⁻¹(x) = ln x &nbsp; Df=(0,∞), Rf=ℝ</text>
+        </svg>
+      </div>
+
+      <h3>More Inverse Examples</h3>
+      <div class="ex-grid">
+        <div class="ex-card">
+          <div class="ex-card-label">f(x) = √(4x + 3)</div>
+          <div class="ex-card-steps">
+            y = √(4x+3)<br>
+            y² = 4x + 3<br>
+            4x = y² − 3<br>
+            x = (y² − 3)/4
+          </div>
+          <div class="ex-card-result">f⁻¹(x) = (x² − 3) / 4 &nbsp;, x ≥ 0</div>
+        </div>
+        <div class="ex-card">
+          <div class="ex-card-label">f(x) = e^(x−2)</div>
+          <div class="ex-card-steps">
+            y = e^(x−2)<br>
+            ln y = x − 2<br>
+            x = ln y + 2
+          </div>
+          <div class="ex-card-result">f⁻¹(x) = ln(x) + 2</div>
+        </div>
+        <div class="ex-card">
+          <div class="ex-card-label">f(x) = 1/x</div>
+          <div class="ex-card-steps">
+            y = 1/x<br>
+            x = 1/y<br>
+          </div>
+          <div class="ex-card-result">f⁻¹(x) = 1/x &nbsp;(self-inverse!)</div>
+        </div>
+        <div class="ex-card">
+          <div class="ex-card-label">f(x) = ln(2x + 5)</div>
+          <div class="ex-card-steps">
+            y = ln(2x+5)<br>
+            eʸ = 2x + 5<br>
+            x = (eʸ − 5)/2
+          </div>
+          <div class="ex-card-result">f⁻¹(x) = (eˣ − 5) / 2</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 4: TASK 5 ═══ -->
+    <section id="task5" class="reveal">
+      <div class="sec-badge">// Task 5</div>
+      <h2>Practice Problems</h2>
+      <div class="task-box">
+        <div class="task-title">// Part 1 — Classify as Even, Odd, or Neither</div>
+        <div class="task-item">① f(x) = x / (1 + x²)</div>
+        <div class="task-item">② f(x) = x⁵ + 7x² − 3x + 5</div>
+      </div>
+      <div class="task-box">
+        <div class="task-title">// Part 2 — Check 1-1 and Find Inverse</div>
+        <div class="task-item">① f(x) = 3x + 5</div>
+        <div class="task-item">② f(x) = 1/x</div>
+        <div class="task-item">③ f(x) = √(4x + 3)</div>
+        <div class="task-item">④ f(x) = (x + 1)²</div>
+        <div class="task-item">⑤ f(x) = e^(x − 2)</div>
+        <div class="task-item">⑥ f(x) = ln(2x + 5)</div>
+      </div>
+      <div class="box box-note" style="margin-top:1rem;">
+        <span class="box-label">Hint — Inverse Steps</span>
+        <p><strong>1.</strong> Check f is 1-1 &nbsp; <strong>2.</strong> Write y = f(x) &nbsp; <strong>3.</strong> Solve for x &nbsp; <strong>4.</strong> Replace y → x</p>
+        <p>Always verify: (f ∘ f⁻¹)(x) = x and (f⁻¹ ∘ f)(x) = x</p>
+      </div>
+    </section>
+
+    <div class="lec-nav">
+      <a href="lecture6.html" class="nav-btn">← Lecture 06</a>
+      <a href="index.html" class="nav-btn">Back to Index →</a>
+    </div>
+  </main>
+</div>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  reveals.forEach(r => observer.observe(r));
+
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc a');
+  const tocObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.toc a[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => tocObs.observe(s));
+</script>
+</body>
+</html>
