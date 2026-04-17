@@ -92,7 +92,6 @@
   .step-list li:last-child{border-bottom:none;}
   .step-list li::before{content:counter(steps);position:absolute;left:0;top:0.6rem;width:1.7rem;height:1.7rem;background:var(--purple-dim);border:1px solid rgba(167,139,250,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--purple);}
 
-
   .reveal{opacity:0;transform:translateY(18px);transition:opacity 0.55s ease,transform 0.55s ease;}
   .reveal.visible{opacity:1;transform:translateY(0);}
 
@@ -118,7 +117,7 @@
 
 <div class="page">
   <aside class="sidebar">
-    <a href="index.html" class="sidebar-back">← Back to Home</a>
+    <a href="index.html" class="sidebar-back">← Back to Course</a>
     <div class="sidebar-title">// Contents</div>
     <ul class="toc">
       <li><a href="#even-odd">Odd &amp; Even Functions</a></li>
@@ -158,50 +157,58 @@
           <span class="box-label">Classic Example</span>
           <p>f(x) = x² is even because: f(−x) = (−x)² = x² = f(x) ✓</p>
         </div>
+
+        <!-- GRAPH 1: y=x² — viewBox 300×230, origin(150,210), unit=45 -->
         <div class="graph-wrap">
           <div class="graph-title">// y = x² — even function, y-axis symmetry. f(−x) = f(x)</div>
-          <svg viewBox="-100 -100 220 130" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:220px;">
-            <defs><marker id="ev1" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#64748b"/></marker></defs>
-            <!-- origin(0,20), unit=40 -->
-            <line x1="-95" y1="20" x2="110" y2="20" stroke="#64748b" stroke-width="1.5" marker-end="url(#ev1)"/>
-            <line x1="0" y1="25" x2="0" y2="-95" stroke="#64748b" stroke-width="1.5" marker-end="url(#ev1)"/>
-            <text x="102" y="34" class="svg-axis-label">x</text>
-            <text x="4" y="-88" class="svg-axis-label">y</text>
-            <!-- grid -->
-            <line x1="-95" y1="-20" x2="110" y2="-20" stroke="#1c2640" stroke-width="0.8"/>
-            <line x1="-95" y1="-60" x2="110" y2="-60" stroke="#1c2640" stroke-width="0.8"/>
-            <line x1="-80" y1="-95" x2="-80" y2="25" stroke="#1c2640" stroke-width="0.8"/>
-            <line x1="-40" y1="-95" x2="-40" y2="25" stroke="#1c2640" stroke-width="0.8"/>
-            <line x1="40" y1="-95" x2="40" y2="25" stroke="#1c2640" stroke-width="0.8"/>
-            <line x1="80" y1="-95" x2="80" y2="25" stroke="#1c2640" stroke-width="0.8"/>
-            <!-- tick labels: origin(0,20),unit=40 -->
-            <text x="-84" y="34" class="svg-label">-2</text>
-            <text x="-44" y="34" class="svg-label">-1</text>
-            <text x="36" y="34" class="svg-label">1</text>
-            <text x="76" y="34" class="svg-label">2</text>
-            <text x="-18" y="-17" class="svg-label">1</text>
-            <text x="-18" y="-57" class="svg-label">2</text>
-            <!-- parabola: svg_y=20-40x² -->
-            <polyline points="-80,-244 -70,-176 -60,-124 -50,-80 -40,-44 -30,-16 -20,4 -10,16 0,20 10,16 20,4 30,-16 40,-44 50,-80 60,-124 70,-176 80,-244" stroke="#a78bfa" stroke-width="2.5" fill="none" clip-path="url(#clip1)"/>
-            <defs><clipPath id="clip1"><rect x="-95" y="-95" width="205" height="125"/></clipPath></defs>
-            <polyline points="-80,-244 -70,-176 -60,-124 -50,-80 -40,-44 -30,-16 -20,4 -10,16 0,20 10,16 20,4 30,-16 40,-44 50,-80 60,-124 70,-176 80,-244" stroke="#a78bfa" stroke-width="2.5" fill="none" clip-path="url(#clip1)"/>
-            <!-- symmetry annotation -->
-            <line x1="-40" y1="-44" x2="-40" y2="20" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
-            <line x1="40" y1="-44" x2="40" y2="20" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
-            <line x1="-40" y1="-44" x2="0" y2="-44" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2"/>
-            <line x1="0" y1="-44" x2="40" y2="-44" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2"/>
-            <text x="-54" y="-48" class="svg-legend" fill="#f59e0b">f(−1)</text>
-            <text x="42" y="-48" class="svg-legend" fill="#f59e0b">f(1)</text>
-            <text x="-42" y="-58" class="svg-legend" fill="#94a3b8">equal!</text>
-            <circle cx="-40" cy="-44" r="4" fill="#a78bfa"/>
-            <circle cx="40" cy="-44" r="4" fill="#a78bfa"/>
-            <circle cx="0" cy="20" r="4" fill="#a78bfa"/>
-            <!-- y-axis symmetry label -->
-            <text x="-95" y="-82" class="svg-legend">y-axis symmetry</text>
-            <text x="-95" y="-72" class="svg-legend">f(x) = x², f(−x) = f(x)</text>
+          <svg viewBox="0 0 300 230" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:220px;">
+            <defs>
+              <marker id="ev1" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+                <path d="M0,0 L7,3.5 L0,7 Z" fill="#64748b"/>
+              </marker>
+              <clipPath id="clipG1"><rect x="5" y="5" width="290" height="220"/></clipPath>
+            </defs>
+            <!-- Grid: verticals at x=±1,±2 → svg_x=105,195,60,240 -->
+            <line x1="60"  y1="5" x2="60"  y2="218" stroke="#1c2640" stroke-width="0.8"/>
+            <line x1="105" y1="5" x2="105" y2="218" stroke="#1c2640" stroke-width="0.8"/>
+            <line x1="195" y1="5" x2="195" y2="218" stroke="#1c2640" stroke-width="0.8"/>
+            <line x1="240" y1="5" x2="240" y2="218" stroke="#1c2640" stroke-width="0.8"/>
+            <!-- Grid: horizontals at y=1,2,3,4 → svg_y=165,120,75,30 -->
+            <line x1="15" y1="165" x2="285" y2="165" stroke="#1c2640" stroke-width="0.8"/>
+            <line x1="15" y1="120" x2="285" y2="120" stroke="#1c2640" stroke-width="0.8"/>
+            <line x1="15" y1="75"  x2="285" y2="75"  stroke="#1c2640" stroke-width="0.8"/>
+            <line x1="15" y1="30"  x2="285" y2="30"  stroke="#1c2640" stroke-width="0.8"/>
+            <!-- Axes -->
+            <line x1="10" y1="210" x2="292" y2="210" stroke="#64748b" stroke-width="1.5" marker-end="url(#ev1)"/>
+            <line x1="150" y1="225" x2="150" y2="8"  stroke="#64748b" stroke-width="1.5" marker-end="url(#ev1)"/>
+            <text x="281" y="224" class="svg-axis-label">x</text>
+            <text x="154" y="16"  class="svg-axis-label">y</text>
+            <!-- Tick labels -->
+            <text x="54"  y="224" class="svg-label">-2</text>
+            <text x="100" y="224" class="svg-label">-1</text>
+            <text x="191" y="224" class="svg-label">1</text>
+            <text x="236" y="224" class="svg-label">2</text>
+            <text x="132" y="169" class="svg-label">1</text>
+            <text x="132" y="124" class="svg-label">2</text>
+            <text x="132" y="79"  class="svg-label">3</text>
+            <text x="132" y="34"  class="svg-label">4</text>
+            <!-- Parabola y=x²: polyline from pre-computed points -->
+            <polyline clip-path="url(#clipG1)"
+              points="60.0,30.0 69.0,64.2 78.0,94.8 87.0,121.8 96.0,145.2 105.0,165.0 114.0,181.2 123.0,193.8 132.0,202.8 141.0,208.2 150.0,210.0 159.0,208.2 168.0,202.8 177.0,193.8 186.0,181.2 195.0,165.0 204.0,145.2 213.0,121.8 222.0,94.8 231.0,64.2 240.0,30.0"
+              stroke="#a78bfa" stroke-width="2.5" fill="none"/>
+            <!-- Symmetry annotation: f(-1)=f(1)=1 at svg(-1)=105, svg(1)=195, svg_y=165 -->
+            <line x1="105" y1="165" x2="105" y2="210" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+            <line x1="195" y1="165" x2="195" y2="210" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+            <line x1="105" y1="165" x2="195" y2="165" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,2"/>
+            <circle cx="105" cy="165" r="4" fill="#a78bfa"/>
+            <circle cx="195" cy="165" r="4" fill="#a78bfa"/>
+            <circle cx="150" cy="210" r="4" fill="#a78bfa"/>
+            <text x="68"  y="160" class="svg-legend" fill="#f59e0b">f(−1)=1</text>
+            <text x="197" y="160" class="svg-legend" fill="#f59e0b">f(1)=1</text>
+            <text x="12"  y="20"  class="svg-legend">y-axis symmetry — f(x)=x², f(−x)=f(x)</text>
           </svg>
         </div>
-      </div>
+      </div><!-- /even-def -->
 
       <div id="odd-def">
         <h3>Odd Functions</h3>
@@ -215,51 +222,48 @@
           <span class="box-label">Classic Example</span>
           <p>f(x) = x³ is odd because: f(−x) = (−x)³ = −x³ = −f(x) ✓</p>
         </div>
+
+        <!-- GRAPH 2: y=x³ — square viewBox 300×300, origin(150,150), unit=45 -->
         <div class="graph-wrap">
           <div class="graph-title">// y = x³ — odd function, origin symmetry. f(−x) = −f(x)</div>
-          <svg viewBox="-90 -80 200 170" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:220px;">
-            <defs><marker id="od1" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#64748b"/></marker></defs>
-            <!-- origin(0,50), unit=40 -->
-            <line x1="-85" y1="50" x2="105" y2="50" stroke="#64748b" stroke-width="1.5" marker-end="url(#od1)"/>
-            <line x1="0" y1="75" x2="0" y2="-75" stroke="#64748b" stroke-width="1.5" marker-end="url(#od1)"/>
-            <text x="96" y="64" class="svg-axis-label">x</text>
-            <text x="4" y="-68" class="svg-axis-label">y</text>
-            <!-- grid -->
-            <line x1="-85" y1="10" x2="105" y2="10" stroke="#1c2640" stroke-width="0.8"/>
-            <line x1="-85" y1="-30" x2="105" y2="-30" stroke="#1c2640" stroke-width="0.8"/>
-            <line x1="-85" y1="90" x2="105" y2="90" stroke="#1c2640" stroke-width="0.8"/>
-            <line x1="-40" y1="-75" x2="-40" y2="75" stroke="#1c2640" stroke-width="0.8"/>
-            <line x1="40" y1="-75" x2="40" y2="75" stroke="#1c2640" stroke-width="0.8"/>
-            <line x1="80" y1="-75" x2="80" y2="75" stroke="#1c2640" stroke-width="0.8"/>
-            <line x1="-80" y1="-75" x2="-80" y2="75" stroke="#1c2640" stroke-width="0.8"/>
-            <!-- tick labels: origin(0,50),unit=40 -->
-            <text x="-84" y="64" class="svg-label">-2</text>
-            <text x="-44" y="64" class="svg-label">-1</text>
-            <text x="36" y="64" class="svg-label">1</text>
-            <text x="76" y="64" class="svg-label">2</text>
-            <text x="-18" y="14" class="svg-label">1</text>
-            <text x="-18" y="-26" class="svg-label">2</text>
-            <text x="-18" y="94" class="svg-label">-1</text>
-            <!-- y=x³: svg_y=50-40x³ -->
-            <!-- x=-1.5:svg_y=50-40*(-3.375)=50+135=185→clip; x=-1:svg_y=50+40=90; x=-0.5:svg_y=50+5=55; x=0:50; x=0.5:50-5=45; x=1:50-40=10; x=1.5:50-135=-85 clip -->
-            <polyline points="-80,50+40*2=-80,50-40*8=-80,-270 clip" stroke="none"/>
-            <!-- Let me be precise: svg_y = 50 - 40*(x)^3 where x is in real units and svg_x = x*40 -->
-            <!-- svg_x=-80 → x=-2: svg_y=50-40*(-8)=50+320=370 way off -->
-            <!-- Use unit=20: svg_y=50-20*x³, svg_x=20*x -->
-            <!-- x=−2:svg(−40, 50+160=210 clip); x=−1.5:(−30,50+67.5=117.5); x=−1:(−20,50+20=70); x=−0.5:(−10,50+2.5=52.5); x=0:(0,50); x=0.5:(10,47.5); x=1:(20,30); x=1.5:(30,-17.5); x=2:(40,-110 clip) -->
-            <polyline points="-30,117.5 -20,70 -10,52.5 0,50 10,47.5 20,30 30,-17.5" stroke="#34d399" stroke-width="2.5" fill="none"/>
-            <!-- origin symmetry annotation -->
-            <line x1="-20" y1="70" x2="20" y2="30" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2" opacity="0.6"/>
-            <circle cx="-20" cy="70" r="4" fill="#34d399"/>
-            <circle cx="20" cy="30" r="4" fill="#34d399"/>
-            <circle cx="0" cy="50" r="4" fill="#34d399"/>
-            <text x="-36" y="68" class="svg-legend" fill="#f59e0b">(−1,−1)</text>
-            <text x="22" y="28" class="svg-legend" fill="#f59e0b">(1, 1)</text>
-            <text x="-85" y="-68" class="svg-legend">origin symmetry</text>
-            <text x="-85" y="-58" class="svg-legend">f(x)=x³, f(−x)=−f(x)</text>
+          <svg viewBox="0 0 300 300" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:240px;">
+            <defs>
+              <marker id="od1" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+                <path d="M0,0 L7,3.5 L0,7 Z" fill="#64748b"/>
+              </marker>
+              <clipPath id="clipG2"><rect x="5" y="5" width="290" height="290"/></clipPath>
+            </defs>
+            <!-- Grid: verticals at x=±1 → 105,195 -->
+            <line x1="105" y1="5" x2="105" y2="292" stroke="#1c2640" stroke-width="0.8"/>
+            <line x1="195" y1="5" x2="195" y2="292" stroke="#1c2640" stroke-width="0.8"/>
+            <!-- Grid: horizontals at y=±1 → 105,195 -->
+            <line x1="5" y1="105" x2="292" y2="105" stroke="#1c2640" stroke-width="0.8"/>
+            <line x1="5" y1="195" x2="292" y2="195" stroke="#1c2640" stroke-width="0.8"/>
+            <!-- Axes -->
+            <line x1="8"   y1="150" x2="292" y2="150" stroke="#64748b" stroke-width="1.5" marker-end="url(#od1)"/>
+            <line x1="150" y1="292" x2="150" y2="8"   stroke="#64748b" stroke-width="1.5" marker-end="url(#od1)"/>
+            <text x="281" y="164" class="svg-axis-label">x</text>
+            <text x="154" y="16"  class="svg-axis-label">y</text>
+            <!-- Tick labels -->
+            <text x="100" y="164" class="svg-label">-1</text>
+            <text x="191" y="164" class="svg-label">1</text>
+            <text x="133" y="109" class="svg-label">1</text>
+            <text x="130" y="199" class="svg-label">-1</text>
+            <!-- Cubic y=x³ -->
+            <polyline clip-path="url(#clipG2)"
+              points="82.5,301.9 89.2,260.7 96.0,227.8 102.8,202.1 109.5,182.8 116.2,169.0 123.0,159.7 129.8,154.1 136.5,151.2 143.2,150.2 150.0,150.0 156.8,149.8 163.5,148.8 170.2,145.9 177.0,140.3 183.8,131.0 190.5,117.2 197.2,97.9 204.0,72.2 210.8,39.3 217.5,-1.9"
+              stroke="#34d399" stroke-width="2.5" fill="none"/>
+            <!-- Origin symmetry: (-1,-1) and (1,1) -->
+            <line x1="105" y1="195" x2="195" y2="105" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
+            <circle cx="105" cy="195" r="5" fill="#34d399"/>
+            <circle cx="195" cy="105" r="5" fill="#34d399"/>
+            <circle cx="150" cy="150" r="4" fill="#34d399"/>
+            <text x="55"  y="200" class="svg-legend" fill="#f59e0b">(−1,−1)</text>
+            <text x="197" y="103" class="svg-legend" fill="#f59e0b">(1, 1)</text>
+            <text x="10"  y="18"  class="svg-legend">origin symmetry — f(x)=x³, f(−x)=−f(x)</text>
           </svg>
         </div>
-      </div>
+      </div><!-- /odd-def -->
 
       <div id="neither">
         <h3>Example — Classify Each Function</h3>
@@ -298,52 +302,74 @@
           <div class="ex-card-result" style="color:var(--accent);">⚠ NEITHER even nor odd</div>
         </div>
 
+        <!-- GRAPH 3: Comparison — 3 panels in one SVG, viewBox 630×200 -->
         <div class="graph-wrap" style="margin-top:1.5rem;">
           <div class="graph-title">// Comparing symmetry: even (y-axis), odd (origin), neither (no symmetry)</div>
-          <svg viewBox="0 0 580 180" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:200px;">
+          <svg viewBox="0 0 630 200" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:200px;">
             <defs>
-              <marker id="sym1" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/></marker>
+              <marker id="sym1" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/>
+              </marker>
+              <clipPath id="c1"><rect x="5"   y="5" width="190" height="190"/></clipPath>
+              <clipPath id="c2"><rect x="215" y="5" width="190" height="190"/></clipPath>
+              <clipPath id="c3"><rect x="425" y="5" width="200" height="190"/></clipPath>
             </defs>
-            <!-- Panel 1: g(x)=1-x⁴ (even) -->
-            <text x="90" y="12" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#a78bfa">g(x)=1−x⁴ (even)</text>
-            <line x1="10" y1="100" x2="170" y2="100" stroke="#64748b" stroke-width="1.2" marker-end="url(#sym1)"/>
-            <line x1="90" y1="155" x2="90" y2="15" stroke="#64748b" stroke-width="1.2" marker-end="url(#sym1)"/>
-            <!-- g(-x)=g(x): parabola-like, peak at x=0, y=1 → svg(90,60) with unit=40 -->
-            <!-- svg_x=90+40x, svg_y=100-40*(1-x⁴)=60+40x⁴ -->
-            <!-- x=0:(90,60); x=0.5:(110,62.5); x=1:(130,100); x=-1:(50,100); x=-0.5:(70,62.5) -->
-            <polyline points="10,155 30,145 50,100 70,62.5 90,60 110,62.5 130,100 150,145 170,155" stroke="#a78bfa" stroke-width="2.5" fill="none"/>
-            <circle cx="90" cy="60" r="4" fill="#a78bfa"/>
-            <!-- symmetry arrows -->
-            <path d="M 75 40 Q 90 30 105 40" stroke="#f59e0b" stroke-width="1.5" fill="none" marker-end="url(#sym1)"/>
-            <text x="90" y="28" text-anchor="middle" class="svg-legend" fill="#f59e0b">y-axis sym</text>
 
-            <!-- Panel 2: f(x)=x³ (odd) -->
-            <text x="290" y="12" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#34d399">f(x)=x⁵+x (odd)</text>
-            <line x1="205" y1="90" x2="380" y2="90" stroke="#64748b" stroke-width="1.2" marker-end="url(#sym1)"/>
-            <line x1="290" y1="160" x2="290" y2="18" stroke="#64748b" stroke-width="1.2" marker-end="url(#sym1)"/>
-            <!-- odd: origin symmetry. use x⁵+x which looks like x³ for display -->
-            <!-- svg_x=290+30x, svg_y=90-30*(x⁵+x). Unit=30 -->
-            <!-- x=0:(290,90); x=0.5:(305,90-30*0.53125=90-15.9=74); x=1:(320,90-30*2=30); x=-0.5:(275,90+16=106); x=-1:(260,90+60=150) -->
-            <polyline points="260,150 265,140 275,106 290,90 305,74 315,50 320,30" stroke="#34d399" stroke-width="2.5" fill="none"/>
-            <circle cx="290" cy="90" r="4" fill="#34d399"/>
-            <!-- origin symmetry arrow -->
-            <line x1="275" y1="106" x2="305" y2="74" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2" opacity="0.6"/>
-            <text x="290" y="175" text-anchor="middle" class="svg-legend" fill="#f59e0b">origin sym</text>
+            <!-- ── Panel 1: g(x)=1−x⁴ (even), origin(100,100), unit=55 ── -->
+            <text x="100" y="14" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#a78bfa">g(x)=1−x⁴ (even)</text>
+            <line x1="10"  y1="100" x2="195" y2="100" stroke="#64748b" stroke-width="1.2" marker-end="url(#sym1)"/>
+            <line x1="100" y1="185" x2="100" y2="12"  stroke="#64748b" stroke-width="1.2" marker-end="url(#sym1)"/>
+            <!-- grid -->
+            <line x1="45"  y1="10" x2="45"  y2="190" stroke="#1c2640" stroke-width="0.7"/><!-- x=-1 -->
+            <line x1="155" y1="10" x2="155" y2="190" stroke="#1c2640" stroke-width="0.7"/><!-- x=+1 -->
+            <line x1="10"  y1="45" x2="190" y2="45"  stroke="#1c2640" stroke-width="0.7"/><!-- y=1 -->
+            <!-- g(x)=1-x⁴ curve: origin(100,100), unit=55 -->
+            <polyline clip-path="url(#c1)"
+              points="32.9,166.8 39.6,124.9 46.3,94.9 53.0,74.3 59.7,60.8 66.5,52.6 73.2,48.1 79.9,46.0 86.6,45.2 93.3,45.0 100.0,45.0 106.7,45.0 113.4,45.2 120.1,46.0 126.8,48.1 133.6,52.6 140.3,60.8 147.0,74.3 153.7,94.9 160.4,124.9 167.1,166.8"
+              stroke="#a78bfa" stroke-width="2.5" fill="none"/>
+            <circle cx="100" cy="45" r="4" fill="#a78bfa"/>
+            <!-- y-axis symmetry arrow -->
+            <path d="M 80 28 Q 100 18 120 28" stroke="#f59e0b" stroke-width="1.5" fill="none" marker-end="url(#sym1)"/>
+            <text x="100" y="16" text-anchor="middle" class="svg-legend" fill="#f59e0b">y-axis sym</text>
 
-            <!-- Panel 3: h(x)=2x-x² (neither) -->
-            <text x="490" y="12" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#f87171">h(x)=2x−x² (neither)</text>
-            <line x1="400" y1="100" x2="575" y2="100" stroke="#64748b" stroke-width="1.2" marker-end="url(#sym1)"/>
-            <line x1="420" y1="155" x2="420" y2="18" stroke="#64748b" stroke-width="1.2" marker-end="url(#sym1)"/>
-            <!-- h(x)=2x-x², vertex at x=1,y=1. svg_x=420+40*x, svg_y=100-40*(2x-x²) -->
-            <!-- x=0:(420,100); x=1:(460,60); x=2:(500,100); x=-1:(380,140); x=3:(540,60) wait: 2*3-9=-3 → svg_y=100+120=220 clip -->
-            <!-- x=0:(420,100); x=0.5:(440,80); x=1:(460,60); x=1.5:(480,70); x=2:(500,100); x=-0.5:(400,120); x=-1:(380,140) -->
-            <polyline points="380,140 390,120 400,104 420,100 440,80 460,60 480,70 500,100 520,140" stroke="#f87171" stroke-width="2.5" fill="none"/>
-            <circle cx="460" cy="60" r="4" fill="#f87171"/>
-            <text x="464" y="56" class="svg-legend" fill="#f87171">(1,1)</text>
-            <text x="490" y="175" text-anchor="middle" class="svg-legend" fill="#f87171">no symmetry</text>
+            <!-- ── Panel 2: f(x)=x⁵+x (odd), origin(300,100), unit=45 ── -->
+            <text x="310" y="14" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#34d399">f(x)=x⁵+x (odd)</text>
+            <line x1="220" y1="100" x2="405" y2="100" stroke="#64748b" stroke-width="1.2" marker-end="url(#sym1)"/>
+            <line x1="300" y1="185" x2="300" y2="12"  stroke="#64748b" stroke-width="1.2" marker-end="url(#sym1)"/>
+            <!-- grid -->
+            <line x1="255" y1="10" x2="255" y2="190" stroke="#1c2640" stroke-width="0.7"/><!-- x=-1 -->
+            <line x1="345" y1="10" x2="345" y2="190" stroke="#1c2640" stroke-width="0.7"/><!-- x=+1 -->
+            <line x1="220" y1="55"  x2="400" y2="55"  stroke="#1c2640" stroke-width="0.7"/><!-- y=1 -->
+            <line x1="220" y1="145" x2="400" y2="145" stroke="#1c2640" stroke-width="0.7"/><!-- y=-1 -->
+            <!-- f(x)=x⁵+x curve: origin(300,100), unit=45 -->
+            <polyline clip-path="url(#c2)"
+              points="252.8,204.7 257.5,176.4 262.2,156.6 266.9,142.7 271.6,132.8 276.4,125.4 281.1,119.5 285.8,114.3 290.6,109.5 295.3,104.7 300.0,100.0 304.7,95.3 309.4,90.5 314.2,85.7 318.9,80.5 323.6,74.6 328.4,67.2 333.1,57.3 337.8,43.4 342.5,23.6 347.2,-4.7"
+              stroke="#34d399" stroke-width="2.5" fill="none"/>
+            <circle cx="300" cy="100" r="4" fill="#34d399"/>
+            <!-- origin symmetry dashes -->
+            <line x1="255" y1="145" x2="345" y2="55" stroke="#f59e0b" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.6"/>
+            <text x="310" y="192" text-anchor="middle" class="svg-legend" fill="#f59e0b">origin sym</text>
+
+            <!-- ── Panel 3: h(x)=2x−x² (neither), origin(510,100), unit=50 ── -->
+            <text x="525" y="14" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#f87171">h(x)=2x−x² (neither)</text>
+            <line x1="428" y1="100" x2="622" y2="100" stroke="#64748b" stroke-width="1.2" marker-end="url(#sym1)"/>
+            <line x1="510" y1="185" x2="510" y2="12"  stroke="#64748b" stroke-width="1.2" marker-end="url(#sym1)"/>
+            <!-- grid -->
+            <line x1="460" y1="10" x2="460" y2="190" stroke="#1c2640" stroke-width="0.7"/><!-- x=-1 -->
+            <line x1="560" y1="10" x2="560" y2="190" stroke="#1c2640" stroke-width="0.7"/><!-- x=+1 -->
+            <line x1="610" y1="10" x2="610" y2="190" stroke="#1c2640" stroke-width="0.7"/><!-- x=+2 -->
+            <line x1="430" y1="50"  x2="620" y2="50"  stroke="#1c2640" stroke-width="0.7"/><!-- y=1 -->
+            <!-- h(x)=2x-x² curve: origin(510,100), unit=50 -->
+            <polyline clip-path="url(#c3)"
+              points="485.0,134.5 491.8,117.9 498.5,103.0 505.2,90.1 512.0,78.9 518.8,69.5 525.5,62.0 532.2,56.3 539.0,52.4 545.8,50.4 552.5,50.1 559.2,51.7 566.0,55.1 572.8,60.4 579.5,67.4 586.2,76.3 593.0,87.0 599.8,99.5 606.5,113.8"
+              stroke="#f87171" stroke-width="2.5" fill="none"/>
+            <!-- vertex at (1,1): svg(560,50) -->
+            <circle cx="560" cy="50" r="4" fill="#f87171"/>
+            <text x="562" y="46" class="svg-legend" fill="#f87171">(1,1)</text>
+            <text x="520" y="192" text-anchor="middle" class="svg-legend" fill="#f87171">no symmetry</text>
           </svg>
         </div>
-      </div>
+      </div><!-- /neither -->
     </section>
 
     <!-- ═══ SECTION 2: ONE-TO-ONE ═══ -->
@@ -364,76 +390,95 @@
           <span class="box-label">The Test</span>
           <p>A function is one-to-one <strong>if and only if</strong> every horizontal line intersects its graph at <strong>most once</strong>.</p>
         </div>
+
         <div class="graph-grid-2 reveal">
+          <!-- GRAPH 4: HLT linear — viewBox 240×240, origin(120,150), unit=30 -->
           <div class="graph-wrap" style="padding:1rem;">
-            <div class="graph-title">// f(x) = 2x + 3 — ONE-TO-ONE ✓ (linear, strict monotone)</div>
-            <svg viewBox="-70 -80 180 180" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:220px;">
-              <defs><marker id="hlt1" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/></marker></defs>
-              <line x1="-65" y1="50" x2="100" y2="50" stroke="#64748b" stroke-width="1.2" marker-end="url(#hlt1)"/>
-              <line x1="0" y1="75" x2="0" y2="-75" stroke="#64748b" stroke-width="1.2" marker-end="url(#hlt1)"/>
-              <text x="92" y="62" class="svg-axis-label">x</text>
-              <text x="4" y="-68" class="svg-axis-label">y</text>
-              <!-- grid -->
-              <line x1="-65" y1="10" x2="100" y2="10" stroke="#1c2640" stroke-width="0.8"/>
-              <line x1="-65" y1="-30" x2="100" y2="-30" stroke="#1c2640" stroke-width="0.8"/>
-              <line x1="-65" y1="90" x2="100" y2="90" stroke="#1c2640" stroke-width="0.8"/>
-              <line x1="-40" y1="-75" x2="-40" y2="75" stroke="#1c2640" stroke-width="0.8"/>
-              <line x1="40" y1="-75" x2="40" y2="75" stroke="#1c2640" stroke-width="0.8"/>
-              <line x1="80" y1="-75" x2="80" y2="75" stroke="#1c2640" stroke-width="0.8"/>
-              <!-- y=2x+3: svg_y=50-30*(2x+3)=50-60x-90=-40-60x; svg_x=30x -->
-              <!-- Hmm unit=30: svg_y=50-30*(2x+3). x=-2:svg(-60,50-30*(-1)=50+30=80); x=-1:svg(-30,50-30=20+10?): Let me recalc. -->
-              <!-- f(x)=2x+3. x=-1:f=-1+3=1→but wait 2*(-1)+3=1. x=0:3. x=1:5. x=-1.5:0. -->
-              <!-- svg_y = 50 - 30*f(x) = 50 - 30*(2x+3) -->
-              <!-- x=-2: f=-1, svg_y=50+30=80; x=-1.5:f=0,svg_y=50; x=-1:f=1,svg_y=50-30=20; x=0:f=3,svg_y=50-90=-40; x=0.5:f=4,svg_y=-70; x=1:f=5,svg_y=-100 clip -->
-              <!-- svg_x = 30*x -->
-              <line x1="-60" y1="80" x2="30" y2="-40" stroke="#34d399" stroke-width="2.5"/>
-              <!-- horizontal test line: y = 2 for example: svg_y=50-60=-10 -->
-              <line x1="-65" y1="-10" x2="100" y2="-10" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="5,3"/>
-              <!-- single intersection point: x=(y-3)/2=(2-3)/2=-0.5 → wait f(x)=2, 2x+3=2, x=-0.5, svg_x=-15, svg_y=-10 -->
-              <circle cx="-15" cy="-10" r="4" fill="#f59e0b"/>
-              <text x="-65" y="-14" class="svg-legend" fill="#f59e0b">horizontal line hits once → 1-1</text>
+            <div class="graph-title">// f(x) = 2x + 3 — ONE-TO-ONE ✓</div>
+            <svg viewBox="0 0 240 240" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:220px;">
+              <defs>
+                <marker id="hlt1" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                  <path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/>
+                </marker>
+                <clipPath id="clipH1"><rect x="5" y="5" width="230" height="230"/></clipPath>
+              </defs>
+              <!-- origin(120,150), unit=30 -->
+              <!-- Grid: x=±1,±2 → 90,150,60,180; y=0,1,2 → 150,120,90 -->
+              <line x1="90"  y1="5" x2="90"  y2="232" stroke="#1c2640" stroke-width="0.8"/>
+              <line x1="150" y1="5" x2="150" y2="232" stroke="#1c2640" stroke-width="0.8"/><!-- x=1 -->
+              <line x1="60"  y1="5" x2="60"  y2="232" stroke="#1c2640" stroke-width="0.8"/>
+              <line x1="5"   y1="120" x2="232" y2="120" stroke="#1c2640" stroke-width="0.8"/><!-- y=1 -->
+              <line x1="5"   y1="90"  x2="232" y2="90"  stroke="#1c2640" stroke-width="0.8"/><!-- y=2 -->
+              <line x1="5"   y1="180" x2="232" y2="180" stroke="#1c2640" stroke-width="0.8"/><!-- y=-1 -->
+              <!-- Axes -->
+              <line x1="8"   y1="150" x2="232" y2="150" stroke="#64748b" stroke-width="1.5" marker-end="url(#hlt1)"/>
+              <line x1="120" y1="232" x2="120" y2="8"   stroke="#64748b" stroke-width="1.5" marker-end="url(#hlt1)"/>
+              <text x="222" y="163" class="svg-axis-label">x</text>
+              <text x="124" y="16"  class="svg-axis-label">y</text>
+              <!-- Tick labels -->
+              <text x="85"  y="163" class="svg-label">-1</text>
+              <text x="146" y="163" class="svg-label">1</text>
+              <text x="103" y="124" class="svg-label">1</text>
+              <text x="103" y="94"  class="svg-label">2</text>
+              <text x="100" y="184" class="svg-label">-1</text>
+              <!-- f(x)=2x+3: y=2x+3. x=-1.8→y=-0.6→svg(66,168); x=0→y=3→svg(120,60); clip at top. -->
+              <!-- x=-1.5→y=0→svg(75,150); x=0→y=3→svg(120,60) too high for unit=30 with height 240 -->
+              <!-- Use: x=-2.4→y=-1.8→svg(48,204); x=0.5→y=4→svg(135,30) -->
+              <line clip-path="url(#clipH1)" x1="48" y1="204" x2="135" y2="30" stroke="#34d399" stroke-width="2.5"/>
+              <!-- Horizontal test line at y=2: svg_y=150-30*2=90. Intersection: 2x+3=2→x=-0.5→svg_x=120-15=105 -->
+              <line x1="5" y1="90" x2="232" y2="90" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="6,3"/>
+              <circle cx="105" cy="90" r="5" fill="#f59e0b"/>
+              <text x="8" y="84" class="svg-legend" fill="#f59e0b">horizontal line hits exactly once → 1-1 ✓</text>
             </svg>
           </div>
+
+          <!-- GRAPH 5: HLT parabola — viewBox 250×240, origin(125,230), unit=35 -->
           <div class="graph-wrap" style="padding:1rem;">
-            <div class="graph-title">// f(x) = x² + 3 — NOT one-to-one ✗ (even function)</div>
-            <svg viewBox="-80 -80 180 180" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:220px;">
-              <defs><marker id="hlt2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/></marker></defs>
-              <line x1="-75" y1="70" x2="90" y2="70" stroke="#64748b" stroke-width="1.2" marker-end="url(#hlt2)"/>
-              <line x1="0" y1="75" x2="0" y2="-75" stroke="#64748b" stroke-width="1.2" marker-end="url(#hlt2)"/>
-              <text x="82" y="82" class="svg-axis-label">x</text>
-              <text x="4" y="-68" class="svg-axis-label">y</text>
-              <line x1="-75" y1="30" x2="90" y2="30" stroke="#1c2640" stroke-width="0.8"/>
-              <line x1="-75" y1="-10" x2="90" y2="-10" stroke="#1c2640" stroke-width="0.8"/>
-              <line x1="-75" y1="-50" x2="90" y2="-50" stroke="#1c2640" stroke-width="0.8"/>
-              <line x1="-40" y1="-75" x2="-40" y2="75" stroke="#1c2640" stroke-width="0.8"/>
-              <line x1="40" y1="-75" x2="40" y2="75" stroke="#1c2640" stroke-width="0.8"/>
-              <!-- tick labels: origin(0,70),unit=40 -->
-              <text x="-44" y="84" class="svg-label">-1</text>
-              <text x="36" y="84" class="svg-label">1</text>
-              <text x="-16" y="34" class="svg-label">1</text>
-              <text x="-16" y="-6" class="svg-label">2</text>
-              <text x="-16" y="-46" class="svg-label">3</text>
-              <!-- y=x²+3: svg_y=70-40*(x²+3)=70-40x²-120=-50-40x² -->
-              <!-- x=0:(0,-50); x=1:(40,-90); x=-1:(-40,-90); -->
-              <!-- This would have vertex way above visible area. Use smaller scale. -->
-              <!-- origin(0,70), unit=25: svg_y=70-25*(x²+3)=70-25x²-75=-5-25x² -->
-              <!-- x=0:(0,-5); x=1:(25,-30); x=-1:(-25,-30); x=1.5:(37.5,-61.25); x=-1.5:(-37.5,-61.25); -->
-              <polyline points="-65,-112 -50,-67.5 -40,-45 -30,-27.5 -20,-15 -10,-7.5 0,-5 10,-7.5 20,-15 30,-27.5 40,-45 50,-67.5 65,-112" stroke="#60a5fa" stroke-width="2.5" fill="none"/>
-              <!-- horizontal line at y=4: svg_y=70-25*4=-30 -->
-              <line x1="-75" y1="-30" x2="90" y2="-30" stroke="#f87171" stroke-width="1.5" stroke-dasharray="5,3"/>
-              <!-- intersections at x=±1: svg(±25,-30) -->
-              <circle cx="25" cy="-30" r="4" fill="#f87171"/>
-              <circle cx="-25" cy="-30" r="4" fill="#f87171"/>
-              <text x="-62" y="-34" class="svg-legend" fill="#f87171">hits twice → not 1-1!</text>
-              <!-- x₁ and x₂ labels -->
-              <text x="-34" y="84" class="svg-legend" fill="#f87171">x₂</text>
-              <text x="22" y="84" class="svg-legend" fill="#f87171">x₁</text>
-              <line x1="-25" y1="-30" x2="-25" y2="70" stroke="#f87171" stroke-width="1" stroke-dasharray="2,2" opacity="0.5"/>
-              <line x1="25" y1="-30" x2="25" y2="70" stroke="#f87171" stroke-width="1" stroke-dasharray="2,2" opacity="0.5"/>
+            <div class="graph-title">// f(x) = x² + 3 — NOT one-to-one ✗</div>
+            <svg viewBox="0 0 250 240" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:220px;">
+              <defs>
+                <marker id="hlt2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                  <path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/>
+                </marker>
+                <clipPath id="clipH2"><rect x="5" y="5" width="240" height="230"/></clipPath>
+              </defs>
+              <!-- origin(125,230), unit=35 -->
+              <!-- x-axis: svg_y=230; y=3 (vertex): svg_y=125; y=4: svg_y=90 -->
+              <!-- Grid: x=±1→160,90; y=3→125; y=4→90; y=5→55 -->
+              <line x1="90"  y1="5" x2="90"  y2="232" stroke="#1c2640" stroke-width="0.8"/><!-- x=-1 -->
+              <line x1="160" y1="5" x2="160" y2="232" stroke="#1c2640" stroke-width="0.8"/><!-- x=+1 -->
+              <line x1="5"   y1="125" x2="242" y2="125" stroke="#1c2640" stroke-width="0.8"/><!-- y=3 -->
+              <line x1="5"   y1="90"  x2="242" y2="90"  stroke="#1c2640" stroke-width="0.8"/><!-- y=4 -->
+              <line x1="5"   y1="55"  x2="242" y2="55"  stroke="#1c2640" stroke-width="0.8"/><!-- y=5 -->
+              <!-- Axes -->
+              <line x1="8"   y1="230" x2="242" y2="230" stroke="#64748b" stroke-width="1.5" marker-end="url(#hlt2)"/>
+              <line x1="125" y1="235" x2="125" y2="8"   stroke="#64748b" stroke-width="1.5" marker-end="url(#hlt2)"/>
+              <text x="232" y="243" class="svg-axis-label">x</text>
+              <text x="129" y="16"  class="svg-axis-label">y</text>
+              <!-- Tick labels -->
+              <text x="84"  y="244" class="svg-label">-1</text>
+              <text x="156" y="244" class="svg-label">1</text>
+              <text x="107" y="129" class="svg-label">3</text>
+              <text x="107" y="94"  class="svg-label">4</text>
+              <text x="107" y="59"  class="svg-label">5</text>
+              <!-- Parabola y=x²+3: origin(125,230), unit=35 -->
+              <polyline clip-path="url(#clipH2)"
+                points="62.0,11.6 68.3,33.1 74.6,52.4 80.9,69.4 87.2,84.2 93.5,96.7 99.8,106.9 106.1,114.8 112.4,120.5 118.7,123.9 125.0,125.0 131.3,123.9 137.6,120.5 143.9,114.8 150.2,106.9 156.5,96.6 162.8,84.2 169.1,69.4 175.4,52.4 181.7,33.1 188.0,11.6"
+                stroke="#60a5fa" stroke-width="2.5" fill="none"/>
+              <!-- Horizontal test line at y=4: svg_y=90. Intersections at x=±1: svg_x=160,90 -->
+              <line x1="5" y1="90" x2="242" y2="90" stroke="#f87171" stroke-width="1.8" stroke-dasharray="6,3"/>
+              <circle cx="160" cy="90" r="5" fill="#f87171"/>
+              <circle cx="90"  cy="90" r="5" fill="#f87171"/>
+              <!-- vertical dashes to x-axis -->
+              <line x1="160" y1="90" x2="160" y2="230" stroke="#f87171" stroke-width="1" stroke-dasharray="2,2" opacity="0.5"/>
+              <line x1="90"  y1="90" x2="90"  y2="230" stroke="#f87171" stroke-width="1" stroke-dasharray="2,2" opacity="0.5"/>
+              <text x="84"  y="244" class="svg-label" fill="#f87171">x₂</text>
+              <text x="156" y="244" class="svg-label" fill="#f87171">x₁</text>
+              <text x="8" y="84" class="svg-legend" fill="#f87171">hits twice → not 1-1 ✗</text>
             </svg>
           </div>
-        </div>
-      </div>
+        </div><!-- /graph-grid-2 -->
+      </div><!-- /hlt -->
 
       <h3>Solved Examples</h3>
       <div class="ex-grid">
@@ -508,52 +553,74 @@
         <p>y = 5x + 2 &nbsp;→&nbsp; y − 2 = 5x &nbsp;→&nbsp; x = (y − 2)/5</p>
         <p><strong>f⁻¹(x) = (x − 2) / 5</strong></p>
       </div>
+
+      <!-- GRAPH 6: Inverse 5x+2 — SQUARE viewBox 300×300, origin(100,220), unit=18 -->
+      <!-- svg_x=100+18x, svg_y=220-18y. y=x line: svg_y=(100+220)-svg_x=320-svg_x -->
       <div class="graph-wrap">
         <div class="graph-title">// f(x) = 5x+2 and f⁻¹(x) = (x−2)/5 — reflections across y = x</div>
-        <svg viewBox="-60 -80 220 180" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:240px;">
-          <defs><marker id="inv1" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#64748b"/></marker></defs>
-          <!-- origin(60,80), unit=20 -->
-          <line x1="-55" y1="80" x2="150" y2="80" stroke="#64748b" stroke-width="1.5" marker-end="url(#inv1)"/>
-          <line x1="60" y1="95" x2="60" y2="-75" stroke="#64748b" stroke-width="1.5" marker-end="url(#inv1)"/>
-          <text x="142" y="94" class="svg-axis-label">x</text>
-          <text x="64" y="-68" class="svg-axis-label">y</text>
-          <!-- grid -->
-          <line x1="-55" y1="40" x2="150" y2="40" stroke="#1c2640" stroke-width="0.8"/>
-          <line x1="-55" y1="0" x2="150" y2="0" stroke="#1c2640" stroke-width="0.8"/>
-          <line x1="-55" y1="-40" x2="150" y2="-40" stroke="#1c2640" stroke-width="0.8"/>
-          <line x1="20" y1="-75" x2="20" y2="95" stroke="#1c2640" stroke-width="0.8"/>
-          <line x1="100" y1="-75" x2="100" y2="95" stroke="#1c2640" stroke-width="0.8"/>
-          <line x1="140" y1="-75" x2="140" y2="95" stroke="#1c2640" stroke-width="0.8"/>
-          <!-- tick labels: origin(60,80),unit=20 -->
-          <text x="16" y="94" class="svg-label">-2</text>
-          <text x="96" y="94" class="svg-label">2</text>
-          <text x="136" y="94" class="svg-label">4</text>
-          <text x="42" y="44" class="svg-label">-2</text>
-          <text x="42" y="4" class="svg-label">4</text>
-          <text x="42" y="-36" class="svg-label">6</text>
-          <!-- line y=x: svg_y = 80 - (svg_x - 60) = 140 - svg_x i.e. slope=-1 in svg which means slope=1 in real -->
-          <line x1="-55" y1="175" x2="155" y2="-35" stroke="#253050" stroke-width="1.2" stroke-dasharray="5,3" opacity="0.6"/>
-          <text x="125" y="-55" class="svg-legend" fill="#475569">y = x</text>
-          <!-- f(x)=5x+2: svg_y=80-20*(5x+2)=80-100x-40=40-100x; svg_x=60+20x -->
-          <!-- x=-2:svg(20,40+200=240 clip); x=-1:svg(40,40+100=140 clip→95); x=-0.5:svg(50,90); x=0:svg(60,40); x=0.5:svg(70,-10); x=1:svg(80,-60); x=1.5:svg(90,-110 clip) -->
-          <line x1="50" y1="90" x2="85" y2="-60" stroke="#60a5fa" stroke-width="2.5"/>
-          <text x="86" y="-55" class="svg-legend" fill="#60a5fa">f(x)=5x+2</text>
-          <!-- f⁻¹(x)=(x-2)/5: svg_y=80-20*(x-2)/5=80-4x+8=88-4x; svg_x=60+20x -->
-          <!-- x=-2:svg(20,88+8=96≈95); x=0:svg(60,88); x=2:svg(100,80); x=5:svg(160,68 clip) -->
-          <!-- wait: f⁻¹(x)=(x-2)/5. x=-2:(-4/5) → svg_y=80-20*(-4/5)=80+16=96; x=0:(-2/5)→svg_y=80+8=88; x=2:(0)→svg_y=80; x=5:(3/5)→svg_y=80-12=68; x=7:(1)→svg_y=80-20=60; x=12:(2)→svg_y=80-40=40 -->
-          <line x1="20" y1="95.2" x2="150" y2="73.6" stroke="#a78bfa" stroke-width="2.5"/>
-          <text x="152" y="75" class="svg-legend" fill="#a78bfa">f⁻¹(x)=(x−2)/5</text>
-          <!-- verify: point (0,2) on f → (2,0) on f⁻¹ -->
-          <circle cx="60" cy="40" r="4" fill="#60a5fa"/>
-          <circle cx="100" cy="80" r="4" fill="#a78bfa"/>
-          <text x="62" y="36" class="svg-legend" fill="#60a5fa">(0,2)</text>
-          <text x="102" y="76" class="svg-legend" fill="#a78bfa">(2,0)</text>
+        <svg viewBox="0 0 300 300" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:260px;">
+          <defs>
+            <marker id="inv1" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+              <path d="M0,0 L7,3.5 L0,7 Z" fill="#64748b"/>
+            </marker>
+            <clipPath id="clipG6"><rect x="5" y="5" width="290" height="290"/></clipPath>
+          </defs>
+          <!-- origin(100,220), unit=18 -->
+          <!-- Grid: x=0,2,4,6,8 → svg 100,136,172,208,244 -->
+          <!-- y=0,2,4,6,8 → svg 220,184,148,112,76 -->
+          <!-- x=-2,-4 → 64,28; y=-2,-4 → 256,292 -->
+          <line x1="64"  y1="5" x2="64"  y2="292" stroke="#1c2640" stroke-width="0.8"/><!-- x=-2 -->
+          <line x1="136" y1="5" x2="136" y2="292" stroke="#1c2640" stroke-width="0.8"/><!-- x=2 -->
+          <line x1="172" y1="5" x2="172" y2="292" stroke="#1c2640" stroke-width="0.8"/><!-- x=4 -->
+          <line x1="208" y1="5" x2="208" y2="292" stroke="#1c2640" stroke-width="0.8"/><!-- x=6 -->
+          <line x1="244" y1="5" x2="244" y2="292" stroke="#1c2640" stroke-width="0.8"/><!-- x=8 -->
+          <line x1="5" y1="184" x2="292" y2="184" stroke="#1c2640" stroke-width="0.8"/><!-- y=2 -->
+          <line x1="5" y1="148" x2="292" y2="148" stroke="#1c2640" stroke-width="0.8"/><!-- y=4 -->
+          <line x1="5" y1="112" x2="292" y2="112" stroke="#1c2640" stroke-width="0.8"/><!-- y=6 -->
+          <line x1="5" y1="76"  x2="292" y2="76"  stroke="#1c2640" stroke-width="0.8"/><!-- y=8 -->
+          <line x1="5" y1="256" x2="292" y2="256" stroke="#1c2640" stroke-width="0.8"/><!-- y=-2 -->
+          <!-- Axes -->
+          <line x1="8"   y1="220" x2="292" y2="220" stroke="#64748b" stroke-width="1.5" marker-end="url(#inv1)"/>
+          <line x1="100" y1="292" x2="100" y2="8"   stroke="#64748b" stroke-width="1.5" marker-end="url(#inv1)"/>
+          <text x="282" y="234" class="svg-axis-label">x</text>
+          <text x="104" y="16"  class="svg-axis-label">y</text>
+          <!-- Tick labels -->
+          <text x="58"  y="234" class="svg-label">-2</text>
+          <text x="132" y="234" class="svg-label">2</text>
+          <text x="168" y="234" class="svg-label">4</text>
+          <text x="204" y="234" class="svg-label">6</text>
+          <text x="240" y="234" class="svg-label">8</text>
+          <text x="80"  y="188" class="svg-label">2</text>
+          <text x="80"  y="152" class="svg-label">4</text>
+          <text x="80"  y="116" class="svg-label">6</text>
+          <text x="80"  y="80"  class="svg-label">8</text>
+          <text x="77"  y="260" class="svg-label">-2</text>
+          <!-- y=x line: svg_y=320-svg_x. From (28,292) to (292,28) -->
+          <line x1="28" y1="292" x2="292" y2="28" stroke="#253050" stroke-width="1.5" stroke-dasharray="6,3" opacity="0.8"/>
+          <text x="240" y="22" class="svg-legend" fill="#475569">y = x</text>
+          <!-- f(x)=5x+2: visible range where svg_y in [5,292] -->
+          <!-- svg_y=5: y=(220-5)/18=11.94, x=(11.94-2)/5=1.99 → svg_x=100+18*1.99=135.8 -->
+          <!-- svg_y=292: y=(220-292)/18=-4, x=(-4-2)/5=-1.2 → svg_x=100+18*(-1.2)=78.4 -->
+          <line clip-path="url(#clipG6)" x1="78" y1="292" x2="136" y2="5" stroke="#60a5fa" stroke-width="2.5"/>
+          <text x="138" y="8" class="svg-legend" fill="#60a5fa">f(x)=5x+2</text>
+          <!-- f⁻¹(x)=(x-2)/5: visible range svg_x in [5,292] -->
+          <!-- svg_x=5: x=(5-100)/18=-5.28, y=(-5.28-2)/5=-1.46 → svg_y=220+18*1.46=246.3 -->
+          <!-- svg_x=292: x=(292-100)/18=10.67, y=(10.67-2)/5=1.73 → svg_y=220-18*1.73=188.9 -->
+          <line clip-path="url(#clipG6)" x1="5" y1="246" x2="292" y2="189" stroke="#a78bfa" stroke-width="2.5"/>
+          <text x="4" y="243" class="svg-legend" fill="#a78bfa">f⁻¹(x)=(x−2)/5</text>
+          <!-- Key reflected pair: (0,2) on f ↔ (2,0) on f⁻¹ -->
+          <!-- (0,2): svg(100,184); (2,0): svg(136,220) -->
+          <circle cx="100" cy="184" r="5" fill="#60a5fa"/>
+          <circle cx="136" cy="220" r="5" fill="#a78bfa"/>
+          <line x1="100" y1="184" x2="136" y2="220" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="102" y="178" class="svg-legend" fill="#60a5fa">(0,2)</text>
+          <text x="138" y="216" class="svg-legend" fill="#a78bfa">(2,0)</text>
         </svg>
       </div>
 
       <div id="inverse-compose">
         <h3>Verifying with Composition</h3>
-        <div class="box box-teal" style="background:var(--green-dim);border-color:rgba(52,211,153,0.2);">
+        <div class="box" style="background:var(--green-dim);border-color:rgba(52,211,153,0.2);">
           <span class="box-label" style="color:var(--green);">Verification for f(x) = 5x + 2, f⁻¹(x) = (x−2)/5</span>
           <p>(f ∘ f⁻¹)(x) = f(f⁻¹(x)) = f((x−2)/5) = 5·(x−2)/5 + 2 = (x−2) + 2 = <strong>x ✓</strong></p>
           <p>(f⁻¹ ∘ f)(x) = f⁻¹(f(x)) = f⁻¹(5x+2) = (5x+2−2)/5 = 5x/5 = <strong>x ✓</strong></p>
@@ -568,58 +635,71 @@
         <p><strong>Domain of ln x</strong> = (0, ∞) &nbsp;&nbsp; <strong>Range of ln x</strong> = ℝ</p>
         <p style="margin-top:0.5rem;">(f ∘ f⁻¹)(x) = e^(ln x) = x ✓ &nbsp;&nbsp; (f⁻¹ ∘ f)(x) = ln(eˣ) = x ✓</p>
       </div>
+
+      <!-- GRAPH 7: eˣ / ln x — SQUARE viewBox 320×320, origin(80,240), unit=55 -->
+      <!-- svg_x=80+55x, svg_y=240-55y. y=x line: svg_y=(80+240)-svg_x = 320-svg_x -->
       <div class="graph-wrap">
         <div class="graph-title">// f(x)=eˣ and f⁻¹(x)=ln x — reflections across y=x</div>
-        <svg viewBox="-80 -80 220 200" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:260px;">
-          <defs><marker id="inv2" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#64748b"/></marker></defs>
-          <!-- origin(0,0), unit=30 -->
-          <line x1="-75" y1="0" x2="130" y2="0" stroke="#64748b" stroke-width="1.5" marker-end="url(#inv2)"/>
-          <line x1="0" y1="110" x2="0" y2="-75" stroke="#64748b" stroke-width="1.5" marker-end="url(#inv2)"/>
-          <text x="122" y="14" class="svg-axis-label">x</text>
-          <text x="4" y="-68" class="svg-axis-label">y</text>
-          <!-- grid -->
-          <line x1="-75" y1="-60" x2="130" y2="-60" stroke="#1c2640" stroke-width="0.8"/>
-          <line x1="-75" y1="-30" x2="130" y2="-30" stroke="#1c2640" stroke-width="0.8"/>
-          <line x1="-75" y1="30" x2="130" y2="30" stroke="#1c2640" stroke-width="0.8"/>
-          <line x1="-75" y1="60" x2="130" y2="60" stroke="#1c2640" stroke-width="0.8"/>
-          <line x1="-75" y1="90" x2="130" y2="90" stroke="#1c2640" stroke-width="0.8"/>
-          <line x1="-60" y1="-75" x2="-60" y2="110" stroke="#1c2640" stroke-width="0.8"/>
-          <line x1="-30" y1="-75" x2="-30" y2="110" stroke="#1c2640" stroke-width="0.8"/>
-          <line x1="30" y1="-75" x2="30" y2="110" stroke="#1c2640" stroke-width="0.8"/>
-          <line x1="60" y1="-75" x2="60" y2="110" stroke="#1c2640" stroke-width="0.8"/>
-          <line x1="90" y1="-75" x2="90" y2="110" stroke="#1c2640" stroke-width="0.8"/>
-          <line x1="120" y1="-75" x2="120" y2="110" stroke="#1c2640" stroke-width="0.8"/>
-          <!-- tick labels -->
-          <text x="-64" y="14" class="svg-label">-2</text>
-          <text x="-34" y="14" class="svg-label">-1</text>
-          <text x="26" y="14" class="svg-label">1</text>
-          <text x="56" y="14" class="svg-label">2</text>
-          <text x="86" y="14" class="svg-label">3</text>
-          <text x="-18" y="-27" class="svg-label">1</text>
-          <text x="-18" y="-57" class="svg-label">2</text>
-          <text x="-18" y="34" class="svg-label">-1</text>
-          <text x="-18" y="64" class="svg-label">-2</text>
-          <!-- y=x line -->
-          <line x1="-75" y1="75" x2="110" y2="-110" stroke="#253050" stroke-width="1.2" stroke-dasharray="5,3" opacity="0.7"/>
-          <text x="95" y="-70" class="svg-legend" fill="#475569">y = x</text>
-          <!-- eˣ: svg_y=-30*eˣ, svg_x=30*x -->
-          <!-- x=-2:svg(-60,-30*0.135=-4); x=-1:svg(-30,-11); x=0:svg(0,-30); x=0.5:svg(15,-49.5); x=1:svg(30,-81.5); -->
-          <polyline points="-75,-3 -60,-4 -30,-11 -15,-20 0,-30 12,-45 18,-55 24,-72 30,-81.5" stroke="#f59e0b" stroke-width="2.5" fill="none"/>
-          <text x="32" y="-78" class="svg-legend" fill="#f59e0b">eˣ</text>
-          <!-- ln(x): svg_y = -30*ln(x), svg_x=30*x  (x>0) -->
-          <!-- x=0.1:(3,69); x=0.2:(6,48); x=0.5:(15,21); x=1:(30,0); x=2:(60,-20.8); x=3:(90,-33); x=4:(120,-41.6) -->
-          <polyline points="3,69 6,48 10,32 15,21 21,11 30,0 45,-11.7 60,-20.8 90,-33 120,-41.6" stroke="#2dd4bf" stroke-width="2.5" fill="none"/>
-          <text x="122" y="-38" class="svg-legend" fill="#2dd4bf">ln x</text>
-          <!-- key: (1,0) on ln and (0,1) on eˣ -->
-          <circle cx="30" cy="0" r="4" fill="#2dd4bf"/>
-          <circle cx="0" cy="-30" r="4" fill="#f59e0b"/>
-          <text x="32" y="-2" class="svg-legend" fill="#2dd4bf">(1,0)</text>
-          <text x="2" y="-26" class="svg-legend" fill="#f59e0b">(0,1)</text>
-          <!-- legend -->
-          <line x1="-75" y1="-68" x2="-60" y2="-68" stroke="#f59e0b" stroke-width="2"/>
-          <text x="-57" y="-64" class="svg-legend">f(x) = eˣ &nbsp; Df=ℝ, Rf=(0,∞)</text>
-          <line x1="-75" y1="-58" x2="-60" y2="-58" stroke="#2dd4bf" stroke-width="2"/>
-          <text x="-57" y="-54" class="svg-legend">f⁻¹(x) = ln x &nbsp; Df=(0,∞), Rf=ℝ</text>
+        <svg viewBox="0 0 320 320" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:280px;">
+          <defs>
+            <marker id="inv2" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+              <path d="M0,0 L7,3.5 L0,7 Z" fill="#64748b"/>
+            </marker>
+            <clipPath id="clipG7"><rect x="5" y="5" width="310" height="310"/></clipPath>
+          </defs>
+          <!-- origin(80,240), unit=55 -->
+          <!-- Grid: x=-1→25; x=1→135; x=2→190; x=3→245; x=4→300 -->
+          <!-- y=-1→295; y=1→185; y=2→130; y=3→75; y=4→20 -->
+          <line x1="25"  y1="5" x2="25"  y2="312" stroke="#1c2640" stroke-width="0.8"/><!-- x=-1 -->
+          <line x1="135" y1="5" x2="135" y2="312" stroke="#1c2640" stroke-width="0.8"/><!-- x=1 -->
+          <line x1="190" y1="5" x2="190" y2="312" stroke="#1c2640" stroke-width="0.8"/><!-- x=2 -->
+          <line x1="245" y1="5" x2="245" y2="312" stroke="#1c2640" stroke-width="0.8"/><!-- x=3 -->
+          <line x1="300" y1="5" x2="300" y2="312" stroke="#1c2640" stroke-width="0.8"/><!-- x=4 -->
+          <line x1="5" y1="295" x2="312" y2="295" stroke="#1c2640" stroke-width="0.8"/><!-- y=-1 -->
+          <line x1="5" y1="185" x2="312" y2="185" stroke="#1c2640" stroke-width="0.8"/><!-- y=1 -->
+          <line x1="5" y1="130" x2="312" y2="130" stroke="#1c2640" stroke-width="0.8"/><!-- y=2 -->
+          <line x1="5" y1="75"  x2="312" y2="75"  stroke="#1c2640" stroke-width="0.8"/><!-- y=3 -->
+          <line x1="5" y1="20"  x2="312" y2="20"  stroke="#1c2640" stroke-width="0.8"/><!-- y=4 -->
+          <!-- Axes -->
+          <line x1="8"  y1="240" x2="312" y2="240" stroke="#64748b" stroke-width="1.5" marker-end="url(#inv2)"/>
+          <line x1="80" y1="312" x2="80"  y2="8"   stroke="#64748b" stroke-width="1.5" marker-end="url(#inv2)"/>
+          <text x="302" y="254" class="svg-axis-label">x</text>
+          <text x="84"  y="16"  class="svg-axis-label">y</text>
+          <!-- Tick labels -->
+          <text x="19"  y="254" class="svg-label">-1</text>
+          <text x="131" y="254" class="svg-label">1</text>
+          <text x="186" y="254" class="svg-label">2</text>
+          <text x="241" y="254" class="svg-label">3</text>
+          <text x="296" y="254" class="svg-label">4</text>
+          <text x="60"  y="299" class="svg-label">-1</text>
+          <text x="62"  y="189" class="svg-label">1</text>
+          <text x="62"  y="134" class="svg-label">2</text>
+          <text x="62"  y="79"  class="svg-label">3</text>
+          <text x="62"  y="24"  class="svg-label">4</text>
+          <!-- y=x line: svg_y=320-svg_x. Runs from (10,310) to (310,10) -->
+          <line x1="10" y1="310" x2="310" y2="10" stroke="#253050" stroke-width="1.5" stroke-dasharray="6,3" opacity="0.8"/>
+          <text x="264" y="10" class="svg-legend" fill="#475569">y = x</text>
+          <!-- eˣ curve: origin(80,240), unit=55 -->
+          <polyline clip-path="url(#clipG7)"
+            points="0.2,227.1 6.4,225.6 12.6,223.9 18.7,221.9 24.9,219.8 31.1,217.4 37.2,214.7 43.4,211.7 49.5,208.4 55.7,204.6 61.9,200.5 68.0,195.8 74.2,190.5 80.3,184.7 86.5,178.1 92.7,170.8 98.8,162.6 105.0,153.4 111.1,143.1 117.3,131.7 123.5,118.8 129.6,104.5 135.8,88.4 141.9,70.4 148.1,50.3 154.2,27.8"
+            stroke="#f59e0b" stroke-width="2.5" fill="none"/>
+          <!-- ln x curve -->
+          <polyline clip-path="url(#clipG7)"
+            points="96.0,308.1 104.9,283.7 113.8,266.8 122.7,253.9 131.6,243.5 140.5,234.8 149.4,227.2 158.3,220.6 167.2,214.6 176.1,209.3 185.1,204.4 194.0,199.9 202.9,195.8 211.8,191.9 220.7,188.3 229.6,185.0 238.5,181.8 247.4,178.8 256.3,175.9 265.2,173.2 274.1,170.6 283.1,168.2 292.0,165.8 300.9,163.5 309.8,161.4 318.7,159.3"
+            stroke="#2dd4bf" stroke-width="2.5" fill="none"/>
+          <!-- Key points -->
+          <circle cx="80"  cy="185" r="5" fill="#f59e0b"/><!-- (0,1) on eˣ -->
+          <circle cx="135" cy="240" r="5" fill="#2dd4bf"/><!-- (1,0) on ln x -->
+          <text x="82"  y="180" class="svg-legend" fill="#f59e0b">(0,1)</text>
+          <text x="137" y="255" class="svg-legend" fill="#2dd4bf">(1,0)</text>
+          <!-- dashed reflection line between the two key points -->
+          <line x1="80" y1="185" x2="135" y2="240" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+          <!-- Legend -->
+          <rect x="8" y="8" width="135" height="42" rx="5" fill="rgba(7,9,15,0.85)"/>
+          <line x1="14" y1="22" x2="32" y2="22" stroke="#f59e0b" stroke-width="2.5"/>
+          <text x="35" y="26" class="svg-legend">f(x) = eˣ  Df=ℝ, Rf=(0,∞)</text>
+          <line x1="14" y1="40" x2="32" y2="40" stroke="#2dd4bf" stroke-width="2.5"/>
+          <text x="35" y="44" class="svg-legend">f⁻¹(x) = ln x  Df=(0,∞), Rf=ℝ</text>
         </svg>
       </div>
 
@@ -666,7 +746,7 @@
 
     <div class="lec-nav">
       <a href="lecture6.html" class="nav-btn">← Lecture 06</a>
-      <a href="index.html" class="nav-btn">Back to Home →</a>
+      <a href="index.html" class="nav-btn">Back to Course →</a>
     </div>
   </main>
 </div>
