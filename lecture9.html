@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lecture 9 — Differentiation &amp; Derivative Rules</title>
+<title>Lecture 8 — Limits &amp; Their Techniques</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -15,7 +15,7 @@
     --purple:#a78bfa;--purple-dim:rgba(167,139,250,0.12);
     --green:#34d399;--green-dim:rgba(52,211,153,0.1);
     --red:#f87171;--red-dim:rgba(248,113,113,0.1);
-    --pink:#ec4899;--pink-dim:rgba(236,72,153,0.12);
+    --orange:#fb923c;--orange-dim:rgba(251,146,60,0.12);
     --text:#e2e8f0;--muted:#64748b;--muted2:#94a3b8;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
@@ -25,31 +25,31 @@
   .bg-fixed{position:fixed;inset:0;z-index:0;pointer-events:none;}
   .bg-dots{position:absolute;inset:0;background-image:radial-gradient(circle,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:0.5;}
   .bg-glow{position:absolute;border-radius:50%;filter:blur(100px);}
-  .g1{width:500px;height:500px;background:rgba(236,72,153,0.05);top:-100px;right:-100px;}
-  .g2{width:400px;height:400px;background:rgba(96,165,250,0.04);bottom:-50px;left:-100px;}
+  .g1{width:500px;height:500px;background:rgba(251,146,60,0.05);top:-100px;left:-100px;}
+  .g2{width:400px;height:400px;background:rgba(96,165,250,0.04);bottom:-50px;right:-100px;}
 
   .page{position:relative;z-index:1;display:flex;min-height:100vh;}
 
   .sidebar{width:240px;flex-shrink:0;padding:2rem 1.5rem;border-right:1px solid var(--border);position:sticky;top:0;height:100vh;overflow-y:auto;background:rgba(7,9,15,0.6);backdrop-filter:blur(8px);}
   .sidebar-back{display:inline-flex;align-items:center;gap:0.4rem;text-decoration:none;color:var(--muted);font-size:0.8rem;transition:color 0.2s;margin-bottom:2rem;font-family:'JetBrains Mono',monospace;}
-  .sidebar-back:hover{color:var(--pink);}
-  .sidebar-title{font-size:0.7rem;color:var(--pink);text-transform:uppercase;letter-spacing:0.18em;font-family:'JetBrains Mono',monospace;margin-bottom:1rem;}
+  .sidebar-back:hover{color:var(--orange);}
+  .sidebar-title{font-size:0.7rem;color:var(--orange);text-transform:uppercase;letter-spacing:0.18em;font-family:'JetBrains Mono',monospace;margin-bottom:1rem;}
   .toc{list-style:none;}
   .toc li{margin-bottom:0.2rem;}
   .toc a{display:block;padding:0.38rem 0.75rem;text-decoration:none;color:var(--muted2);font-size:0.82rem;border-left:2px solid transparent;border-radius:0 6px 6px 0;transition:all 0.2s;}
-  .toc a:hover,.toc a.active{color:var(--pink);border-left-color:var(--pink);background:var(--pink-dim);}
+  .toc a:hover,.toc a.active{color:var(--orange);border-left-color:var(--orange);background:var(--orange-dim);}
   .toc-sub a{padding-left:1.5rem;font-size:0.78rem;}
 
   .main{flex:1;max-width:800px;padding:3rem 3rem 6rem;margin:0 auto;}
 
   .lec-header{margin-bottom:3.5rem;padding-bottom:2.5rem;border-bottom:1px solid var(--border);}
-  .lec-num{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--pink);text-transform:uppercase;letter-spacing:0.22em;background:var(--pink-dim);border:1px solid rgba(236,72,153,0.2);display:inline-block;padding:0.3rem 0.8rem;border-radius:4px;margin-bottom:1.25rem;}
+  .lec-num{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--orange);text-transform:uppercase;letter-spacing:0.22em;background:var(--orange-dim);border:1px solid rgba(251,146,60,0.2);display:inline-block;padding:0.3rem 0.8rem;border-radius:4px;margin-bottom:1.25rem;}
   .lec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,3.5rem);font-weight:700;line-height:1.1;margin-bottom:1rem;}
-  .lec-title em{font-style:italic;background:linear-gradient(100deg,var(--pink),var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .lec-title em{font-style:italic;background:linear-gradient(100deg,var(--orange),var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
   .lec-desc{color:var(--muted2);font-size:1rem;max-width:560px;line-height:1.7;}
 
   section{margin-bottom:4rem;scroll-margin-top:2rem;}
-  .sec-badge{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--pink);text-transform:uppercase;letter-spacing:0.2em;margin-bottom:0.6rem;}
+  .sec-badge{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--orange);text-transform:uppercase;letter-spacing:0.2em;margin-bottom:0.6rem;}
   h2{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;margin-bottom:1.5rem;}
   h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;margin:1.75rem 0 0.75rem;}
   p{margin-bottom:1rem;color:var(--muted2);}
@@ -63,8 +63,8 @@
   .box-note .box-label{color:var(--accent);}
   .box-rule{background:var(--purple-dim);border-color:rgba(167,139,250,0.2);}
   .box-rule .box-label{color:var(--purple);}
-  .box-pink{background:var(--pink-dim);border-color:rgba(236,72,153,0.2);}
-  .box-pink .box-label{color:var(--pink);}
+  .box-orange{background:var(--orange-dim);border-color:rgba(251,146,60,0.2);}
+  .box-orange .box-label{color:var(--orange);}
   .box-formula{background:var(--surface2);border-color:var(--border2);text-align:center;}
   .box-label{font-size:0.72rem;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:0.5rem;display:block;}
   .box p{margin:0;}.box p+p{margin-top:0.5rem;}
@@ -81,7 +81,7 @@
   .ex-card-result{margin-top:0.75rem;font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--green);font-weight:500;}
 
   .solution{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin:1.25rem 0;}
-  .solution-title{font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--pink);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem;}
+  .solution-title{font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--orange);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem;}
   .sol-step{display:flex;gap:1rem;margin-bottom:0.85rem;align-items:flex-start;}
   .sol-arrow{flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:var(--muted);padding-top:0.1rem;}
   .sol-expr{font-family:'JetBrains Mono',monospace;font-size:0.92rem;color:var(--text);}
@@ -93,7 +93,7 @@
 
   .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
   .rule-table{width:100%;border-collapse:collapse;margin:1.25rem 0;}
-  .rule-table th{background:var(--surface2);border:1px solid var(--border2);padding:0.65rem 1rem;text-align:left;font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--pink);text-transform:uppercase;letter-spacing:0.1em;}
+  .rule-table th{background:var(--surface2);border:1px solid var(--border2);padding:0.65rem 1rem;text-align:left;font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--orange);text-transform:uppercase;letter-spacing:0.1em;}
   .rule-table td{border:1px solid var(--border);padding:0.65rem 1rem;font-size:0.88rem;color:var(--muted2);}
   .rule-table tr:hover td{background:var(--surface2);}
 
@@ -111,7 +111,6 @@
   .svg-axis-label{font-family:'JetBrains Mono',monospace;font-size:12px;fill:#64748b;}
   .svg-legend{font-family:'JetBrains Mono',monospace;font-size:10px;fill:#94a3b8;}
 </style>
-<base target="_blank">
 </head>
 <body>
 
@@ -123,266 +122,295 @@
 
 <div class="page">
   <aside class="sidebar">
-    <a href="index.html" class="sidebar-back" target="_self">← Back to Course</a>
+    <a href="index.html" class="sidebar-back">← Back to Course</a>
     <div class="sidebar-title">// Contents</div>
     <ul class="toc">
-      <li><a href="#line">1. Line Equation Review</a></li>
-      <li><a href="#definition">2. The Derivative</a></li>
-      <li><a href="#basic">3. Basic Rules</a></li>
-      <li class="toc-sub"><a href="#constant">Constant &amp; Power</a></li>
-      <li class="toc-sub"><a href="#sum">Sum, Difference, Constant Multiple</a></li>
-      <li><a href="#exp-log">4. Exponential &amp; Logarithmic</a></li>
-      <li><a href="#product-quotient">5. Product &amp; Quotient Rules</a></li>
-      <li><a href="#chain">6. The Chain Rule</a></li>
-      <li><a href="#higher">7. Higher Derivatives</a></li>
+      <li><a href="#definition">1. What is a Limit?</a></li>
+      <li><a href="#estimating">2. Estimating Limits</a></li>
+      <li class="toc-sub"><a href="#one-sided">One-Sided Limits</a></li>
+      <li><a href="#no-limit">3. When Limits Fail</a></li>
+      <li><a href="#techniques">4. Finding Limits</a></li>
+      <li class="toc-sub"><a href="#direct">Direct Substitution</a></li>
+      <li class="toc-sub"><a href="#factor">Factorization</a></li>
+      <li class="toc-sub"><a href="#rationalize">Rationalizing</a></li>
+      <li class="toc-sub"><a href="#infinity">Limits to Infinity</a></li>
+      <li><a href="#piecewise">5. Piecewise Functions</a></li>
     </ul>
   </aside>
 
   <main class="main">
     <header class="lec-header">
-      <div class="lec-num">Lecture 09</div>
-      <h1 class="lec-title">Differentiation &amp; <em>Derivative Rules</em></h1>
-      <p class="lec-desc">From the limit definition of slope to the full toolkit of differentiation — power, product, quotient, and chain rules for every function you will meet.</p>
+      <div class="lec-num">Lecture 08</div>
+      <h1 class="lec-title">Limits &amp; <em>Their Techniques</em></h1>
+      <p class="lec-desc">The bridge between algebra and calculus — understanding how functions behave as inputs approach a point, with numerical, graphical, and algebraic techniques.</p>
     </header>
 
-    <section id="line" class="reveal">
+    <section id="definition" class="reveal">
       <div class="sec-badge">// Section 1</div>
-      <h2>Line Equation Review</h2>
-      <p>Before derivatives, recall that the slope of a line through two points <span class="math">(x₁, y₁)</span> and <span class="math">(x₂, y₂)</span> is:</p>
-      <div class="box box-formula">
-        <span class="big-formula">m = (y₂ − y₁)/(x₂ − x₁)</span>
+      <h2>What is a Limit?</h2>
+      <div class="box box-def">
+        <span class="box-label">Definition</span>
+        <p>If <span class="math">f(x)</span> becomes arbitrarily close to a unique number <span class="math">L</span> as <span class="math">x</span> approaches <span class="math">c</span> from either side, then the <strong>limit</strong> of <span class="math">f(x)</span> as <span class="math">x</span> approaches <span class="math">c</span> is <span class="math">L</span>.</p>
+        <span class="big-formula">lim<sub>x→c</sub> f(x) = L</span>
       </div>
-      <p>The <strong>point-slope form</strong> with slope <span class="math">m</span> through <span class="math">(x₁, y₁)</span>:</p>
-      <div class="box box-formula">
-        <span class="big-formula">y − y₁ = m(x − x₁)</span>
-      </div>
+      <p>The limit describes the <em>destination</em> the function is heading toward, not necessarily the value it actually reaches at <span class="math">x = c</span>.</p>
       <div class="box box-ex">
-        <span class="box-label">Example</span>
-        <p>Find the equation of the line through <span class="math">(1, 4)</span> and <span class="math">(5, 12)</span>.</p>
-        <p class="math-block">m = (12 − 4)/(5 − 1) = 8/4 = 2</p>
-        <p class="math-block">y − 4 = 2(x − 1) → y = 2x + 2</p>
+        <span class="box-label">Classic Example</span>
+        <p>How does <span class="math">f(x) = (x² − 1)/(x − 1)</span> behave near <span class="math">x = 1</span>?</p>
+        <p>Direct substitution gives <span class="math">0/0</span> (undefined), but for every <span class="math">x ≠ 1</span> we can simplify:</p>
+        <p class="math-block">(x² − 1)/(x − 1) = (x − 1)(x + 1)/(x − 1) = x + 1</p>
+        <p>As <span class="math">x → 1</span>, the expression approaches <span class="math">1 + 1 = 2</span>. Therefore:</p>
+        <p class="math-block">lim<sub>x→1</sub> (x² − 1)/(x − 1) = 2</p>
       </div>
     </section>
 
-    <section id="definition" class="reveal">
+    <section id="estimating" class="reveal">
       <div class="sec-badge">// Section 2</div>
-      <h2>The Derivative</h2>
-      <div class="box box-def">
-        <span class="box-label">Limit Definition</span>
-        <p>For a function <span class="math">y = f(x)</span>, its derivative at <span class="math">x</span> is:</p>
-        <span class="big-formula">f′(x) = lim<sub>h→0</sub> [f(x+h) − f(x)]/h</span>
-        <p style="margin-top:0.5rem;">If this limit exists, we say <span class="math">f</span> is <strong>differentiable</strong> at <span class="math">x</span>.</p>
+      <h2>Estimating Limits</h2>
+      <p>When the limit is not obvious, we can estimate it numerically by sampling points closer and closer to <span class="math">c</span>, or graphically by zooming in.</p>
+
+      <div class="box box-orange">
+        <span class="box-label">Numerical Estimation</span>
+        <p>Estimate <span class="math">lim<sub>x→0</sub> (√(x+1) − 1)/x</span></p>
       </div>
-      <p>Geometrically, the derivative is the <strong>instantaneous rate of change</strong> — the slope of the tangent line at a point, obtained by letting the secant line between two nearby points collapse to a single point.</p>
+      <div class="table-scroll">
+        <table class="rule-table">
+          <thead>
+            <tr><th>x</th><th>−0.1</th><th>−0.01</th><th>−0.001</th><th>0</th><th>0.001</th><th>0.01</th><th>0.1</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>f(x)</td><td>0.513</td><td>0.501</td><td>0.500</td><td>?</td><td>0.500</td><td>0.499</td><td>0.488</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>From both sides, <span class="math">f(x)</span> appears to approach <span class="math">0.5</span>. In fact, rationalizing the numerator confirms the limit is exactly <span class="math">1/2</span>.</p>
 
       <div class="graph-wrap">
-        <div class="graph-title">// Secant line → Tangent line as h → 0</div>
+        <div class="graph-title">// Graphical interpretation: as x → c, f(x) → L</div>
         <svg viewBox="0 0 320 220" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:220px;">
           <defs>
-            <marker id="ah9" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+            <marker id="ah8" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
               <path d="M0,0 L7,3.5 L0,7 Z" fill="#64748b"/>
             </marker>
           </defs>
-          <line x1="30" y1="190" x2="300" y2="190" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah9)"/>
-          <line x1="50" y1="210" x2="50" y2="20" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah9)"/>
+          <line x1="30" y1="190" x2="300" y2="190" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah8)"/>
+          <line x1="60" y1="210" x2="60" y2="20" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah8)"/>
           <text x="290" y="204" class="svg-axis-label">x</text>
-          <text x="54" y="18" class="svg-axis-label">y</text>
-          <!-- Smooth curve: cubic bezier through P(170,110) and Q(229,81) -->
-          <path d="M 50 190 C 100 150, 130 130, 170 110 C 210 90, 250 70, 280 60" stroke="#e2e8f0" stroke-width="2" fill="none"/>
-          <!-- Point P on curve -->
-          <circle cx="170" cy="110" r="5" fill="#ec4899"/>
-          <text x="175" y="105" class="svg-legend" fill="#ec4899">P(x, f(x))</text>
-          <!-- Point Q on curve (t≈0.5 of second cubic segment) -->
-          <circle cx="229" cy="81" r="4" fill="#a78bfa"/>
-          <text x="235" y="75" class="svg-legend" fill="#a78bfa">Q(x+h, f(x+h))</text>
-          <!-- Secant line through P and Q -->
-          <line x1="130" y1="130" x2="260" y2="65" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="5,3"/>
-          <text x="265" y="60" class="svg-legend" fill="#60a5fa">secant slope = Δy/Δx</text>
-          <!-- Tangent line at P (slope matches curve derivative at P) -->
-          <line x1="110" y1="140" x2="230" y2="80" stroke="#ec4899" stroke-width="2.5"/>
-          <text x="80" y="135" class="svg-legend" fill="#ec4899">tangent slope = f′(x)</text>
+          <text x="64" y="18" class="svg-axis-label">y</text>
+          <!-- Grid -->
+          <line x1="60" y1="150" x2="300" y2="150" stroke="#1c2640" stroke-width="0.8"/>
+          <line x1="60" y1="110" x2="300" y2="110" stroke="#1c2640" stroke-width="0.8"/>
+          <line x1="60" y1="70" x2="300" y2="70" stroke="#1c2640" stroke-width="0.8"/>
+          <line x1="140" y1="20" x2="140" y2="190" stroke="#1c2640" stroke-width="0.8"/>
+          <line x1="220" y1="20" x2="220" y2="190" stroke="#1c2640" stroke-width="0.8"/>
+          <!-- Curve approaching L from both sides -->
+          <path d="M 30 170 Q 80 130 120 112" stroke="#fb923c" stroke-width="2.5" fill="none"/>
+          <path d="M 160 108 Q 220 105 280 100" stroke="#fb923c" stroke-width="2.5" fill="none"/>
+          <!-- L line -->
+          <line x1="60" y1="110" x2="300" y2="110" stroke="#34d399" stroke-width="1.5" stroke-dasharray="6,3" opacity="0.7"/>
+          <text x="64" y="106" class="svg-legend" fill="#34d399">L</text>
+          <!-- c line -->
+          <line x1="140" y1="20" x2="140" y2="190" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="6,3" opacity="0.7"/>
+          <text x="144" y="204" class="svg-legend" fill="#f59e0b">c</text>
+          <!-- Open circle at (c, L) showing limit exists even if f(c) undefined -->
+          <circle cx="140" cy="110" r="4" fill="none" stroke="#fb923c" stroke-width="2"/>
+          <text x="150" y="100" class="svg-legend" fill="#fb923c">limit = L even if f(c) is undefined</text>
         </svg>
       </div>
+    </section>
 
-      <div class="box box-pink">
-        <span class="box-label">Notation</span>
-        <p>The derivative can be written in many equivalent ways:</p>
-        <p class="math-block">f′(x) &nbsp;&nbsp; or &nbsp;&nbsp; d/dx f(x) &nbsp;&nbsp; or &nbsp;&nbsp; y′ &nbsp;&nbsp; or &nbsp;&nbsp; dy/dx</p>
+    <section id="one-sided" class="reveal">
+      <h3>One-Sided Limits</h3>
+      <div class="box box-def">
+        <span class="box-label">Left-Hand &amp; Right-Hand Limits</span>
+        <p><span class="math">lim<sub>x→c⁻</sub> f(x) = L</span> — the limit as x approaches c from the <strong>left</strong> (values less than c).</p>
+        <p><span class="math">lim<sub>x→c⁺</sub> f(x) = L</span> — the limit as x approaches c from the <strong>right</strong> (values greater than c).</p>
       </div>
-
-      <h3>Examples from the Definition</h3>
-      <div class="box box-ex">
-        <span class="box-label">Example 1 — f(x) = 3x + 5</span>
-        <p class="math-block">f(x+h) = 3(x+h) + 5 = 3x + 3h + 5</p>
-        <p class="math-block">[f(x+h) − f(x)]/h = [3x + 3h + 5 − 3x − 5]/h = 3h/h = 3</p>
-        <p class="math-block">f′(x) = lim<sub>h→0</sub> 3 = 3</p>
-      </div>
-      <div class="box box-ex">
-        <span class="box-label">Example 2 — f(x) = x²</span>
-        <p class="math-block">[f(x+h) − f(x)]/h = [(x+h)² − x²]/h = [2xh + h²]/h = 2x + h</p>
-        <p class="math-block">f′(x) = lim<sub>h→0</sub> (2x + h) = 2x</p>
+      <div class="box box-note">
+        <span class="box-label">Existence Rule</span>
+        <p>The two-sided limit <span class="math">lim<sub>x→c</sub> f(x)</span> exists <strong>if and only if</strong> both one-sided limits exist and are equal:</p>
+        <p class="math-block">lim<sub>x→c⁻</sub> f(x) = lim<sub>x→c⁺</sub> f(x) = L</p>
       </div>
     </section>
 
-    <section id="basic" class="reveal">
+    <section id="no-limit" class="reveal">
       <div class="sec-badge">// Section 3</div>
-      <h2>Basic Differentiation Rules</h2>
-      <p>Instead of using the limit definition every time, we have rules that let us differentiate instantly.</p>
+      <h2>When Limits Do Not Exist</h2>
+      <p>A limit fails to exist in three common situations:</p>
+      <div class="ex-grid">
+        <div class="ex-card">
+          <div class="ex-card-label">1. Jump Discontinuity</div>
+          <div class="ex-card-fn">Left ≠ Right</div>
+          <div class="ex-card-steps">The Heaviside step function H(t) has H(t)=0 for t&lt;0 and H(t)=1 for t≥0. lim<sub>t→0⁻</sub> H(t)=0 but lim<sub>t→0⁺</sub> H(t)=1. The two-sided limit does not exist.</div>
+        </div>
+        <div class="ex-card">
+          <div class="ex-card-label">2. Infinite Limit</div>
+          <div class="ex-card-fn">Blows up to ±∞</div>
+          <div class="ex-card-steps">lim<sub>x→0</sub> 1/x² = +∞. The function grows without bound and never settles near any finite number L. We write the limit does not exist (DNE), or say it "equals infinity" informally.</div>
+        </div>
+        <div class="ex-card">
+          <div class="ex-card-label">3. Wild Oscillation</div>
+          <div class="ex-card-fn">No single value</div>
+          <div class="ex-card-steps">Some functions oscillate infinitely fast near a point (e.g. sin(1/x) near 0), never honing in on one value. The limit DNE.</div>
+        </div>
+      </div>
+
+      <div class="graph-wrap">
+        <div class="graph-title">// Heaviside step function — left and right limits disagree</div>
+        <svg viewBox="0 0 320 180" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:180px;">
+          <defs>
+            <marker id="ah81" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+              <path d="M0,0 L7,3.5 L0,7 Z" fill="#64748b"/>
+            </marker>
+          </defs>
+          <line x1="20" y1="150" x2="300" y2="150" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah81)"/>
+          <line x1="160" y1="170" x2="160" y2="10" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah81)"/>
+          <text x="290" y="164" class="svg-axis-label">t</text>
+          <text x="164" y="16" class="svg-axis-label">H(t)</text>
+          <!-- Left branch y=0 -->
+          <line x1="20" y1="130" x2="160" y2="130" stroke="#60a5fa" stroke-width="2.5"/>
+          <circle cx="160" cy="130" r="4" fill="none" stroke="#60a5fa" stroke-width="2"/>
+          <!-- Right branch y=1 -->
+          <line x1="160" y1="70" x2="300" y2="70" stroke="#60a5fa" stroke-width="2.5"/>
+          <circle cx="160" cy="70" r="4" fill="#60a5fa"/>
+          <text x="80" y="124" class="svg-legend" fill="#60a5fa">lim<sub>t→0⁻</sub> = 0</text>
+          <text x="200" y="64" class="svg-legend" fill="#60a5fa">lim<sub>t→0⁺</sub> = 1</text>
+          <text x="164" y="164" class="svg-label">0</text>
+        </svg>
+      </div>
     </section>
 
-    <section id="constant" class="reveal">
-      <h3>Constant &amp; Power Rules</h3>
-      <div class="box box-rule">
-        <span class="box-label">Rule 1 — Constant Rule</span>
-        <span class="big-formula">d/dx(c) = 0</span>
-        <p style="margin-top:0.5rem;">The derivative of a constant is zero — its graph is a horizontal line with no change.</p>
-      </div>
-      <div class="box box-rule">
-        <span class="box-label">Rule 2 — Power Rule</span>
-        <span class="big-formula">d/dx(xⁿ) = n·xⁿ⁻¹</span>
-        <p style="margin-top:0.5rem;">For <strong>any</strong> real number n. This is the most frequently used rule in calculus.</p>
-      </div>
-      <div class="box box-ex">
-        <span class="box-label">Power Rule Examples</span>
-        <p><span class="math">d/dx(x³) = 3x²</span></p>
-        <p><span class="math">d/dx(x^(2/3)) = (2/3)x^(−1/3)</span></p>
-        <p><span class="math">d/dx(1/x⁴) = d/dx(x^(−4)) = −4x^(−5)</span></p>
-        <p><span class="math">d/dx(√x) = d/dx(x^(1/2)) = (1/2)x^(−1/2) = 1/(2√x)</span></p>
-      </div>
-    </section>
-
-    <section id="sum" class="reveal">
-      <h3>Sum, Difference &amp; Constant Multiple</h3>
-      <div class="box box-rule">
-        <span class="box-label">Rule 3 — Constant Multiple Rule</span>
-        <span class="big-formula">d/dx [c·f(x)] = c·f′(x)</span>
-      </div>
-      <div class="box box-rule">
-        <span class="box-label">Rule 4 — Sum &amp; Difference Rules</span>
-        <span class="big-formula">d/dx [f(x) ± g(x)] = f′(x) ± g′(x)</span>
-      </div>
-      <div class="box box-ex">
-        <span class="box-label">Worked Example</span>
-        <p>Differentiate <span class="math">f(x) = 2x⁵ + 7</span></p>
-        <p class="math-block">f′(x) = d/dx(2x⁵) + d/dx(7) = 2·5x⁴ + 0 = 10x⁴</p>
-      </div>
-      <div class="box box-ex">
-        <span class="box-label">Example — Polynomial</span>
-        <p>Differentiate <span class="math">y = x⁸ + 12x⁵ − 4x⁴ + 10x³ − 6x + 5</span></p>
-        <p class="math-block">y′ = 8x⁷ + 60x⁴ − 16x³ + 30x² − 6</p>
-      </div>
-    </section>
-
-    <section id="exp-log" class="reveal">
+    <section id="techniques" class="reveal">
       <div class="sec-badge">// Section 4</div>
-      <h2>Exponential &amp; Logarithmic Rules</h2>
-      <div class="ex-grid">
-        <div class="ex-card">
-          <div class="ex-card-label">Natural Exponential</div>
-          <div class="ex-card-fn">d/dx(eˣ) = eˣ</div>
-          <div class="ex-card-steps">The function eˣ is its own derivative — unique and essential.</div>
-        </div>
-        <div class="ex-card">
-          <div class="ex-card-label">Natural Logarithm</div>
-          <div class="ex-card-fn">d/dx(ln x) = 1/x</div>
-          <div class="ex-card-steps">For x &gt; 0. More generally: d/dx[ln f(x)] = f′(x)/f(x).</div>
-        </div>
-        <div class="ex-card">
-          <div class="ex-card-label">General Exponential</div>
-          <div class="ex-card-fn">d/dx(aˣ) = aˣ·ln a</div>
-          <div class="ex-card-steps">Example: d/dx(2ˣ) = 2ˣ·ln 2.</div>
-        </div>
-        <div class="ex-card">
-          <div class="ex-card-label">General Logarithm</div>
-          <div class="ex-card-fn">d/dx(logₐ x) = 1/(x ln a)</div>
-          <div class="ex-card-steps">Derived from the change-of-base formula.</div>
-        </div>
-      </div>
-      <div class="box box-ex">
-        <span class="box-label">Example — Combined</span>
-        <p>If <span class="math">f(x) = eˣ − x</span>, then <span class="math">f′(x) = eˣ − 1</span>.</p>
-      </div>
+      <h2>Techniques for Finding Limits</h2>
     </section>
 
-    <section id="product-quotient" class="reveal">
-      <div class="sec-badge">// Section 5</div>
-      <h2>Product &amp; Quotient Rules</h2>
-      <div class="box box-rule">
-        <span class="box-label">Product Rule</span>
-        <span class="big-formula">d/dx [f(x)·g(x)] = f(x)·g′(x) + g(x)·f′(x)</span>
-      </div>
-      <div class="box box-ex">
-        <span class="box-label">Example — Product Rule</span>
-        <p>Let <span class="math">f(x) = x·eˣ</span>.</p>
-        <p class="math-block">f′(x) = x·d/dx(eˣ) + eˣ·d/dx(x) = x·eˣ + eˣ·1 = (x + 1)eˣ</p>
+    <section id="direct" class="reveal">
+      <h3>Direct Substitution &amp; Limit Laws</h3>
+      <div class="box box-def">
+        <span class="box-label">Direct Substitution</span>
+        <p>If <span class="math">f</span> is a polynomial or rational function and <span class="math">a</span> is in the domain of <span class="math">f</span>, then:</p>
+        <span class="big-formula">lim<sub>x→a</sub> f(x) = f(a)</span>
       </div>
       <div class="box box-rule">
-        <span class="box-label">Quotient Rule</span>
-        <span class="big-formula">d/dx [f(x)/g(x)] = [g(x)·f′(x) − f(x)·g′(x)] / [g(x)]²</span>
-      </div>
-      <div class="box box-ex">
-        <span class="box-label">Example — Quotient Rule</span>
-        <p>Let <span class="math">y = (ln x)/x³</span>.</p>
-        <p class="math-block">y′ = [x³·(1/x) − (ln x)·3x²] / x⁶ = [x² − 3x²·ln x] / x⁶ = (1 − 3 ln x)/x⁴</p>
-      </div>
-    </section>
-
-    <section id="chain" class="reveal">
-      <div class="sec-badge">// Section 6</div>
-      <h2>The Chain Rule</h2>
-      <p>The Chain Rule is for <strong>composite functions</strong> — functions inside functions. It is the most powerful rule in differentiation.</p>
-      <div class="box box-rule">
-        <span class="box-label">Chain Rule</span>
-        <p>If <span class="math">y = f(g(x))</span>, then:</p>
-        <span class="big-formula">dy/dx = f′(g(x)) · g′(x)</span>
-        <p style="margin-top:0.5rem;">In words: "derivative of the outside (evaluated at the inside) × derivative of the inside."</p>
-      </div>
-
-      <h3>Special Cases of the Chain Rule</h3>
-      <div class="ex-grid">
-        <div class="ex-card">
-          <div class="ex-card-label">General Power</div>
-          <div class="ex-card-fn">d/dx [g(x)]ⁿ = n[g(x)]ⁿ⁻¹ · g′(x)</div>
-          <div class="ex-card-steps">Example: d/dx (x³ − 1)^100 = 100(x³ − 1)^99 · 3x² = 300x²(x³ − 1)^99</div>
+        <span class="box-label">The Limit Laws</span>
+        <p>Suppose <span class="math">lim<sub>x→a</sub> f(x)</span> and <span class="math">lim<sub>x→a</sub> g(x)</span> both exist. Then:</p>
+        <div class="table-scroll">
+          <table class="rule-table">
+            <thead><tr><th>Law</th><th>Formula</th></tr></thead>
+            <tbody>
+              <tr><td>Sum</td><td>lim [f(x) + g(x)] = lim f(x) + lim g(x)</td></tr>
+              <tr><td>Difference</td><td>lim [f(x) − g(x)] = lim f(x) − lim g(x)</td></tr>
+              <tr><td>Constant Multiple</td><td>lim [c·f(x)] = c·lim f(x)</td></tr>
+              <tr><td>Product</td><td>lim [f(x)·g(x)] = lim f(x) · lim g(x)</td></tr>
+              <tr><td>Quotient</td><td>lim [f(x)/g(x)] = lim f(x) / lim g(x), if lim g(x) ≠ 0</td></tr>
+              <tr><td>Power</td><td>lim [f(x)]ⁿ = [lim f(x)]ⁿ</td></tr>
+              <tr><td>Root</td><td>lim ⁿ√f(x) = ⁿ√lim f(x)</td></tr>
+            </tbody>
+          </table>
         </div>
-        <div class="ex-card">
-          <div class="ex-card-label">Exponential Chain</div>
-          <div class="ex-card-fn">d/dx e^(g(x)) = e^(g(x)) · g′(x)</div>
-          <div class="ex-card-steps">Example: d/dx e^(5x) = 5e^(5x). &nbsp; d/dx e^(x²+1) = 2x·e^(x²+1)</div>
-        </div>
-        <div class="ex-card">
-          <div class="ex-card-label">Logarithmic Chain</div>
-          <div class="ex-card-fn">d/dx ln(g(x)) = g′(x) / g(x)</div>
-          <div class="ex-card-steps">Example: d/dx ln(x³ + 1) = 3x²/(x³ + 1)</div>
-        </div>
-        <div class="ex-card">
-          <div class="ex-card-label">General Exponential Chain</div>
-          <div class="ex-card-fn">d/dx a^(g(x)) = a^(g(x)) · ln a · g′(x)</div>
-          <div class="ex-card-steps">Example: d/dx 3^(2x²) = 3^(2x²) · ln 3 · 4x</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="higher" class="reveal">
-      <div class="sec-badge">// Section 7</div>
-      <h2>Higher Derivatives</h2>
-      <p>The derivative of a derivative is the <strong>second derivative</strong>, denoted <span class="math">f″(x)</span> or <span class="math">d²y/dx²</span>. We can continue indefinitely:</p>
-      <div class="box box-formula">
-        <span class="big-formula">f′(x) → f″(x) → f‴(x) → f⁽⁴⁾(x) → … → f⁽ⁿ⁾(x)</span>
       </div>
       <div class="box box-ex">
         <span class="box-label">Example</span>
-        <p>Let <span class="math">y = x³ − 3x² + 2</span></p>
-        <p class="math-block">y′ = 3x² − 6x</p>
-        <p class="math-block">y″ = 6x − 6</p>
-        <p class="math-block">y‴ = 6</p>
-        <p class="math-block">y⁽⁴⁾ = 0</p>
+        <p>Evaluate <span class="math">lim<sub>x→5</sub> (2x² − 3x + 4)</span></p>
+        <p class="math-block">= 2(5)² − 3(5) + 4 = 50 − 15 + 4 = 39</p>
+      </div>
+    </section>
+
+    <section id="factor" class="reveal">
+      <h3>Factorization &amp; Dividing Out</h3>
+      <p>When direct substitution yields the indeterminate form <span class="math">0/0</span>, factor the numerator and denominator, cancel common factors, then substitute again.</p>
+      <div class="box box-orange">
+        <span class="box-label">Example — 0/0 Form</span>
+        <p>Find <span class="math">lim<sub>x→−3</sub> (x² + x − 6)/(x + 3)</span></p>
+      </div>
+      <div class="solution">
+        <div class="solution-title">// Factor, cancel, substitute</div>
+        <div class="sol-step"><span class="sol-arrow">⟹</span><span class="sol-expr">(x² + x − 6)/(x + 3) = (x − 2)(x + 3)/(x + 3)</span><span class="sol-note">factor numerator</span></div>
+        <div class="sol-step"><span class="sol-arrow">⟹</span><span class="sol-expr">= x − 2</span><span class="sol-note">cancel (x + 3), x ≠ −3</span></div>
+        <div class="sol-step"><span class="sol-arrow">⟹</span><span class="sol-expr">lim<sub>x→−3</sub> (x − 2) = −3 − 2</span></div>
+        <span class="sol-result">= −5</span>
+      </div>
+
+      <div class="box box-ex">
+        <span class="box-label">More Examples</span>
+        <p><span class="math">lim<sub>x→2</sub> (x² − 4)/(x³ − 8)</span> = <span class="math">lim (x−2)(x+2)/[(x−2)(x²+2x+4)] = lim (x+2)/(x²+2x+4) = 4/12 = 1/3</span></p>
+        <p><span class="math">lim<sub>x→3</sub> (x² − 9)/(x² − 5x + 6)</span> = <span class="math">lim (x−3)(x+3)/[(x−2)(x−3)] = lim (x+3)/(x−2) = 6/1 = 6</span></p>
+      </div>
+    </section>
+
+    <section id="rationalize" class="reveal">
+      <h3>Rationalizing Technique</h3>
+      <p>When a radical appears in the numerator and direct substitution gives <span class="math">0/0</span>, multiply numerator and denominator by the <strong>conjugate</strong> of the radical expression.</p>
+      <div class="box box-orange">
+        <span class="box-label">Example</span>
+        <p>Find <span class="math">lim<sub>x→0</sub> (√(x+1) − 1)/x</span></p>
+      </div>
+      <div class="solution">
+        <div class="solution-title">// Multiply by conjugate √(x+1) + 1</div>
+        <div class="sol-step"><span class="sol-arrow">⟹</span><span class="sol-expr">[(√(x+1) − 1)/x] · [(√(x+1) + 1)/(√(x+1) + 1)]</span></div>
+        <div class="sol-step"><span class="sol-arrow">⟹</span><span class="sol-expr">= [(x+1) − 1] / [x(√(x+1) + 1)] = x / [x(√(x+1) + 1)]</span></div>
+        <div class="sol-step"><span class="sol-arrow">⟹</span><span class="sol-expr">= 1 / (√(x+1) + 1)</span><span class="sol-note">cancel x, x ≠ 0</span></div>
+        <div class="sol-step"><span class="sol-arrow">⟹</span><span class="sol-expr">= 1 / (√1 + 1) = 1/2</span></div>
+        <span class="sol-result">lim = 1/2</span>
+      </div>
+    </section>
+
+    <section id="infinity" class="reveal">
+      <h3>Limits to Infinity</h3>
+      <div class="box box-def">
+        <span class="box-label">Rational Functions at Infinity</span>
+        <p>For polynomials, divide numerator and denominator by the <strong>highest power of x</strong> in the denominator, then use the fact that <span class="math">lim<sub>x→∞</sub> 1/xⁿ = 0</span> for <span class="math">n &gt; 0</span>.</p>
+      </div>
+      <div class="ex-grid">
+        <div class="ex-card">
+          <div class="ex-card-label">deg(N) &lt; deg(D)</div>
+          <div class="ex-card-fn">Limit = 0</div>
+          <div class="ex-card-steps">lim<sub>x→∞</sub> (x³+3x+6)/(x⁵+2x²+9) = 0</div>
+        </div>
+        <div class="ex-card">
+          <div class="ex-card-label">deg(N) = deg(D)</div>
+          <div class="ex-card-fn">Limit = ratio of leading coefficients</div>
+          <div class="ex-card-steps">lim<sub>x→∞</sub> (3x²+2x+1)/(5x²−x+4) = 3/5</div>
+        </div>
+        <div class="ex-card">
+          <div class="ex-card-label">deg(N) &gt; deg(D)</div>
+          <div class="ex-card-fn">Limit = ±∞</div>
+          <div class="ex-card-steps">lim<sub>x→∞</sub> (x⁷+4x⁵+2)/(2x⁵+3x²+1) = ∞</div>
+        </div>
+      </div>
+      <div class="box box-note">
+        <span class="box-label">Special Limits to Remember</span>
+        <p><span class="math">lim<sub>x→0</sub> eˣ = 1</span> &nbsp;&nbsp; <span class="math">lim<sub>x→1</sub> ln x = 0</span> &nbsp;&nbsp; <span class="math">lim<sub>x→∞</sub> ln x = ∞</span></p>
+        <p><span class="math">lim<sub>x→0</sub> (eˣ − 1)/x = 1</span> &nbsp;&nbsp; <span class="math">lim<sub>x→0</sub> ln(1+x)/x = 1</span></p>
+      </div>
+    </section>
+
+    <section id="piecewise" class="reveal">
+      <div class="sec-badge">// Section 5</div>
+      <h2>Piecewise Functions &amp; Limits</h2>
+      <p>For a piecewise function, always check the <strong>left-hand</strong> and <strong>right-hand</strong> limits separately at the boundary points.</p>
+      <div class="box box-ex">
+        <span class="box-label">Example</span>
+        <p>Let <span class="math">f(x) = 2 − x</span> if <span class="math">x &lt; 1</span>, and <span class="math">f(x) = x²</span> if <span class="math">x ≥ 1</span>.</p>
+        <p>Find <span class="math">lim<sub>x→1</sub> f(x)</span>.</p>
+      </div>
+      <div class="solution">
+        <div class="solution-title">// Check both sides</div>
+        <div class="sol-step"><span class="sol-arrow">⟹</span><span class="sol-expr">lim<sub>x→1⁻</sub> f(x) = lim<sub>x→1⁻</sub> (2 − x) = 1</span></div>
+        <div class="sol-step"><span class="sol-arrow">⟹</span><span class="sol-expr">lim<sub>x→1⁺</sub> f(x) = lim<sub>x→1⁺</sub> x² = 1</span></div>
+        <div class="sol-step"><span class="sol-arrow">⟹</span><span class="sol-expr">Both sides agree → the two-sided limit exists</span></div>
+        <span class="sol-result">lim<sub>x→1</sub> f(x) = 1</span>
+      </div>
+      <div class="box box-note">
+        <span class="box-label">Important</span>
+        <p>If the left and right limits had been different, the two-sided limit would <strong>not exist</strong> even though each one-sided limit exists individually.</p>
       </div>
     </section>
 
     <div class="lec-nav">
-      <a href="lecture8.html" class="nav-btn" target="_self">← Lecture 8: Limits</a>
-      <a href="lecture10.html" class="nav-btn" target="_self">Lecture 10: Extrema &amp; Integration →</a>
+      <a href="lecture7.html" class="nav-btn">← Lecture 7: Symmetry &amp; Inverses</a>
+      <a href="lecture9.html" class="nav-btn">Lecture 9: Differentiation →</a>
     </div>
   </main>
 </div>
